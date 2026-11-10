@@ -91,8 +91,11 @@ const THEME_ICON = { system: 'monitor', light: 'sun', dark: 'moon' };
     </ng-template>
   `,
   styles: `
+    /* A column as tall as the screen, so the footer rests at the bottom on short pages */
     :host {
-      display: block;
+      display: flex;
+      flex-direction: column;
+      min-block-size: 100dvh;
     }
 
     .skip {
@@ -231,9 +234,11 @@ const THEME_ICON = { system: 'monitor', light: 'sun', dark: 'moon' };
       flex-wrap: wrap;
       justify-content: space-between;
       gap: var(--kn-space-2) var(--kn-space-6);
+      box-sizing: border-box;
+      inline-size: 100%;
       max-inline-size: 87rem;
-      margin: var(--kn-space-8) auto 0;
-      padding: var(--kn-space-6);
+      margin: auto auto 0;
+      padding: var(--kn-space-12) var(--kn-space-6) var(--kn-space-6);
       color: var(--kn-color-text-muted);
       font-size: var(--kn-text-sm);
     }
