@@ -97,7 +97,16 @@ export class KnDialogRef<R = unknown> {
     }
 
     /* A projected component host (or any wrapper) must not break the column layout */
-    :host ::ng-deep > :not(kn-dialog-header, kn-dialog-body, kn-dialog-footer) {
+    :host
+      ::ng-deep
+      > :not(
+        kn-dialog-header,
+        kn-dialog-body,
+        kn-dialog-footer,
+        kn-drawer-header,
+        kn-drawer-body,
+        kn-drawer-footer
+      ) {
       display: flex;
       flex: 1;
       flex-direction: column;
@@ -271,7 +280,7 @@ export class KnDialog {
 
 /** Шапка окна: заголовок связывается с окном через `aria-labelledby`. */
 @Component({
-  selector: 'kn-dialog-header',
+  selector: 'kn-dialog-header, kn-drawer-header',
   imports: [KnIcon],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
@@ -368,7 +377,7 @@ export class KnDialogHeader implements OnDestroy {
 
 /** Прокручиваемое тело окна. */
 @Component({
-  selector: 'kn-dialog-body',
+  selector: 'kn-dialog-body, kn-drawer-body',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `<ng-content />`,
   styles: `
@@ -391,7 +400,7 @@ export class KnDialogBody {}
 
 /** Ряд действий внизу окна. */
 @Component({
-  selector: 'kn-dialog-footer',
+  selector: 'kn-dialog-footer, kn-drawer-footer',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `<ng-content />`,
   styles: `
@@ -408,11 +417,13 @@ export class KnDialogFooter {}
 
 /** Закрывает окно по клику и передаёт значение как результат: `[knDialogClose]="true"`. */
 @Directive({
-  selector: '[knDialogClose]',
-  host: { '(click)': 'ref.close(result())' },
+  selector: '[knDialogClose], [knDrawerClose]',
+  host: { '(click)': 'ref.close(result() ?? drawerResult())' },
 })
 export class KnDialogClose {
   /** Результат, с которым закроется окно. */
   readonly result = input<unknown>(undefined, { alias: 'knDialogClose' });
+  /** То же для панелей: `[knDrawerClose]="value"`. */
+  readonly drawerResult = input<unknown>(undefined, { alias: 'knDrawerClose' });
   protected readonly ref = inject(KnDialogRef);
 }

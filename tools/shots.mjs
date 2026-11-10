@@ -1,4 +1,5 @@
 // Visual check helper: serves a built app and takes screenshots with headless Chrome.
+/* global document */
 //
 //   node tools/shots.mjs <distDir> <path> [<path> …] [--theme=dark] [--width=1280]
 //                        [--height=800] [--full] [--out=tools/shots] [--wait=400]
