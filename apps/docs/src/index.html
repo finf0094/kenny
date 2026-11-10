@@ -1,13 +1,25 @@
 <!doctype html>
-<html lang="en">
+<html lang="ru">
   <head>
     <meta charset="utf-8" />
-    <title>Docs</title>
+    <title>Kenny — стеклянные компоненты для Angular</title>
     <base href="/" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <meta
+      name="description"
+      content="Kenny — UI-библиотека для Angular: доступные компоненты на signals, стеклянный материал, пружинная анимация, светлая и тёмная темы."
+    />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <script>
+      // Apply the saved theme before first paint to avoid a flash.
+      try {
+        var t = localStorage.getItem('kn-theme');
+        if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
+      } catch (e) {}
+    </script>
   </head>
   <body>
-    <app-root></app-root>
+    <docs-root></docs-root>
   </body>
 </html>

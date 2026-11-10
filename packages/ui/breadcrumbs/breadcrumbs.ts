@@ -4,6 +4,7 @@ import { booleanAttribute, ChangeDetectionStrategy, Component, input } from '@an
 @Component({
   selector: 'kn-breadcrumbs',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: { '[attr.aria-label]': 'null' },
   template: `
     <nav [attr.aria-label]="ariaLabel()">
       <ol><ng-content /></ol>

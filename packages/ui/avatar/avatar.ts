@@ -91,7 +91,7 @@ import { KnSize } from '@kenny/ui/core';
     }
 
     :host-context(kn-avatar-group):not(:first-child) {
-      margin-inline-start: calc(var(--kn-avatar-size, var(--_size)) * -0.28);
+      margin-inline-start: calc(var(--kn-avatar-size, var(--_size)) * -0.2);
     }
   `,
 })

@@ -23,6 +23,7 @@ import { KnAnchoredOverlay, KnPlacement } from '@kenny/ui/core';
   selector: 'kn-popover',
   imports: [CdkTrapFocus],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: { '[attr.aria-label]': 'null' },
   template: `
     <ng-template #panel>
       <div

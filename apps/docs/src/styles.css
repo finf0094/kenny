@@ -1,1 +1,168 @@
-/* You can add global styles to this file, and also import other style files */
+@import './wallpaper.css';
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 6rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  min-block-size: 100dvh;
+}
+
+/*
+ * The wallpaper stays put while the page scrolls, like a home screen.
+ * Inner pages get the calm version: the cobalt disc only peeks over the top corner,
+ * so headings and controls that sit directly on the canvas never land on it.
+ */
+body::before {
+  --_disc-x: calc(100% - 1rem);
+  --_disc-y: -1rem;
+  --_disc-r: 11rem;
+  --_ring-r: 15.5rem;
+  --_spot-x: 69%;
+  --_spot-y: 24rem;
+
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background-color: var(--kn-color-canvas);
+  background-image:
+    radial-gradient(
+      circle at var(--_disc-x) var(--_disc-y),
+      light-dark(#2f5ff0, #2a52d6) 0 var(--_disc-r),
+      transparent calc(var(--_disc-r) + 1px)
+    ),
+    radial-gradient(
+      circle at var(--_spot-x) var(--_spot-y),
+      light-dark(#ffb23e, #e08a1c) 0 3.5rem,
+      transparent calc(3.5rem + 1px)
+    ),
+    radial-gradient(
+      circle at var(--_disc-x) var(--_disc-y),
+      transparent 0 var(--_ring-r),
+      light-dark(rgb(31 75 219 / 0.16), rgb(157 185 255 / 0.14)) var(--_ring-r) calc(var(--_ring-r) + 1.5px),
+      transparent calc(var(--_ring-r) + 2.5px)
+    ),
+    radial-gradient(circle at 4% 96%, light-dark(#a9c1ff, #16328f) 0 13rem, transparent calc(13rem + 1px)),
+    radial-gradient(120% 90% at 100% 0%, light-dark(#dfe8ff, #0b1436) 0%, transparent 60%);
+  background-repeat: no-repeat;
+}
+
+/* The home page is composed around the full disc */
+html:has(main.home) body::before {
+  --_disc-x: 86%;
+  --_disc-y: 9rem;
+  --_spot-y: 22rem;
+}
+
+a {
+  color: var(--kn-color-accent-text);
+  text-underline-offset: 0.18em;
+}
+
+code {
+  font-family: var(--kn-font-mono);
+  font-size: 0.88em;
+}
+
+/* Syntax theme: one render, both themes — colours come from these variables */
+:root {
+  --code-foreground: light-dark(#0c1330, #e6ebfb);
+  --code-background: transparent;
+  --code-token-constant: light-dark(#1a40c2, #9db9ff);
+  --code-token-string: light-dark(#0f7a4d, #7fe0b3);
+  --code-token-string-expression: light-dark(#0f7a4d, #7fe0b3);
+  --code-token-comment: light-dark(#586380, #93a0c0);
+  --code-token-keyword: light-dark(#a3268f, #f29be4);
+  --code-token-parameter: light-dark(#8f5400, #ffc260);
+  --code-token-function: light-dark(#1f4bdb, #86a8ff);
+  --code-token-punctuation: light-dark(#4a546e, #a3aecb);
+  --code-token-link: light-dark(#1f4bdb, #86a8ff);
+}
+
+/* Shared prose styles for guide pages and component pages */
+.prose {
+  line-height: var(--kn-leading-relaxed);
+}
+
+.prose > * + * {
+  margin-block-start: var(--kn-space-4);
+}
+
+.prose h1 {
+  margin: 0;
+  font-size: clamp(var(--kn-text-3xl), 4vw, var(--kn-text-4xl));
+  font-weight: 650;
+  line-height: var(--kn-leading-tight);
+  letter-spacing: var(--kn-tracking-tight);
+  text-wrap: balance;
+}
+
+.prose .lead {
+  margin-block-start: var(--kn-space-3);
+  font-size: var(--kn-text-lg);
+  color: var(--kn-color-text-muted);
+  max-inline-size: 42rem;
+  text-wrap: pretty;
+}
+
+.prose h2 {
+  margin-block: var(--kn-space-12) 0;
+  font-size: var(--kn-text-2xl);
+  font-weight: 650;
+  letter-spacing: var(--kn-tracking-snug);
+  line-height: var(--kn-leading-snug);
+}
+
+.prose h3 {
+  margin-block: var(--kn-space-8) 0;
+  font-size: var(--kn-text-lg);
+  font-weight: var(--kn-weight-semibold);
+  letter-spacing: var(--kn-tracking-snug);
+}
+
+.prose p,
+.prose li {
+  max-inline-size: 44rem;
+  text-wrap: pretty;
+}
+
+.prose ul,
+.prose ol {
+  padding-inline-start: var(--kn-space-5);
+}
+
+.prose li + li {
+  margin-block-start: var(--kn-space-1-5);
+}
+
+.prose :not(pre) > code {
+  padding: 0.1em 0.35em;
+  border-radius: var(--kn-radius-xs);
+  background: var(--kn-color-surface-sunken);
+}
+
+kbd {
+  display: inline-grid;
+  place-items: center;
+  min-inline-size: 1.5rem;
+  block-size: 1.5rem;
+  box-sizing: border-box;
+  padding: 0 var(--kn-space-1-5);
+  border-radius: var(--kn-radius-xs);
+  background: var(--kn-color-surface);
+  box-shadow:
+    inset 0 0 0 1px var(--kn-color-border-strong),
+    0 1px 0 0 var(--kn-color-border-strong);
+  font-family: var(--kn-font-sans);
+  font-size: var(--kn-text-xs);
+  font-weight: var(--kn-weight-medium);
+  white-space: nowrap;
+}

@@ -68,7 +68,7 @@ import { KN_OPTION_PARENT, KnOption, KnOptionParent } from '@kenny/ui/option';
       </div>
     </ng-template>
   `,
-  host: { '[attr.data-size]': 'size()' },
+  host: { '[attr.aria-label]': 'null', '[attr.data-size]': 'size()' },
   styles: `
     :host {
       --_height: var(--kn-size-md);

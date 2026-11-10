@@ -1,0 +1,11 @@
+@for (item of items(); track item.id; let i = $index) {
+  <li class="item" [style.--kn-index]="i">{{ item.title }}</li>
+}
+
+<style>
+  .item {
+    animation: kn-stagger-in var(--kn-duration-normal) var(--kn-ease-out) backwards;
+    /* Ограничиваем задержку: длинный список не должен «доезжать» секунду. */
+    animation-delay: calc(min(var(--kn-index), 10) * var(--kn-stagger));
+  }
+</style>

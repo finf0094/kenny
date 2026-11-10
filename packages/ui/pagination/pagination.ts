@@ -61,7 +61,7 @@ export function paginationRange(current: number, count: number, siblings: number
       </ul>
     </nav>
   `,
-  host: { '[attr.data-size]': 'size()' },
+  host: { '[attr.aria-label]': 'null', '[attr.data-size]': 'size()' },
   styles: `
     :host {
       --_size: var(--kn-size-md);

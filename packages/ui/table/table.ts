@@ -20,6 +20,8 @@ export interface KnColumn<T> {
   key: string;
   /** Заголовок. */
   header: string;
+  /** Прячет заголовок визуально, оставляя его скринридерам: для колонок с кнопками действий. */
+  headerHidden?: boolean;
   /** Можно ли сортировать по колонке. */
   sortable?: boolean;
   /** Выравнивание содержимого. Числа обычно выравнивают по `end`. */
@@ -83,6 +85,8 @@ export class KnCell<T = unknown> {
                     [attr.data-direction]="sort()?.key === column.key ? sort()?.direction : null"
                   />
                 </button>
+              } @else if (column.headerHidden) {
+                <span class="sr-only">{{ column.header }}</span>
               } @else {
                 {{ column.header }}
               }
@@ -126,7 +130,7 @@ export class KnCell<T = unknown> {
       </tbody>
     </table>
   `,
-  host: { '[attr.data-size]': 'size()', '[attr.data-sticky]': 'stickyHeader() ? "" : null' },
+  host: { '[attr.aria-label]': 'null', '[attr.data-size]': 'size()', '[attr.data-sticky]': 'stickyHeader() ? "" : null' },
   styles: `
     :host {
       --_pad-block: var(--kn-space-3);
@@ -171,6 +175,8 @@ export class KnCell<T = unknown> {
     }
 
     th {
+      /* Containing block for a visually hidden header */
+      position: relative;
       font-size: var(--kn-text-sm);
       font-weight: var(--kn-weight-medium);
       color: var(--kn-color-text-muted);
@@ -256,6 +262,15 @@ export class KnCell<T = unknown> {
 
     .arrow[data-direction='desc'] {
       transform: rotate(180deg);
+    }
+
+    .sr-only {
+      position: absolute;
+      inline-size: 1px;
+      block-size: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
     }
 
     .empty td {

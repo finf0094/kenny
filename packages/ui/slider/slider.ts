@@ -39,6 +39,8 @@ import { KnFormControl, KnSize } from '@kenny/ui/core';
     />
   `,
   host: {
+    // The label belongs to the inner element; the wrapper must not carry a copy
+    '[attr.aria-label]': 'null',
     '[attr.data-size]': 'size()',
     '[attr.data-disabled]': 'isDisabled() ? "" : null',
     '[style.--_ratio]': 'ratio()',

@@ -236,9 +236,9 @@ export class KnCalendar {
   /** Выбранная дата. Двусторонняя привязка: `[(value)]`. */
   readonly value = model<Date | null>(null);
   /** Самая ранняя доступная дата. */
-  readonly min = input<Date | null>(null);
+  readonly min = input<Date | null | undefined>(null);
   /** Самая поздняя доступная дата. */
-  readonly max = input<Date | null>(null);
+  readonly max = input<Date | null | undefined>(null);
   /** Возвращает `false` для дат, которые нельзя выбрать. */
   readonly dateFilter = input<((date: Date) => boolean) | null>(null);
   /** Локаль для названий и первого дня недели. По умолчанию `LOCALE_ID`. */

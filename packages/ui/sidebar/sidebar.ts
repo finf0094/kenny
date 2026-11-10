@@ -22,7 +22,7 @@ import { _IdGenerator } from '@angular/cdk/a11y';
     </nav>
     <div class="footer"><ng-content select="[knSidebarFooter]" /></div>
   `,
-  host: { '[attr.data-collapsed]': 'collapsed() ? "" : null' },
+  host: { '[attr.aria-label]': 'null', '[attr.data-collapsed]': 'collapsed() ? "" : null' },
   styles: `
     :host {
       display: flex;

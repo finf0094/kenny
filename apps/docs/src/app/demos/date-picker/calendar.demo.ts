@@ -1,15 +1,14 @@
-import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { KnCalendar } from '@kenny/ui/date-picker';
 
 @Component({
-  imports: [KnCalendar, DatePipe],
+  imports: [KnCalendar],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="card">
       <kn-calendar [(value)]="date" />
     </div>
-    <p>Выбрано: {{ date() | date: 'd.MM.y' }}</p>
+    <p>Выбрано: {{ date()?.toLocaleDateString('ru') ?? '—' }}</p>
   `,
   styles: `
     :host {

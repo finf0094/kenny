@@ -29,7 +29,7 @@ import { KnFormControl, KnSize } from '@kenny/ui/core';
       <span class="label"><ng-content /></span>
     </label>
   `,
-  host: { '[attr.data-size]': 'size()' },
+  host: { '[attr.aria-label]': 'null', '[attr.data-size]': 'size()' },
   styles: `
     :host {
       --_h: 1.5rem;

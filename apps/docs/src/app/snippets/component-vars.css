@@ -1,0 +1,11 @@
+/* Переменные компонентов наследуются: задайте их на предке. */
+.toolbar-compact {
+  --kn-button-radius: var(--kn-radius-sm);
+  --kn-button-height: 1.75rem;
+}
+
+/* Или точечно. */
+kn-card.plain {
+  --kn-card-bg: var(--kn-color-surface);
+  --kn-card-radius: var(--kn-radius-md);
+}

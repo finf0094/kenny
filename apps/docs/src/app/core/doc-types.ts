@@ -50,8 +50,6 @@ export interface DemoDoc {
   title: string;
   description?: string;
   component: Type<unknown>;
-  /** Render the preview on the plain canvas instead of the wallpaper stage. */
-  plain?: boolean;
 }
 
 export interface KeyboardDoc {
@@ -71,11 +69,18 @@ export interface ComponentDoc {
   description: string;
   /** Entry point name, e.g. `button` → `@kenny/ui/button`. */
   entry: string;
-  data: EntryData;
+  /** Generated API of the entry point. */
+  api: EntryData['api'];
+  /** Generated sources of the demo files. */
+  sources: Record<string, DemoSource>;
   demos: DemoDoc[];
   playground?: Type<unknown>;
   /** Limit the API tables to these classes (defaults to all in the entry point). */
   apiClasses?: string[];
+  /** Names for the import line (defaults to the documented classes). */
+  imports?: string[];
+  /** Only list CSS variables with this prefix (when an entry point holds several components). */
+  cssPrefix?: string;
   slots?: SlotDoc[];
   keyboard?: KeyboardDoc[];
   a11y?: string[];

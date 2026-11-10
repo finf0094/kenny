@@ -78,7 +78,7 @@ import { datePattern, formatDate, parseDate, startOfDay } from './date-utils';
       </div>
     </ng-template>
   `,
-  host: { '[attr.data-size]': 'size()' },
+  host: { '[attr.aria-label]': 'null', '[attr.data-size]': 'size()' },
   styles: `
     :host {
       --_height: var(--kn-size-md);
@@ -201,9 +201,9 @@ export class KnDatePicker extends KnFormControl<Date | null> {
   /** Выбранная дата. Двусторонняя привязка: `[(value)]`. */
   readonly value = model<Date | null>(null);
   /** Самая ранняя доступная дата. */
-  readonly min = input<Date | null>(null);
+  readonly min = input<Date | null | undefined>(null);
   /** Самая поздняя доступная дата. */
-  readonly max = input<Date | null>(null);
+  readonly max = input<Date | null | undefined>(null);
   /** Возвращает `false` для дат, которые нельзя выбрать. */
   readonly dateFilter = input<((date: Date) => boolean) | null>(null);
   /** Подсказка в пустом поле. По умолчанию — формат даты локали. */

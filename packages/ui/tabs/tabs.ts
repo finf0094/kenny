@@ -61,6 +61,8 @@ export type KnTabsVariant = 'segmented' | 'underline';
     <ng-content />
   `,
   host: {
+    // The label belongs to the inner element; the wrapper must not carry a copy
+    '[attr.aria-label]': 'null',
     '[attr.data-variant]': 'variant()',
     '[attr.data-size]': 'size()',
     '[attr.data-stretch]': 'stretch() ? "" : null',

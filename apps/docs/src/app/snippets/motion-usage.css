@@ -1,0 +1,20 @@
+/* Частое действие: быстро, стандартная кривая, только opacity. */
+.row::before {
+  opacity: 0;
+  transition: opacity var(--kn-duration-fast) var(--kn-ease-standard);
+}
+
+/* То, что пользователь двигает сам: пружина, только transform. */
+.thumb {
+  transition: transform var(--kn-duration-slow) var(--kn-ease-spring);
+}
+
+/* Появление поверхности: общий keyframe + токены. */
+.sheet {
+  animation: kn-rise-in var(--kn-duration-slow) var(--kn-ease-spring);
+}
+
+/* Выход: компонент ставит data-kn-state="closing" и ждёт конца анимации. */
+.sheet[data-kn-state='closing'] {
+  animation: kn-rise-out var(--kn-duration-fast) var(--kn-ease-in) forwards;
+}

@@ -1,0 +1,3 @@
+{
+  "styles": ["node_modules/@kenny/tokens/kenny.css", "src/styles.css"]
+}

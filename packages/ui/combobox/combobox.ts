@@ -41,7 +41,7 @@ import { KN_OPTION_PARENT, KnOption, KnOptionParent } from '@kenny/ui/option';
         spellcheck="false"
         aria-autocomplete="list"
         [id]="controlId"
-        [value]="query()"
+        [value]="displayText()"
         [placeholder]="placeholder()"
         [disabled]="isDisabled()"
         [attr.name]="name() || null"
@@ -90,7 +90,7 @@ import { KN_OPTION_PARENT, KnOption, KnOptionParent } from '@kenny/ui/option';
       </div>
     </ng-template>
   `,
-  host: { '[attr.data-size]': 'size()' },
+  host: { '[attr.aria-label]': 'null', '[attr.data-size]': 'size()' },
   styles: `
     :host {
       --_height: var(--kn-size-md);
@@ -227,7 +227,7 @@ import { KN_OPTION_PARENT, KnOption, KnOptionParent } from '@kenny/ui/option';
 export class KnCombobox<T = unknown> extends KnFormControl<T | null> implements KnOptionParent<T> {
   /** Выбранное значение. Двусторонняя привязка: `[(value)]`. */
   readonly value = model<T | null>(null);
-  /** Текст в поле. Привяжите `[(query)]`, чтобы загружать варианты с сервера. */
+  /** Текст, который пользователь набирает прямо сейчас (пустая строка вне ввода). Привяжите `[(query)]`, чтобы загружать варианты с сервера. */
   readonly query = model('');
   /** Подсказка в пустом поле. */
   readonly placeholder = input<string>('');
@@ -251,6 +251,10 @@ export class KnCombobox<T = unknown> extends KnFormControl<T | null> implements 
   private readonly inputElement = viewChild.required<ElementRef<HTMLInputElement>>('input');
   private readonly panel = viewChild.required<TemplateRef<unknown>>('panel');
 
+  /** True from the first keystroke until the list closes: the box shows the typed text. */
+  private readonly editing = signal(false);
+  /** Label of the last picked option, for lists where the option is no longer rendered. */
+  private readonly pickedText = signal('');
   /** What the user typed since the list opened; drives filtering. */
   private readonly typed = signal('');
   readonly filter = computed(() =>
@@ -269,23 +273,22 @@ export class KnCombobox<T = unknown> extends KnFormControl<T | null> implements 
     this.options().find((option) => this.compareWith()(option.value(), this.value())),
   );
 
+  /**
+   * Text in the box: what is being typed, otherwise the label of the selected option.
+   * Evaluated from the template, i.e. after the projected options received their inputs.
+   */
+  protected readonly displayText = computed(() => {
+    if (this.editing()) return this.query();
+    if (this.value() === null) return '';
+    return this.selectedOption()?.text() ?? this.pickedText();
+  });
+
   constructor() {
     super();
     this.keyManager.change.subscribe(() =>
       this.activeId.set(this.keyManager.activeItem?.id ?? null),
     );
-    this.overlay.dismissed.subscribe((reason) => {
-      void this.close();
-      if (reason === 'escape') this.syncQuery();
-    });
-    // Keep the text in sync with the value while the user is not editing.
-    effect(() => {
-      this.selectedOption();
-      this.value();
-      if (!untracked(this.overlay.isOpen)) {
-        untracked(() => this.syncQuery());
-      }
-    });
+    this.overlay.dismissed.subscribe(() => void this.close());
     // Highlight the first match as the list narrows.
     effect(() => {
       this.filter();
@@ -301,8 +304,8 @@ export class KnCombobox<T = unknown> extends KnFormControl<T | null> implements 
   }
 
   pick(option: KnOption<T>): void {
+    this.pickedText.set(option.text());
     this.commit(option.value());
-    this.query.set(option.text());
     void this.close();
   }
 
@@ -331,15 +334,18 @@ export class KnCombobox<T = unknown> extends KnFormControl<T | null> implements 
     }
   }
 
-  /** Закрывает список. */
+  /** Закрывает список. Несохранённый текст в поле сбрасывается к выбранному значению. */
   async close(): Promise<void> {
+    this.editing.set(false);
     this.typed.set('');
+    if (this.query() !== '') this.query.set('');
     await this.overlay.close();
   }
 
   /** Сбрасывает значение и текст. */
   clear(): void {
     this.commit(null);
+    this.editing.set(false);
     this.query.set('');
     this.typed.set('');
     this.inputElement().nativeElement.focus();
@@ -355,6 +361,7 @@ export class KnCombobox<T = unknown> extends KnFormControl<T | null> implements 
   }
 
   protected onInput(text: string): void {
+    this.editing.set(true);
     this.query.set(text);
     this.typed.set(text);
     if (text === '' && this.value() !== null) {
@@ -366,7 +373,6 @@ export class KnCombobox<T = unknown> extends KnFormControl<T | null> implements 
   protected onBlur(): void {
     this.markTouched();
     void this.close();
-    this.syncQuery();
   }
 
   protected onKeydown(event: KeyboardEvent): void {
@@ -394,16 +400,11 @@ export class KnCombobox<T = unknown> extends KnFormControl<T | null> implements 
         break;
       }
       case 'Escape':
-        if (!open && this.query() !== '') {
+        if (!open && this.value() !== null) {
           event.preventDefault();
           this.clear();
         }
         break;
     }
-  }
-
-  /** Shows the label of the selected option (or nothing) in the text box. */
-  private syncQuery(): void {
-    this.query.set(this.selectedOption()?.text() ?? '');
   }
 }

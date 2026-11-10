@@ -48,7 +48,7 @@
   /* Text */
   --kn-color-text: light-dark(#0c1330, #eef2ff);
   --kn-color-text-muted: light-dark(var(--kn-ink-600), #a3aecb);
-  --kn-color-text-subtle: light-dark(var(--kn-ink-500), #8792b3);
+  --kn-color-text-subtle: light-dark(#55607b, #8792b3);
   --kn-color-text-disabled: light-dark(rgb(12 19 48 / 0.38), rgb(238 242 255 / 0.36));
 
   /* Lines */
@@ -71,13 +71,13 @@
   --kn-color-accent-text: light-dark(var(--kn-accent-700), var(--kn-accent-300));
 
   /* Status */
-  --kn-color-success: light-dark(#0f7a4d, #4fd69c);
-  --kn-color-success-soft: light-dark(rgb(15 122 77 / 0.12), rgb(79 214 156 / 0.16));
-  --kn-color-warning: light-dark(#8f5400, #ffc260);
+  --kn-color-success: light-dark(#0b6b43, #4fd69c);
+  --kn-color-success-soft: light-dark(rgb(11 107 67 / 0.12), rgb(79 214 156 / 0.16));
+  --kn-color-warning: light-dark(#804c00, #ffc260);
   --kn-color-warning-soft: light-dark(rgb(214 138 0 / 0.16), rgb(255 194 96 / 0.16));
-  --kn-color-danger: light-dark(#c4263a, #ff7a85);
-  --kn-color-danger-hover: light-dark(#a81f31, #ff939c);
-  --kn-color-danger-soft: light-dark(rgb(196 38 58 / 0.1), rgb(255 122 133 / 0.16));
+  --kn-color-danger: light-dark(#b32035, #ff7a85);
+  --kn-color-danger-hover: light-dark(#9a1b2d, #ff939c);
+  --kn-color-danger-soft: light-dark(rgb(179 32 53 / 0.1), rgb(255 122 133 / 0.16));
   --kn-color-on-danger: light-dark(#ffffff, #3a060c);
 
   /* Interaction layers — painted on top of any surface */

@@ -1,0 +1,5 @@
+/* src/styles.css */
+@import '@kenny/tokens/kenny.css';
+
+/* Или по частям, если базовые стили страницы у вас свои: */
+/* @import '@kenny/tokens/tokens.css'; */

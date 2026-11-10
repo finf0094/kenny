@@ -58,7 +58,7 @@ import { KnIcon } from '@kenny/ui/icon';
     </ol>
     <ng-content />
   `,
-  host: { '[attr.data-orientation]': 'orientation()' },
+  host: { '[attr.aria-label]': 'null', '[attr.data-orientation]': 'orientation()' },
   styles: `
     :host {
       display: block;
@@ -84,6 +84,8 @@ import { KnIcon } from '@kenny/ui/icon';
     }
 
     .trigger {
+      /* Containing block for the visually hidden status text */
+      position: relative;
       display: flex;
       align-items: center;
       gap: var(--kn-space-3);

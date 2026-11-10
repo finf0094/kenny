@@ -5,7 +5,7 @@ import angular from 'angular-eslint';
 import prettier from 'eslint-config-prettier';
 
 export default tseslint.config(
-  { ignores: ['dist/', 'out-tsc/', '.angular/', 'node_modules/', '**/generated/**', 'tools/shots/'] },
+  { ignores: ['dist/', 'out-tsc/', '.angular/', 'node_modules/', '**/generated/**', 'tools/shots/', 'apps/docs/src/app/snippets/'] },
   {
     files: ['**/*.ts'],
     extends: [
