@@ -67,6 +67,17 @@ export function knPositions(placement: KnPlacement, offset = 8): ConnectedPositi
   return sides.flatMap((s) => aligns.map((a) => position(s, a, offset)));
 }
 
+/**
+ * Overlays render at the end of `<body>`, outside of any nested `data-theme` scope.
+ * Copies the theme of the element that opened the overlay onto the overlay itself.
+ */
+export function inheritTheme(source: Element, target: Element): void {
+  const theme = source.closest('[data-theme]')?.getAttribute('data-theme');
+  if (theme) {
+    target.setAttribute('data-theme', theme);
+  }
+}
+
 export interface KnOverlayOpenOptions {
   /** Element the overlay is attached to. */
   origin: ElementRef<HTMLElement> | HTMLElement;
@@ -141,6 +152,7 @@ export class KnAnchoredOverlay {
       minWidth: options.matchWidth ? originElement.getBoundingClientRect().width : undefined,
     });
     this.overlayRef = ref;
+    inheritTheme(originElement, ref.overlayElement);
     ref.attach(new TemplatePortal(options.template, this.viewContainer));
 
     if (options.closeOnEscape !== false) {

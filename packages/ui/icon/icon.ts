@@ -71,7 +71,8 @@ export class KnIcon {
 
   protected readonly cssSize = computed(() => {
     const size = this.size();
-    return size == null ? null : typeof size === 'number' ? `${size}px` : size;
+    if (size == null || size === '') return null;
+    return typeof size === 'number' || /^\d+(\.\d+)?$/.test(size) ? `${size}px` : size;
   });
 
   protected readonly svg = computed(() => {
