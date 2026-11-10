@@ -53,12 +53,16 @@ describe('KnCard', () => {
     expect(card).toHaveAttribute('data-variant', 'solid');
     expect(card).toHaveAttribute('data-padding', 'lg');
     expect(card.firstElementChild).toHaveAttribute('alt', 'Обложка');
-    expect(card.querySelector('.body')!.textContent!.replace(/\s+/g, '')).toBe('ЗаголовокТелоПодвал');
+    expect(card.querySelector('.body')!.textContent!.replace(/\s+/g, '')).toBe(
+      'ЗаголовокТелоПодвал',
+    );
     await expectNoA11yViolations(container);
   });
 
   it('can be an interactive link', async () => {
     await render(`<a kn-card interactive href="#x">Открыть проект</a>`, { imports: [KnCard] });
-    expect(screen.getByRole('link', { name: 'Открыть проект' })).toHaveAttribute('data-interactive');
+    expect(screen.getByRole('link', { name: 'Открыть проект' })).toHaveAttribute(
+      'data-interactive',
+    );
   });
 });

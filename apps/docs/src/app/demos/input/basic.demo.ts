@@ -10,10 +10,10 @@ import { KnInput } from '@kenny/ui/input';
       <input knInput placeholder="Например, «Сайт к запуску»" />
     </kn-field>
     <kn-field label="Маленькое">
-      <input knInput knSize="sm" value="knSize=&quot;sm&quot;" />
+      <input knInput knSize="sm" value='knSize="sm"' />
     </kn-field>
     <kn-field label="Большое">
-      <input knInput knSize="lg" value="knSize=&quot;lg&quot;" />
+      <input knInput knSize="lg" value='knSize="lg"' />
     </kn-field>
     <kn-field label="Только чтение">
       <input knInput value="kenny-prod-eu" disabled />

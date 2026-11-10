@@ -7,8 +7,14 @@ import { KnProgress } from '@kenny/ui/progress';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="item">
-      <div class="head"><span>Загрузка архива</span><span>{{ value() }}%</span></div>
-      <kn-progress aria-label="Загрузка архива" [value]="value()" [tone]="value() === 100 ? 'success' : 'accent'" />
+      <div class="head">
+        <span>Загрузка архива</span><span>{{ value() }}%</span>
+      </div>
+      <kn-progress
+        aria-label="Загрузка архива"
+        [value]="value()"
+        [tone]="value() === 100 ? 'success' : 'accent'"
+      />
     </div>
     <div class="actions">
       <button kn-button size="sm" variant="soft" (click)="step(-20)">−20</button>

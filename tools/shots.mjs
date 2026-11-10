@@ -77,7 +77,9 @@ try {
     }
     await new Promise((r) => setTimeout(r, Number(flags.wait ?? 400)));
     const name =
-      flags.name ?? ((path.replace(/[^\w]+/g, '_').replace(/^_|_$/g, '') || 'home') + (flags.theme ? `.${flags.theme}` : ''));
+      flags.name ??
+      (path.replace(/[^\w]+/g, '_').replace(/^_|_$/g, '') || 'home') +
+        (flags.theme ? `.${flags.theme}` : '');
     await page.screenshot({ path: join(out, `${name}.png`), fullPage: Boolean(flags.full) });
     console.log('shot', join(out, `${name}.png`));
     await page.close();

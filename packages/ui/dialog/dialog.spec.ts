@@ -36,7 +36,10 @@ class ConfirmDialog {
     <button type="button" (click)="openDrawer()">Панель</button>
     <ng-template #sheet let-ref let-data="data">
       <kn-dialog-header heading="Фильтры" />
-      <kn-dialog-body>Статус: {{ data.status }} <button type="button" (click)="ref.close()">Готово</button></kn-dialog-body>
+      <kn-dialog-body
+        >Статус: {{ data.status }}
+        <button type="button" (click)="ref.close()">Готово</button></kn-dialog-body
+      >
     </ng-template>
   `,
 })

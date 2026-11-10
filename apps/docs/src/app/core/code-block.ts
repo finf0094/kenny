@@ -17,9 +17,20 @@ import { DemoSource } from './doc-types';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @if (html(); as markup) {
-      <div class="code" tabindex="0" role="region" [attr.aria-label]="label()" [innerHTML]="markup"></div>
+      <div
+        class="code"
+        tabindex="0"
+        role="region"
+        [attr.aria-label]="label()"
+        [innerHTML]="markup"
+      ></div>
     } @else {
-      <pre class="code plain" tabindex="0" role="region" [attr.aria-label]="label()"><code>{{ text() }}</code></pre>
+      <pre
+        class="code plain"
+        tabindex="0"
+        role="region"
+        [attr.aria-label]="label()"
+      ><code>{{ text() }}</code></pre>
     }
     <button
       class="copy"

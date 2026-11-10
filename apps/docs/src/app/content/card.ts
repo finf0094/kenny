@@ -11,7 +11,12 @@ import Interactive from '../demos/card/interactive.demo';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <docs-playground [controls]="controls" [code]="code()">
-      <kn-card style="inline-size: 16rem" [variant]="variant.value()" [padding]="padding.value()" [interactive]="interactive.value()">
+      <kn-card
+        style="inline-size: 16rem"
+        [variant]="variant.value()"
+        [padding]="padding.value()"
+        [interactive]="interactive.value()"
+      >
         <strong knCardHeader>Квартальный отчёт</strong>
         <span>Обновлён сегодня в 14:20</span>
       </kn-card>
@@ -45,13 +50,15 @@ export default {
     {
       source: 'basic',
       title: 'Три материала',
-      description: 'Стекло читается только на фоне с деталями; на ровной заливке выбирайте solid или outline.',
+      description:
+        'Стекло читается только на фоне с деталями; на ровной заливке выбирайте solid или outline.',
       component: Basic,
     },
     {
       source: 'interactive',
       title: 'Карточка-ссылка',
-      description: 'Селектор работает на <a> и <button>: вся карточка становится одним интерактивным элементом.',
+      description:
+        'Селектор работает на <a> и <button>: вся карточка становится одним интерактивным элементом.',
       component: Interactive,
     },
   ],

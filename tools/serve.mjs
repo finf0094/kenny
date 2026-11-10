@@ -50,4 +50,9 @@ export async function serve(distDir) {
 }
 
 export const chromePath = process.env.CHROME_PATH ?? '/usr/bin/google-chrome';
-export const chromeArgs = ['--no-sandbox', '--disable-gpu', '--hide-scrollbars', '--force-color-profile=srgb'];
+export const chromeArgs = [
+  '--no-sandbox',
+  '--disable-gpu',
+  '--hide-scrollbars',
+  '--force-color-profile=srgb',
+];

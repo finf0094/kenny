@@ -80,12 +80,19 @@ export default {
   ],
   playground: Playground,
   slots: [
-    { name: 'ng-template[knCell]="key"', description: 'Шаблон ячейки колонки. Контекст: строка ($implicit), value и index.' },
+    {
+      name: 'ng-template[knCell]="key"',
+      description: 'Шаблон ячейки колонки. Контекст: строка ($implicit), value и index.',
+    },
     { name: 'knTableEmpty', description: 'Разметка пустого состояния вместо текста emptyText.' },
   ],
   keyboard: [
     { keys: ['Tab'], action: 'Перемещается по кнопкам сортировки и флажкам строк.' },
-    { keys: ['Enter', 'Пробел'], action: 'На заголовке: меняет сортировку по кругу — по возрастанию, по убыванию, без сортировки.' },
+    {
+      keys: ['Enter', 'Пробел'],
+      action:
+        'На заголовке: меняет сортировку по кругу — по возрастанию, по убыванию, без сортировки.',
+    },
     { keys: ['Пробел'], action: 'На флажке: выбирает строку или все строки.' },
   ],
   a11y: [

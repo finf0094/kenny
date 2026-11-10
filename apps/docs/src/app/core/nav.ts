@@ -21,7 +21,11 @@ export const guides: NavItem[] = [
   { path: '/docs/accessibility', title: 'Доступность', icon: 'accessibility' },
 ];
 
-const c = (slug: string, title: string, load: () => Promise<{ default: ComponentDoc }>): ComponentNavItem => ({
+const c = (
+  slug: string,
+  title: string,
+  load: () => Promise<{ default: ComponentDoc }>,
+): ComponentNavItem => ({
   slug,
   title,
   load: () => load().then((m) => m.default),

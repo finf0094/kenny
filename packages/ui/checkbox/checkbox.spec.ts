@@ -22,7 +22,9 @@ describe('KnCheckbox', () => {
   });
 
   it('supports the indeterminate state and clears it on toggle', async () => {
-    await render(`<kn-checkbox [indeterminate]="true">Все</kn-checkbox>`, { imports: [KnCheckbox] });
+    await render(`<kn-checkbox [indeterminate]="true">Все</kn-checkbox>`, {
+      imports: [KnCheckbox],
+    });
     const box = screen.getByRole<HTMLInputElement>('checkbox');
     expect(box.indeterminate).toBe(true);
     await userEvent.click(box);
@@ -31,7 +33,10 @@ describe('KnCheckbox', () => {
   });
 
   it('integrates with reactive forms: value, disabled, invalid', async () => {
-    const control = new FormControl(false, { nonNullable: true, validators: Validators.requiredTrue });
+    const control = new FormControl(false, {
+      nonNullable: true,
+      validators: Validators.requiredTrue,
+    });
     const { fixture } = await render(`<kn-checkbox [formControl]="control">Условия</kn-checkbox>`, {
       imports: [KnCheckbox, ReactiveFormsModule],
       componentProperties: { control },

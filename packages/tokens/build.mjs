@@ -25,7 +25,7 @@ export function parseTokens(css, group) {
   const body = css.slice(open + 1, i - 1);
   const tokens = [];
   const re = /(--kn-[\w-]+)\s*:\s*([^;]+);(?:[ \t]*\/\*([^*]*)\*\/)?/g;
-  for (let m; (m = re.exec(body)); ) {
+  for (let m; (m = re.exec(body));) {
     tokens.push({
       name: m[1],
       value: m[2].replace(/\s+/g, ' ').trim(),
@@ -54,9 +54,9 @@ async function main() {
   await writeFile(join(out, 'kenny.css'), `${tokensCss}\n${baseCss}`);
   await writeFile(join(out, 'tokens.json'), JSON.stringify(await readAllTokens(), null, 2));
   const pkg = JSON.parse(await readFile(join(here, 'package.json'), 'utf8'));
-  delete pkg.publishConfig.directory;
   await writeFile(join(out, 'package.json'), JSON.stringify(pkg, null, 2));
   await copyFile(join(here, 'README.md'), join(out, 'README.md'));
+  await copyFile(join(here, '../../LICENSE'), join(out, 'LICENSE'));
   console.log(`@kenny/tokens → ${out}`);
 }
 

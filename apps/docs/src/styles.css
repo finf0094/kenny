@@ -49,10 +49,15 @@ body::before {
     radial-gradient(
       circle at var(--_disc-x) var(--_disc-y),
       transparent 0 var(--_ring-r),
-      light-dark(rgb(31 75 219 / 0.16), rgb(157 185 255 / 0.14)) var(--_ring-r) calc(var(--_ring-r) + 1.5px),
+      light-dark(rgb(31 75 219 / 0.16), rgb(157 185 255 / 0.14)) var(--_ring-r)
+        calc(var(--_ring-r) + 1.5px),
       transparent calc(var(--_ring-r) + 2.5px)
     ),
-    radial-gradient(circle at 4% 96%, light-dark(#bccfff, #16328f) 0 var(--_pool-r), transparent calc(var(--_pool-r) + 1px)),
+    radial-gradient(
+      circle at 4% 96%,
+      light-dark(#bccfff, #16328f) 0 var(--_pool-r),
+      transparent calc(var(--_pool-r) + 1px)
+    ),
     radial-gradient(120% 90% at 100% 0%, light-dark(#dfe8ff, #0b1436) 0%, transparent 60%);
   background-repeat: no-repeat;
 }

@@ -61,7 +61,9 @@ describe('KnInput', () => {
   });
 
   it('respects a custom id', async () => {
-    await render(`<label for="own">Город</label><input knInput id="own" />`, { imports: [KnInput] });
+    await render(`<label for="own">Город</label><input knInput id="own" />`, {
+      imports: [KnInput],
+    });
     expect(screen.getByLabelText('Город')).toHaveAttribute('id', 'own');
   });
 

@@ -7,7 +7,16 @@ import { ComponentDoc } from '../core/doc-types';
 import { attrs, choice, DocsPlayground, range, text } from '../core/playground';
 import Basic from '../demos/tooltip/basic.demo';
 
-const PLACEMENTS = ['top', 'bottom', 'start', 'end', 'top-start', 'top-end', 'bottom-start', 'bottom-end'] as const;
+const PLACEMENTS = [
+  'top',
+  'bottom',
+  'start',
+  'end',
+  'top-start',
+  'top-end',
+  'bottom-start',
+  'bottom-end',
+] as const;
 
 @Component({
   imports: [DocsPlayground, KnButton, KnIcon, KnTooltip],
@@ -55,7 +64,8 @@ export default {
     {
       source: 'basic',
       title: 'Подсказки к кнопкам-иконкам',
-      description: 'При наведении подсказка ждёт полсекунды, при фокусе с клавиатуры появляется сразу.',
+      description:
+        'При наведении подсказка ждёт полсекунды, при фокусе с клавиатуры появляется сразу.',
       component: Basic,
     },
   ],

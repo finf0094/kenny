@@ -26,7 +26,10 @@ describe('KnPagination', () => {
   it('marks the current page and disables "previous" on the first page', async () => {
     await render(Host);
     expect(screen.getByRole('navigation', { name: 'Страницы' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Страница 1' })).toHaveAttribute('aria-current', 'page');
+    expect(screen.getByRole('button', { name: 'Страница 1' })).toHaveAttribute(
+      'aria-current',
+      'page',
+    );
     expect(screen.getByRole('button', { name: 'Предыдущая страница' })).toBeDisabled();
   });
 
@@ -38,7 +41,10 @@ describe('KnPagination', () => {
     expect(fixture.componentInstance.page()).toBe(4);
     await user.click(screen.getByRole('button', { name: 'Следующая страница' }));
     await stable();
-    expect(screen.getByRole('button', { name: 'Страница 5' })).toHaveAttribute('aria-current', 'page');
+    expect(screen.getByRole('button', { name: 'Страница 5' })).toHaveAttribute(
+      'aria-current',
+      'page',
+    );
     await user.click(screen.getByRole('button', { name: 'Страница 20' }));
     await stable();
     expect(screen.getByRole('button', { name: 'Следующая страница' })).toBeDisabled();

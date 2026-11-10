@@ -160,7 +160,11 @@ export class KnInput {
   hostDirectives: [
     {
       directive: CdkTextareaAutosize,
-      inputs: ['cdkTextareaAutosize: autosize', 'cdkAutosizeMinRows: minRows', 'cdkAutosizeMaxRows: maxRows'],
+      inputs: [
+        'cdkTextareaAutosize: autosize',
+        'cdkAutosizeMinRows: minRows',
+        'cdkAutosizeMaxRows: maxRows',
+      ],
     },
   ],
   host: { class: 'kn-input kn-textarea', ...host },

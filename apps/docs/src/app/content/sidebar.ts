@@ -11,10 +11,19 @@ import Basic from '../demos/sidebar/basic.demo';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <docs-playground [controls]="controls" [code]="code()">
-      <kn-sidebar style="block-size: 15rem" aria-label="Пример навигации" [collapsed]="collapsed.value()">
+      <kn-sidebar
+        style="block-size: 15rem"
+        aria-label="Пример навигации"
+        [collapsed]="collapsed.value()"
+      >
         <kn-sidebar-group label="Работа">
           @for (item of items; track item.id) {
-            <button kn-sidebar-item type="button" [active]="current() === item.id" (click)="current.set(item.id)">
+            <button
+              kn-sidebar-item
+              type="button"
+              [active]="current() === item.id"
+              (click)="current.set(item.id)"
+            >
               <kn-icon knSidebarIcon [name]="item.icon" /> {{ item.label }}
             </button>
           }
@@ -50,16 +59,23 @@ export default {
     {
       source: 'basic',
       title: 'Группы, счётчики и сворачивание',
-      description: 'Кнопка в шапке переключает [(collapsed)]. Счётчик попадает в слот knSidebarEnd.',
+      description:
+        'Кнопка в шапке переключает [(collapsed)]. Счётчик попадает в слот knSidebarEnd.',
       component: Basic,
     },
   ],
   playground: Playground,
   slots: [
-    { name: 'knSidebarHeader', description: 'Шапка: логотип, переключатель пространства, кнопка сворачивания.' },
+    {
+      name: 'knSidebarHeader',
+      description: 'Шапка: логотип, переключатель пространства, кнопка сворачивания.',
+    },
     { name: '(по умолчанию)', description: 'Группы и пункты навигации; область прокручивается.' },
     { name: 'knSidebarFooter', description: 'Подвал: профиль, помощь.' },
-    { name: 'knSidebarIcon (пункт)', description: 'Иконка пункта; остаётся видимой в свёрнутом виде.' },
+    {
+      name: 'knSidebarIcon (пункт)',
+      description: 'Иконка пункта; остаётся видимой в свёрнутом виде.',
+    },
     { name: 'knSidebarEnd (пункт)', description: 'Счётчик или бейдж справа.' },
   ],
   keyboard: [

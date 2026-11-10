@@ -12,7 +12,12 @@ import { KnStep, KnStepper } from '@kenny/ui/stepper';
     <kn-stepper #stepper linear aria-label="Создание пространства" [(step)]="step">
       <kn-step label="Пространство" description="Название и адрес">
         <kn-field label="Название" [error]="nameError()">
-          <input knInput placeholder="Acme" [value]="name()" (input)="name.set($any($event.target).value)" />
+          <input
+            knInput
+            placeholder="Acme"
+            [value]="name()"
+            (input)="name.set($any($event.target).value)"
+          />
         </kn-field>
       </kn-step>
       <kn-step label="Тариф" description="Можно сменить позже">
@@ -22,12 +27,21 @@ import { KnStep, KnStepper } from '@kenny/ui/stepper';
         </kn-radio-group>
       </kn-step>
       <kn-step label="Готово">
-        <p>Пространство «{{ name() }}» на тарифе «{{ plan() === 'team' ? 'Команда' : 'Бесплатный' }}» создано.</p>
+        <p>
+          Пространство «{{ name() }}» на тарифе «{{ plan() === 'team' ? 'Команда' : 'Бесплатный' }}»
+          создано.
+        </p>
       </kn-step>
     </kn-stepper>
 
     <div class="actions">
-      <button kn-button variant="ghost" tone="neutral" [disabled]="step() === 0" (click)="stepper.previous()">
+      <button
+        kn-button
+        variant="ghost"
+        tone="neutral"
+        [disabled]="step() === 0"
+        (click)="stepper.previous()"
+      >
         Назад
       </button>
       @if (step() < 2) {

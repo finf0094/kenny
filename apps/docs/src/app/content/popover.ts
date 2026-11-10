@@ -6,7 +6,16 @@ import { ComponentDoc } from '../core/doc-types';
 import { attrs, choice, DocsPlayground, range } from '../core/playground';
 import Basic from '../demos/popover/basic.demo';
 
-const PLACEMENTS = ['bottom-start', 'bottom', 'bottom-end', 'top-start', 'top', 'top-end', 'start', 'end'] as const;
+const PLACEMENTS = [
+  'bottom-start',
+  'bottom',
+  'bottom-end',
+  'top-start',
+  'top',
+  'top-end',
+  'start',
+  'end',
+] as const;
 
 @Component({
   imports: [DocsPlayground, KnButton, KnPopover, KnPopoverTrigger],
@@ -14,7 +23,13 @@ const PLACEMENTS = ['bottom-start', 'bottom', 'bottom-end', 'top-start', 'top', 
   template: `
     <docs-playground [controls]="controls" [code]="code()">
       <button kn-button variant="glass" tone="neutral" [knPopoverTrigger]="popover">Открыть</button>
-      <kn-popover #popover aria-label="Пример панели" width="14rem" [placement]="placement.value()" [offset]="offset.value()">
+      <kn-popover
+        #popover
+        aria-label="Пример панели"
+        width="14rem"
+        [placement]="placement.value()"
+        [offset]="offset.value()"
+      >
         Панель привязана к кнопке и следует за ней при прокрутке.
       </kn-popover>
     </docs-playground>
@@ -26,10 +41,12 @@ class Playground {
   protected readonly controls = [this.placement, this.offset];
   protected readonly code = computed(
     () =>
-      `<button kn-button [knPopoverTrigger]="popover">Открыть</button>\n<kn-popover #popover aria-label="Пример панели"${attrs({
-        placement: [this.placement.value(), 'bottom-start'],
-        offset: [this.offset.value(), 8],
-      })}>\n  …\n</kn-popover>`,
+      `<button kn-button [knPopoverTrigger]="popover">Открыть</button>\n<kn-popover #popover aria-label="Пример панели"${attrs(
+        {
+          placement: [this.placement.value(), 'bottom-start'],
+          offset: [this.offset.value(), 8],
+        },
+      )}>\n  …\n</kn-popover>`,
   );
 }
 
@@ -45,7 +62,8 @@ export default {
     {
       source: 'basic',
       title: 'Панель настроек',
-      description: 'Триггер связывается с панелью директивой knPopoverTrigger; закрыть панель можно и из содержимого.',
+      description:
+        'Триггер связывается с панелью директивой knPopoverTrigger; закрыть панель можно и из содержимого.',
       component: Basic,
     },
   ],

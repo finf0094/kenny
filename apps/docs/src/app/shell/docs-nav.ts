@@ -12,7 +12,13 @@ import { componentGroups, examples, guides } from '../core/nav';
   template: `
     <kn-sidebar-group label="Руководства">
       @for (item of guides; track item.path) {
-        <a kn-sidebar-item routerLinkActive="active" ariaCurrentWhenActive="page" [routerLink]="item.path" (click)="navigated.emit()">
+        <a
+          kn-sidebar-item
+          routerLinkActive="active"
+          ariaCurrentWhenActive="page"
+          [routerLink]="item.path"
+          (click)="navigated.emit()"
+        >
           <kn-icon knSidebarIcon [name]="item.icon ?? 'file'" [size]="18" />
           {{ item.title }}
         </a>
@@ -35,7 +41,13 @@ import { componentGroups, examples, guides } from '../core/nav';
     }
     <kn-sidebar-group label="Примеры">
       @for (item of examples; track item.path) {
-        <a kn-sidebar-item routerLinkActive="active" ariaCurrentWhenActive="page" [routerLink]="item.path" (click)="navigated.emit()">
+        <a
+          kn-sidebar-item
+          routerLinkActive="active"
+          ariaCurrentWhenActive="page"
+          [routerLink]="item.path"
+          (click)="navigated.emit()"
+        >
           <kn-icon knSidebarIcon [name]="item.icon ?? 'file'" [size]="18" />
           {{ item.title }}
         </a>

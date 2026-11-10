@@ -10,7 +10,12 @@ import Basic from '../demos/badge/basic.demo';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <docs-playground [controls]="controls" [code]="code()">
-      <kn-badge [tone]="tone.value()" [variant]="variant.value()" [size]="size.value()" [dot]="dot.value()">
+      <kn-badge
+        [tone]="tone.value()"
+        [variant]="variant.value()"
+        [size]="size.value()"
+        [dot]="dot.value()"
+      >
         {{ label.value() }}
       </kn-badge>
     </docs-playground>
@@ -18,7 +23,11 @@ import Basic from '../demos/badge/basic.demo';
 })
 class Playground {
   protected readonly label = text('Текст', 'Оплачен');
-  protected readonly tone = choice('tone', ['neutral', 'accent', 'success', 'warning', 'danger'], 'success');
+  protected readonly tone = choice(
+    'tone',
+    ['neutral', 'accent', 'success', 'warning', 'danger'],
+    'success',
+  );
   protected readonly variant = choice('variant', ['soft', 'solid', 'outline']);
   protected readonly size = choice('size', ['md', 'lg']);
   protected readonly dot = toggle('dot', true);
@@ -38,7 +47,8 @@ export default {
   slug: 'badge',
   title: 'Badge',
   entry: 'badge',
-  description: 'Короткая метка: статус записи, счётчик, версия. Не интерактивна — для фильтров и выбора нужны кнопки.',
+  description:
+    'Короткая метка: статус записи, счётчик, версия. Не интерактивна — для фильтров и выбора нужны кнопки.',
   api: data.api,
   sources: data.sources,
   demos: [

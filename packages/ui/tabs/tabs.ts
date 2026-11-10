@@ -270,7 +270,9 @@ export class KnTabs<T = unknown> {
     if (!next) return;
     event.preventDefault();
     this.select(next);
-    this.list().nativeElement.querySelector<HTMLElement>(`#${CSS.escape(next.id + '-tab')}`)?.focus();
+    this.list()
+      .nativeElement.querySelector<HTMLElement>(`#${CSS.escape(next.id + '-tab')}`)
+      ?.focus();
   }
 
   /**

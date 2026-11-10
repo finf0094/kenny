@@ -41,5 +41,11 @@ import { KnAvatar, KnAvatarGroup } from '@kenny/ui/avatar';
   `,
 })
 export default class AvatarBasicDemo {
-  protected readonly team = ['Дина Ахметова', 'Егор Лапин', 'Зоя Мельникова', 'Илья Гринберг', 'Кира Ан'];
+  protected readonly team = [
+    'Дина Ахметова',
+    'Егор Лапин',
+    'Зоя Мельникова',
+    'Илья Гринберг',
+    'Кира Ан',
+  ];
 }

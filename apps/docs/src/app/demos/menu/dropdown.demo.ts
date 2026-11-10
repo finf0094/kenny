@@ -43,7 +43,9 @@ import {
         <button kn-menu-item (triggered)="last.set('Дублировать')">
           <kn-icon name="copy" [size]="16" /> Дублировать <kn-menu-shortcut>⌘D</kn-menu-shortcut>
         </button>
-        <button kn-menu-item [knMenuTrigger]="share"><kn-icon name="send" [size]="16" /> Поделиться</button>
+        <button kn-menu-item [knMenuTrigger]="share">
+          <kn-icon name="send" [size]="16" /> Поделиться
+        </button>
         <button kn-menu-item disabled><kn-icon name="download" [size]="16" /> Экспорт в PDF</button>
         <kn-menu-separator />
         <button kn-menu-item tone="danger" (triggered)="last.set('Удалить')">
@@ -54,8 +56,12 @@ import {
 
     <ng-template #share>
       <kn-menu>
-        <button kn-menu-item (triggered)="last.set('Скопировать ссылку')">Скопировать ссылку</button>
-        <button kn-menu-item (triggered)="last.set('Отправить по почте')">Отправить по почте</button>
+        <button kn-menu-item (triggered)="last.set('Скопировать ссылку')">
+          Скопировать ссылку
+        </button>
+        <button kn-menu-item (triggered)="last.set('Отправить по почте')">
+          Отправить по почте
+        </button>
       </kn-menu>
     </ng-template>
 
@@ -70,7 +76,9 @@ import {
         <kn-menu-separator />
         <kn-menu-group label="Масштаб">
           @for (zoom of zooms; track zoom) {
-            <button kn-menu-item-radio [checked]="scale() === zoom" (triggered)="scale.set(zoom)">{{ zoom }}%</button>
+            <button kn-menu-item-radio [checked]="scale() === zoom" (triggered)="scale.set(zoom)">
+              {{ zoom }}%
+            </button>
           }
         </kn-menu-group>
       </kn-menu>

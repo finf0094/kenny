@@ -80,7 +80,9 @@ export const knIconHome = p(
 );
 export const knIconGrid =
   '<rect x="4" y="4" width="7" height="7" rx="2"/><rect x="13" y="4" width="7" height="7" rx="2"/><rect x="4" y="13" width="7" height="7" rx="2"/><rect x="13" y="13" width="7" height="7" rx="2"/>';
-export const knIconBell = p('M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 2h-15l1.5-2zM10 20.5a2.2 2.2 0 0 0 4 0');
+export const knIconBell = p(
+  'M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 2h-15l1.5-2zM10 20.5a2.2 2.2 0 0 0 4 0',
+);
 export const knIconFolder = p(
   'M3.5 7a2 2 0 0 1 2-2h4l2 2.5h7a2 2 0 0 1 2 2V17a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2V7z',
 );
@@ -109,7 +111,12 @@ export const knIconDownload = p('M12 4v11M7 10.5l5 5 5-5M5 19.5h14');
 export const knIconUpload = p('M12 15.5v-11M7 9l5-5 5 5M5 19.5h14');
 export const knIconFilter = p('M4 6h16M7 12h10M10 18h4');
 export const knIconGrip =
-  dot(9, 6, 1.3) + dot(15, 6, 1.3) + dot(9, 12, 1.3) + dot(15, 12, 1.3) + dot(9, 18, 1.3) + dot(15, 18, 1.3);
+  dot(9, 6, 1.3) +
+  dot(15, 6, 1.3) +
+  dot(9, 12, 1.3) +
+  dot(15, 12, 1.3) +
+  dot(9, 18, 1.3) +
+  dot(15, 18, 1.3);
 export const knIconZap = p('M13 3L5 13.5h6l-1 7.5 8-10.5h-6l1-7.5z');
 export const knIconLayers = p('M12 3.5l9 5-9 5-9-5 9-5zM3 13l9 5 9-5');
 export const knIconClock = `<circle cx="12" cy="12" r="9"/>${p('M12 7v5l3.2 2')}`;
@@ -119,7 +126,9 @@ export const knIconTag = `${p('M3.5 12.2V5.5a2 2 0 0 1 2-2h6.7l8.4 8.4a2 2 0 0 1
 export const knIconHeart = p(
   'M12 20S4 15 4 9.2A4.2 4.2 0 0 1 12 7.3a4.2 4.2 0 0 1 8 1.9C20 15 12 20 12 20z',
 );
-export const knIconDroplet = p('M12 3.5s6.5 6.2 6.5 10.5a6.5 6.5 0 0 1-13 0C5.5 9.7 12 3.5 12 3.5z');
+export const knIconDroplet = p(
+  'M12 3.5s6.5 6.2 6.5 10.5a6.5 6.5 0 0 1-13 0C5.5 9.7 12 3.5 12 3.5z',
+);
 export const knIconKeyboard = `<rect x="2.5" y="6" width="19" height="12" rx="3"/>${p('M7 14h10')}${dot(6.5, 10, 0.9)}${dot(10, 10, 0.9)}${dot(13.5, 10, 0.9)}${dot(17, 10, 0.9)}`;
 export const knIconAccessibility = `${dot(12, 4.8, 1.7)}${p('M5 9l7 1.5L19 9M12 10.5V15M12 15l-3.5 5.5M12 15l3.5 5.5')}`;
 export const knIconBox = p('M12 3l8.5 4.5v9L12 21l-8.5-4.5v-9L12 3zM3.5 7.5L12 12l8.5-4.5M12 12v9');

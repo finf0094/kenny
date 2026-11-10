@@ -52,14 +52,21 @@ const PERIODS = [
         <div class="pitch">
           <h1 id="hero-title">Стеклянные компоненты для Angular</h1>
           <p class="lead">
-            {{ count }} доступных компонентов на signals. Полупрозрачные слои, пружинная анимация, светлая и
-            тёмная темы на CSS-переменных. Из зависимостей — только Angular CDK.
+            {{ count }} доступных компонентов на signals. Полупрозрачные слои, пружинная анимация,
+            светлая и тёмная темы на CSS-переменных. Из зависимостей — только Angular CDK.
           </p>
           <div class="cta">
             <a kn-button size="lg" routerLink="/docs/getting-started">Начать работу</a>
-            <a kn-button size="lg" variant="glass" tone="neutral" routerLink="/components/button">Смотреть компоненты</a>
+            <a kn-button size="lg" variant="glass" tone="neutral" routerLink="/components/button"
+              >Смотреть компоненты</a
+            >
           </div>
-          <button class="install" type="button" [attr.aria-label]="'Скопировать команду установки: ' + install" (click)="copy()">
+          <button
+            class="install"
+            type="button"
+            [attr.aria-label]="'Скопировать команду установки: ' + install"
+            (click)="copy()"
+          >
             <code>{{ install }}</code>
             <kn-icon [name]="copied() ? 'check' : 'copy'" [size]="16" />
           </button>
@@ -68,15 +75,43 @@ const PERIODS = [
         <!-- Not a screenshot: every control below is the real component -->
         <div class="stage" aria-label="Живой пример: панель режима фокуса">
           <kn-toolbar class="float-toolbar" aria-label="Быстрые действия">
-            <button kn-icon-button size="sm" variant="ghost" tone="neutral" aria-label="Поиск по командам" knTooltip="Командная палитра" (click)="palette.open()">
+            <button
+              kn-icon-button
+              size="sm"
+              variant="ghost"
+              tone="neutral"
+              aria-label="Поиск по командам"
+              knTooltip="Командная палитра"
+              (click)="palette.open()"
+            >
               <kn-icon name="command" />
             </button>
-            <button kn-icon-button size="sm" variant="ghost" tone="neutral" aria-label="Показать уведомление" knTooltip="Показать уведомление" (click)="notify()">
+            <button
+              kn-icon-button
+              size="sm"
+              variant="ghost"
+              tone="neutral"
+              aria-label="Показать уведомление"
+              knTooltip="Показать уведомление"
+              (click)="notify()"
+            >
               <kn-icon name="bell" />
             </button>
             <kn-toolbar-separator />
-            <button kn-icon-button size="sm" variant="ghost" tone="neutral" [attr.aria-label]="'Сменить тему'" knTooltip="Сменить тему" (click)="theme.next()">
-              <kn-icon [name]="theme.mode() === 'dark' ? 'moon' : theme.mode() === 'light' ? 'sun' : 'monitor'" />
+            <button
+              kn-icon-button
+              size="sm"
+              variant="ghost"
+              tone="neutral"
+              [attr.aria-label]="'Сменить тему'"
+              knTooltip="Сменить тему"
+              (click)="theme.next()"
+            >
+              <kn-icon
+                [name]="
+                  theme.mode() === 'dark' ? 'moon' : theme.mode() === 'light' ? 'sun' : 'monitor'
+                "
+              />
             </button>
           </kn-toolbar>
 
@@ -96,7 +131,11 @@ const PERIODS = [
                     {{ hours(item.minutes) }}<span>ч</span> {{ item.minutes % 60 }}<span>мин</span>
                   </div>
                   <div class="note">{{ item.label }} без отвлечений</div>
-                  <kn-progress class="goal" [aria-label]="'Доля от цели, ' + item.label.toLowerCase()" [value]="item.done" />
+                  <kn-progress
+                    class="goal"
+                    [aria-label]="'Доля от цели, ' + item.label.toLowerCase()"
+                    [value]="item.done"
+                  />
                 </kn-tab>
               }
             </kn-tabs>
@@ -125,9 +164,9 @@ const PERIODS = [
         <div>
           <h2 id="motion-title">Движение, которое что-то сообщает</h2>
           <p>
-            Пружины — там, где вы двигаете элемент сами: ползунок, галочка, индикатор вкладок. Всё остальное
-            быстро и по делу. Анимируются только transform и opacity, а системная настройка «уменьшить
-            движение» отключает переходы целиком.
+            Пружины — там, где вы двигаете элемент сами: ползунок, галочка, индикатор вкладок. Всё
+            остальное быстро и по делу. Анимируются только transform и opacity, а системная
+            настройка «уменьшить движение» отключает переходы целиком.
           </p>
           <a routerLink="/docs/motion">Как устроена система движения</a>
         </div>
@@ -142,9 +181,9 @@ const PERIODS = [
         <div>
           <h2 id="theme-title">Тема меняется без пересборки</h2>
           <p>
-            Цвета, радиусы, тени и длительности — CSS-переменные. Атрибут <code>data-theme</code> переключает
-            тему для страницы или любого её блока, а шкала из одиннадцати значений перекрашивает акцент.
-            Выберите цвет — перекрасится весь сайт.
+            Цвета, радиусы, тени и длительности — CSS-переменные. Атрибут
+            <code>data-theme</code> переключает тему для страницы или любого её блока, а шкала из
+            одиннадцати значений перекрашивает акцент. Выберите цвет — перекрасится весь сайт.
           </p>
           <a routerLink="/docs/theming">Темизация и токены</a>
         </div>
@@ -167,9 +206,9 @@ const PERIODS = [
         <div>
           <h2 id="a11y-title">Клавиатура и скринридер — по умолчанию</h2>
           <p>
-            Компоненты следуют паттернам WAI-ARIA APG: один Tab-стоп на составной виджет, стрелки внутри,
-            возврат фокуса после закрытия оверлея. Флажки, переключатели и ползунки — настоящие элементы
-            форм. Поведение закреплено тестами с axe-core.
+            Компоненты следуют паттернам WAI-ARIA APG: один Tab-стоп на составной виджет, стрелки
+            внутри, возврат фокуса после закрытия оверлея. Флажки, переключатели и ползунки —
+            настоящие элементы форм. Поведение закреплено тестами с axe-core.
           </p>
           <a routerLink="/docs/accessibility">Что именно гарантируется</a>
         </div>
@@ -177,7 +216,10 @@ const PERIODS = [
           <button kn-button variant="soft" (click)="palette.open()">
             Открыть палитру команд <kbd>Ctrl K</kbd>
           </button>
-          <p><kbd>Tab</kbd> между виджетами, <kbd>←</kbd> <kbd>→</kbd> внутри, <kbd>Esc</kbd> закрывает верхний слой.</p>
+          <p>
+            <kbd>Tab</kbd> между виджетами, <kbd>←</kbd> <kbd>→</kbd> внутри,
+            <kbd>Esc</kbd> закрывает верхний слой.
+          </p>
         </div>
       </section>
 
@@ -189,7 +231,9 @@ const PERIODS = [
               <h3>{{ group.label }}</h3>
               <ul>
                 @for (item of group.items; track item.slug) {
-                  <li><a [routerLink]="['/components', item.slug]">{{ item.title }}</a></li>
+                  <li>
+                    <a [routerLink]="['/components', item.slug]">{{ item.title }}</a>
+                  </li>
                 }
               </ul>
             </div>
@@ -559,7 +603,10 @@ export default class HomePage {
   }
 
   protected notify(): void {
-    this.toaster.show({ title: 'Это настоящий Toast', description: 'Наведите курсор — таймер встанет на паузу.' });
+    this.toaster.show({
+      title: 'Это настоящий Toast',
+      description: 'Наведите курсор — таймер встанет на паузу.',
+    });
   }
 
   protected save(): void {

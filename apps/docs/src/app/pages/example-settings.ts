@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, Component, computed, inject, signal, TemplateRef, viewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  signal,
+  TemplateRef,
+  viewChild,
+} from '@angular/core';
 import { email, form, FormField, maxLength, required } from '@angular/forms/signals';
 import { RouterLink } from '@angular/router';
 import { KnAvatar } from '@kenny/ui/avatar';
@@ -8,7 +16,13 @@ import { KnCard } from '@kenny/ui/card';
 import { KnCheckbox } from '@kenny/ui/checkbox';
 import { KnCombobox } from '@kenny/ui/combobox';
 import { KnDatePicker } from '@kenny/ui/date-picker';
-import { KnDialog, KnDialogBody, KnDialogFooter, KnDialogHeader, KnDialogRef } from '@kenny/ui/dialog';
+import {
+  KnDialog,
+  KnDialogBody,
+  KnDialogFooter,
+  KnDialogHeader,
+  KnDialogRef,
+} from '@kenny/ui/dialog';
 import { KnField } from '@kenny/ui/field';
 import { KnInput } from '@kenny/ui/input';
 import { KnRadio, KnRadioGroup } from '@kenny/ui/radio';
@@ -22,7 +36,16 @@ import { ACCENTS, ThemeMode, ThemeService } from '../core/theme';
 
 const WORKSPACE = 'kenny-team';
 
-const ZONES = ['Калининград (UTC+2)', 'Москва (UTC+3)', 'Самара (UTC+4)', 'Екатеринбург (UTC+5)', 'Омск (UTC+6)', 'Новосибирск (UTC+7)', 'Иркутск (UTC+8)', 'Владивосток (UTC+10)'];
+const ZONES = [
+  'Калининград (UTC+2)',
+  'Москва (UTC+3)',
+  'Самара (UTC+4)',
+  'Екатеринбург (UTC+5)',
+  'Омск (UTC+6)',
+  'Новосибирск (UTC+7)',
+  'Иркутск (UTC+8)',
+  'Владивосток (UTC+10)',
+];
 
 @Component({
   imports: [
@@ -98,13 +121,24 @@ const ZONES = ['Калининград (UTC+2)', 'Москва (UTC+3)', 'Сам
                 </kn-field>
               </div>
 
-              <kn-field label="О себе" [hint]="model().bio.length + ' из 160'" [error]="error(profile.bio)">
+              <kn-field
+                label="О себе"
+                [hint]="model().bio.length + ' из 160'"
+                [error]="error(profile.bio)"
+              >
                 <textarea knTextarea [minRows]="2" [formField]="profile.bio"></textarea>
               </kn-field>
 
               <div class="actions">
                 <button kn-button type="submit" [loading]="saving()">Сохранить профиль</button>
-                <button kn-button type="button" variant="ghost" tone="neutral" [disabled]="!profile().dirty()" (click)="resetProfile()">
+                <button
+                  kn-button
+                  type="button"
+                  variant="ghost"
+                  tone="neutral"
+                  [disabled]="!profile().dirty()"
+                  (click)="resetProfile()"
+                >
                   Отменить изменения
                 </button>
               </div>
@@ -117,15 +151,24 @@ const ZONES = ['Калининград (UTC+2)', 'Москва (UTC+3)', 'Сам
             <h2>Каналы</h2>
             <div class="list">
               <div class="item">
-                <div><strong>Почта</strong><div class="muted">Упоминания и приглашения</div></div>
+                <div>
+                  <strong>Почта</strong>
+                  <div class="muted">Упоминания и приглашения</div>
+                </div>
                 <kn-switch aria-label="Уведомления по почте" [(checked)]="mail" />
               </div>
               <div class="item">
-                <div><strong>Push в браузере</strong><div class="muted">Пока вкладка открыта</div></div>
+                <div>
+                  <strong>Push в браузере</strong>
+                  <div class="muted">Пока вкладка открыта</div>
+                </div>
                 <kn-switch aria-label="Push-уведомления" [(checked)]="push" />
               </div>
               <div class="item">
-                <div><strong>Не беспокоить ночью</strong><div class="muted">С 22:00 до 8:00 по вашему поясу</div></div>
+                <div>
+                  <strong>Не беспокоить ночью</strong>
+                  <div class="muted">С 22:00 до 8:00 по вашему поясу</div>
+                </div>
                 <kn-switch aria-label="Не беспокоить ночью" [(checked)]="quiet" />
               </div>
             </div>
@@ -140,7 +183,9 @@ const ZONES = ['Калининград (UTC+2)', 'Москва (UTC+3)', 'Сам
             <h2>О чём сообщать</h2>
             <div class="checks">
               @for (topic of topics(); track topic.id) {
-                <kn-checkbox [checked]="topic.on" (checkedChange)="toggleTopic(topic.id, $event)">{{ topic.label }}</kn-checkbox>
+                <kn-checkbox [checked]="topic.on" (checkedChange)="toggleTopic(topic.id, $event)">{{
+                  topic.label
+                }}</kn-checkbox>
               }
             </div>
           </kn-card>
@@ -149,7 +194,12 @@ const ZONES = ['Калининград (UTC+2)', 'Москва (UTC+3)', 'Сам
         <kn-tab value="appearance" label="Внешний вид" icon="droplet">
           <kn-card padding="lg">
             <h2>Тема</h2>
-            <kn-radio-group orientation="horizontal" aria-label="Тема" [value]="theme.mode()" (valueChange)="setTheme($event)">
+            <kn-radio-group
+              orientation="horizontal"
+              aria-label="Тема"
+              [value]="theme.mode()"
+              (valueChange)="setTheme($event)"
+            >
               <kn-radio value="system">Как в системе</kn-radio>
               <kn-radio value="light">Светлая</kn-radio>
               <kn-radio value="dark">Тёмная</kn-radio>
@@ -158,7 +208,13 @@ const ZONES = ['Калининград (UTC+2)', 'Москва (UTC+3)', 'Сам
             <h2>Акцент</h2>
             <div class="swatches" role="group" aria-label="Акцентный цвет">
               @for (accent of accents; track accent.id) {
-                <button class="swatch" type="button" [attr.aria-pressed]="theme.accent() === accent.id" [style.--_color]="accent.scale ? accent.scale[6] : '#1f4bdb'" (click)="theme.accent.set(accent.id)">
+                <button
+                  class="swatch"
+                  type="button"
+                  [attr.aria-pressed]="theme.accent() === accent.id"
+                  [style.--_color]="accent.scale ? accent.scale[6] : '#1f4bdb'"
+                  (click)="theme.accent.set(accent.id)"
+                >
                   <span class="dot" aria-hidden="true"></span>{{ accent.label }}
                 </button>
               }
@@ -168,7 +224,9 @@ const ZONES = ['Калининград (UTC+2)', 'Москва (UTC+3)', 'Сам
             <kn-field [label]="fontSize() + ' px'">
               <kn-slider [min]="13" [max]="21" [step]="1" [(value)]="fontSize" />
             </kn-field>
-            <p class="preview" [style.font-size.px]="fontSize()">Съешь ещё этих мягких французских булок, да выпей чаю.</p>
+            <p class="preview" [style.font-size.px]="fontSize()">
+              Съешь ещё этих мягких французских булок, да выпей чаю.
+            </p>
           </kn-card>
         </kn-tab>
 
@@ -176,10 +234,14 @@ const ZONES = ['Калининград (UTC+2)', 'Москва (UTC+3)', 'Сам
           <kn-card padding="lg">
             <h2>Удалить пространство</h2>
             <p class="muted">
-              Пространство <code>{{ workspace }}</code>, все проекты и файлы будут удалены для всех участников.
-              Отменить это нельзя.
+              Пространство <code>{{ workspace }}</code
+              >, все проекты и файлы будут удалены для всех участников. Отменить это нельзя.
             </p>
-            <div><button kn-button tone="danger" variant="soft" (click)="confirmDelete()">Удалить пространство…</button></div>
+            <div>
+              <button kn-button tone="danger" variant="soft" (click)="confirmDelete()">
+                Удалить пространство…
+              </button>
+            </div>
           </kn-card>
         </kn-tab>
       </kn-tabs>
@@ -189,12 +251,25 @@ const ZONES = ['Калининград (UTC+2)', 'Москва (UTC+3)', 'Сам
       <kn-dialog-header heading="Удалить пространство?" description="Это действие необратимо." />
       <kn-dialog-body>
         <kn-field [label]="'Введите ' + workspace + ', чтобы подтвердить'">
-          <input knInput autocomplete="off" spellcheck="false" [value]="confirmation()" (input)="confirmation.set($any($event.target).value)" />
+          <input
+            knInput
+            autocomplete="off"
+            spellcheck="false"
+            [value]="confirmation()"
+            (input)="confirmation.set($any($event.target).value)"
+          />
         </kn-field>
       </kn-dialog-body>
       <kn-dialog-footer>
         <button kn-button variant="ghost" tone="neutral" (click)="ref.close()">Отмена</button>
-        <button kn-button tone="danger" [disabled]="confirmation() !== workspace" (click)="deleteWorkspace(ref)">Удалить навсегда</button>
+        <button
+          kn-button
+          tone="danger"
+          [disabled]="confirmation() !== workspace"
+          (click)="deleteWorkspace(ref)"
+        >
+          Удалить навсегда
+        </button>
       </kn-dialog-footer>
     </ng-template>
   `,
@@ -367,13 +442,16 @@ export default class SettingsExample {
   protected readonly hasErrors = computed(() => this.profile().invalid());
 
   /** First error of a field, shown only after the user has left it (or tried to save). */
-  protected error(field: () => { touched(): boolean; errors(): readonly { message?: string }[] }): string | null {
+  protected error(
+    field: () => { touched(): boolean; errors(): readonly { message?: string }[] },
+  ): string | null {
     const state = field();
     return state.touched() ? (state.errors()[0]?.message ?? null) : null;
   }
 
   protected saveProfile(): void {
-    for (const field of [this.profile.name, this.profile.email, this.profile.bio]) field().markAsTouched();
+    for (const field of [this.profile.name, this.profile.email, this.profile.bio])
+      field().markAsTouched();
     if (this.hasErrors()) {
       this.toaster.error('Профиль не сохранён', 'Исправьте отмеченные поля.');
       return;
@@ -400,11 +478,19 @@ export default class SettingsExample {
 
   protected confirmDelete(): void {
     this.confirmation.set('');
-    this.dialog.open(this.deleteDialog(), { role: 'alertdialog', width: '27rem', closeOnBackdrop: false });
+    this.dialog.open(this.deleteDialog(), {
+      role: 'alertdialog',
+      width: '27rem',
+      closeOnBackdrop: false,
+    });
   }
 
   protected deleteWorkspace(ref: KnDialogRef): void {
     void ref.close();
-    this.toaster.show({ tone: 'warning', title: 'Это демо: пространство не удалено', description: 'В настоящем приложении здесь был бы запрос к серверу.' });
+    this.toaster.show({
+      tone: 'warning',
+      title: 'Это демо: пространство не удалено',
+      description: 'В настоящем приложении здесь был бы запрос к серверу.',
+    });
   }
 }

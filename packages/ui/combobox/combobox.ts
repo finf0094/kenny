@@ -58,7 +58,14 @@ import { KN_OPTION_PARENT, KnOption, KnOptionParent } from '@kenny/ui/option';
         (blur)="onBlur()"
       />
       @if (clearable() && value() !== null && !isDisabled()) {
-        <button class="affix" type="button" tabindex="-1" aria-label="Очистить" (mousedown)="$event.preventDefault()" (click)="clear()">
+        <button
+          class="affix"
+          type="button"
+          tabindex="-1"
+          aria-label="Очистить"
+          (mousedown)="$event.preventDefault()"
+          (click)="clear()"
+        >
           <kn-icon name="x" />
         </button>
       }
@@ -71,7 +78,11 @@ import { KN_OPTION_PARENT, KnOption, KnOptionParent } from '@kenny/ui/option';
         (mousedown)="$event.preventDefault()"
         (click)="toggle()"
       >
-        <kn-icon class="chevron" name="chevron-down" [attr.data-open]="overlay.isOpen() ? '' : null" />
+        <kn-icon
+          class="chevron"
+          name="chevron-down"
+          [attr.data-open]="overlay.isOpen() ? '' : null"
+        />
       </button>
     </div>
 

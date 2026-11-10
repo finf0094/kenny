@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { KnBadge } from '@kenny/ui/badge';
 import { ApiClass, ApiMember } from './doc-types';
+import { DocsText } from './text';
 
 const ORDER = ['input', 'model', 'output', 'property', 'method'];
 const KIND_LABEL: Record<string, string> = {
@@ -14,7 +15,7 @@ const KIND_LABEL: Record<string, string> = {
 /** API of one class, grouped by member kind. Data comes from the sources via tools/gen-docs.mjs. */
 @Component({
   selector: 'docs-api-table',
-  imports: [KnBadge],
+  imports: [KnBadge, DocsText],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="head">
@@ -25,13 +26,20 @@ const KIND_LABEL: Record<string, string> = {
       <kn-badge>{{ kind() }}</kn-badge>
     </div>
     @if (api().description) {
-      <p class="description">{{ api().description }}</p>
+      <p class="description"><docs-text [text]="api().description" /></p>
     }
     @for (group of groups(); track group.kind) {
-      <div class="scroll" tabindex="0" role="region" [attr.aria-label]="api().name + ': ' + group.label">
+      <div
+        class="scroll"
+        tabindex="0"
+        role="region"
+        [attr.aria-label]="api().name + ': ' + group.label"
+      >
         <table>
           <caption>
-            {{ group.label }}
+            {{
+              group.label
+            }}
           </caption>
           <thead>
             <tr>
@@ -52,7 +60,11 @@ const KIND_LABEL: Record<string, string> = {
                     <span class="required" title="Обязательный">*</span>
                   }
                 </th>
-                <td><code class="type">{{ member.type }}</code></td>
+                <td>
+                  <span class="type"
+                    ><code>{{ member.type }}</code></span
+                  >
+                </td>
                 @if (group.kind === 'input' || group.kind === 'model') {
                   <td>
                     @if (member.default !== undefined) {
@@ -62,7 +74,7 @@ const KIND_LABEL: Record<string, string> = {
                     }
                   </td>
                 }
-                <td class="text">{{ member.description }}</td>
+                <td class="text"><docs-text [text]="member.description" /></td>
               </tr>
             }
           </tbody>
@@ -153,13 +165,22 @@ const KIND_LABEL: Record<string, string> = {
       font-weight: var(--kn-weight-medium);
     }
 
+    /* An inline block gives the column a floor: long unions wrap at spaces, short types never break */
     .type {
+      display: inline-block;
+      min-inline-size: 6.5rem;
+      max-inline-size: 14rem;
+    }
+
+    .type code {
       color: var(--kn-color-text-muted);
-      overflow-wrap: anywhere;
+      overflow-wrap: break-word;
+      -webkit-box-decoration-break: clone;
+      box-decoration-break: clone;
     }
 
     .text {
-      min-inline-size: 16rem;
+      min-inline-size: 13rem;
       line-height: var(--kn-leading-normal);
     }
 
@@ -177,7 +198,10 @@ export class DocsApiTable {
   readonly api = input.required<ApiClass>();
 
   protected readonly kind = computed(
-    () => ({ component: 'компонент', directive: 'директива', service: 'сервис', class: 'класс' })[this.api().kind] ?? this.api().kind,
+    () =>
+      ({ component: 'компонент', directive: 'директива', service: 'сервис', class: 'класс' })[
+        this.api().kind
+      ] ?? this.api().kind,
   );
 
   protected readonly groups = computed(() =>

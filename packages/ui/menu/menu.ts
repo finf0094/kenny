@@ -291,7 +291,11 @@ export class KnMenuShortcut {}
   hostDirectives: [
     {
       directive: CdkMenuTrigger,
-      inputs: ['cdkMenuTriggerFor: knMenuTrigger', 'cdkMenuPosition: knMenuPosition', 'cdkMenuTriggerData: knMenuData'],
+      inputs: [
+        'cdkMenuTriggerFor: knMenuTrigger',
+        'cdkMenuPosition: knMenuPosition',
+        'cdkMenuTriggerData: knMenuData',
+      ],
       outputs: ['cdkMenuOpened: menuOpened', 'cdkMenuClosed: menuClosed'],
     },
   ],

@@ -11,7 +11,11 @@ import Basic from '../demos/skeleton/basic.demo';
   template: `
     <docs-playground [controls]="controls" [code]="code()">
       <div style="inline-size: 16rem; display: grid; justify-items: start">
-        <kn-skeleton [shape]="shape.value()" [lines]="lines.value()" [width]="width.value() || null" />
+        <kn-skeleton
+          [shape]="shape.value()"
+          [lines]="lines.value()"
+          [width]="width.value() || null"
+        />
       </div>
     </docs-playground>
   `,
@@ -43,7 +47,8 @@ export default {
     {
       source: 'basic',
       title: 'Карточка в загрузке',
-      description: 'Заглушки собираются из трёх форм и повторяют раскладку готового содержимого, чтобы оно не «прыгало».',
+      description:
+        'Заглушки собираются из трёх форм и повторяют раскладку готового содержимого, чтобы оно не «прыгало».',
       component: Basic,
     },
   ],

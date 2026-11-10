@@ -28,7 +28,9 @@ describe('KnSplitter', () => {
     expect(separator).toHaveAttribute('aria-valuemax', '60');
     expect(separator).toHaveAttribute('aria-orientation', 'vertical');
     expect(separator).toHaveAttribute('tabindex', '0');
-    expect(document.getElementById(separator.getAttribute('aria-controls')!)).toHaveTextContent('Список');
+    expect(document.getElementById(separator.getAttribute('aria-controls')!)).toHaveTextContent(
+      'Список',
+    );
   });
 
   it('resizes with arrow keys and clamps to min/max with Home/End', async () => {

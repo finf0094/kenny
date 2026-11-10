@@ -4,16 +4,17 @@ import { DocsApiTable } from './api-table';
 import { DocsCode } from './code-block';
 import { DocsDemo } from './demo-block';
 import { ComponentDoc } from './doc-types';
+import { DocsText } from './text';
 
 /** Renders any component page from its `ComponentDoc`. */
 @Component({
   selector: 'docs-component-page',
-  imports: [NgComponentOutlet, DocsDemo, DocsCode, DocsApiTable],
+  imports: [NgComponentOutlet, DocsDemo, DocsCode, DocsApiTable, DocsText],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <article class="prose">
       <h1>{{ doc().title }}</h1>
-      <p class="lead">{{ doc().description }}</p>
+      <p class="lead"><docs-text [text]="doc().description" /></p>
       <docs-code [code]="importLine()" label="Импорт" />
 
       <h2 id="examples">Примеры</h2>
@@ -21,7 +22,7 @@ import { ComponentDoc } from './doc-types';
         <section class="demo">
           <h3 [id]="'demo-' + demo.source">{{ demo.title }}</h3>
           @if (demo.description) {
-            <p>{{ demo.description }}</p>
+            <p><docs-text [text]="demo.description" /></p>
           }
           <docs-demo [demo]="demo" [source]="doc().sources[demo.source]" />
         </section>
@@ -51,8 +52,10 @@ import { ComponentDoc } from './doc-types';
             <tbody>
               @for (slot of slots; track slot.name) {
                 <tr>
-                  <th scope="row"><code>{{ slot.name }}</code></th>
-                  <td>{{ slot.description }}</td>
+                  <th scope="row">
+                    <code>{{ slot.name }}</code>
+                  </th>
+                  <td><docs-text [text]="slot.description" /></td>
                 </tr>
               }
             </tbody>
@@ -62,7 +65,9 @@ import { ComponentDoc } from './doc-types';
 
       @if (cssVars().length) {
         <h3 id="css-variables">CSS-переменные</h3>
-        <p>Задайте переменную на компоненте или любом его предке. Значение по умолчанию — справа.</p>
+        <p>
+          Задайте переменную на компоненте или любом его предке. Значение по умолчанию — справа.
+        </p>
         <div class="scroll">
           <table>
             <thead>
@@ -74,8 +79,12 @@ import { ComponentDoc } from './doc-types';
             <tbody>
               @for (variable of cssVars(); track variable.name) {
                 <tr>
-                  <th scope="row"><code>{{ variable.name }}</code></th>
-                  <td><code class="muted">{{ variable.fallback }}</code></td>
+                  <th scope="row">
+                    <code>{{ variable.name }}</code>
+                  </th>
+                  <td>
+                    <code class="muted">{{ variable.fallback }}</code>
+                  </td>
                 </tr>
               }
             </tbody>
@@ -101,7 +110,7 @@ import { ComponentDoc } from './doc-types';
                       <kbd>{{ key }}</kbd>
                     }
                   </th>
-                  <td>{{ row.action }}</td>
+                  <td><docs-text [text]="row.action" /></td>
                 </tr>
               }
             </tbody>
@@ -111,7 +120,7 @@ import { ComponentDoc } from './doc-types';
       @if (doc().a11y; as notes) {
         <ul>
           @for (note of notes; track $index) {
-            <li>{{ note }}</li>
+            <li><docs-text [text]="note" /></li>
           }
         </ul>
       }

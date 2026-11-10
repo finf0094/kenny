@@ -24,13 +24,30 @@ const THEME_ICON = { system: 'monitor', light: 'sun', dark: 'moon' };
 
 @Component({
   selector: 'docs-root',
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, KnButton, KnIcon, KnTooltip, KnDrawerHeader, KnDrawerBody, DocsNav],
+  imports: [
+    RouterOutlet,
+    RouterLink,
+    RouterLinkActive,
+    KnButton,
+    KnIcon,
+    KnTooltip,
+    KnDrawerHeader,
+    KnDrawerBody,
+    DocsNav,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <a class="skip" href="#content" (click)="skip($event)">К содержимому</a>
 
     <header class="bar">
-      <button class="menu" kn-icon-button variant="ghost" tone="neutral" aria-label="Открыть навигацию" (click)="openNav()">
+      <button
+        class="menu"
+        kn-icon-button
+        variant="ghost"
+        tone="neutral"
+        aria-label="Открыть навигацию"
+        (click)="openNav()"
+      >
         <kn-icon name="menu" />
       </button>
       <a class="logo" routerLink="/" aria-label="Kenny, на главную">
@@ -133,7 +150,8 @@ const THEME_ICON = { system: 'monitor', light: 'sun', dark: 'moon' };
       inline-size: 1.5rem;
       block-size: 1.5rem;
       border-radius: 0.45rem;
-      background: radial-gradient(circle at 70% 30%, #ffb23e 0 22%, transparent 23%), var(--kn-accent-600);
+      background:
+        radial-gradient(circle at 70% 30%, #ffb23e 0 22%, transparent 23%), var(--kn-accent-600);
       overflow: hidden;
     }
 
@@ -257,11 +275,18 @@ export class App {
 
   constructor() {
     afterNextRender(() => {
-      if (/Mac|iPhone|iPad/.test(this.document.defaultView?.navigator.platform ?? '')) this.hotkey.set('⌘K');
+      if (/Mac|iPhone|iPad/.test(this.document.defaultView?.navigator.platform ?? ''))
+        this.hotkey.set('⌘K');
     });
     const go = (path: string) => () => void this.router.navigateByUrl(path);
     this.palette.register([
-      ...guides.map((g) => ({ id: g.path, group: 'Руководства', label: g.title, icon: g.icon, run: go(g.path) })),
+      ...guides.map((g) => ({
+        id: g.path,
+        group: 'Руководства',
+        label: g.title,
+        icon: g.icon,
+        run: go(g.path),
+      })),
       ...allComponents.map((c) => ({
         id: `/components/${c.slug}`,
         group: 'Компоненты',
@@ -269,10 +294,37 @@ export class App {
         keywords: [c.slug],
         run: go(`/components/${c.slug}`),
       })),
-      ...examples.map((e) => ({ id: e.path, group: 'Примеры', label: e.title, icon: e.icon, run: go(e.path) })),
-      { id: 'theme.light', group: 'Тема', label: 'Светлая тема', icon: 'sun', keywords: ['light'], run: () => this.theme.mode.set('light') },
-      { id: 'theme.dark', group: 'Тема', label: 'Тёмная тема', icon: 'moon', keywords: ['dark'], run: () => this.theme.mode.set('dark') },
-      { id: 'theme.system', group: 'Тема', label: 'Тема как в системе', icon: 'monitor', keywords: ['system', 'auto'], run: () => this.theme.mode.set('system') },
+      ...examples.map((e) => ({
+        id: e.path,
+        group: 'Примеры',
+        label: e.title,
+        icon: e.icon,
+        run: go(e.path),
+      })),
+      {
+        id: 'theme.light',
+        group: 'Тема',
+        label: 'Светлая тема',
+        icon: 'sun',
+        keywords: ['light'],
+        run: () => this.theme.mode.set('light'),
+      },
+      {
+        id: 'theme.dark',
+        group: 'Тема',
+        label: 'Тёмная тема',
+        icon: 'moon',
+        keywords: ['dark'],
+        run: () => this.theme.mode.set('dark'),
+      },
+      {
+        id: 'theme.system',
+        group: 'Тема',
+        label: 'Тема как в системе',
+        icon: 'monitor',
+        keywords: ['system', 'auto'],
+        run: () => this.theme.mode.set('system'),
+      },
     ]);
   }
 

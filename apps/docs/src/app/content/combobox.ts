@@ -29,14 +29,31 @@ import Basic from '../demos/combobox/basic.demo';
   `,
 })
 class Playground {
-  protected readonly cities = ['Владивосток', 'Волгоград', 'Воронеж', 'Екатеринбург', 'Казань', 'Калининград', 'Краснодар', 'Москва', 'Новосибирск', 'Санкт-Петербург'];
+  protected readonly cities = [
+    'Владивосток',
+    'Волгоград',
+    'Воронеж',
+    'Екатеринбург',
+    'Казань',
+    'Калининград',
+    'Краснодар',
+    'Москва',
+    'Новосибирск',
+    'Санкт-Петербург',
+  ];
   protected readonly value = signal<string | null>(null);
   protected readonly placeholder = text('placeholder', 'Начните вводить город');
   protected readonly size = choice('size', ['sm', 'md', 'lg'], 'md');
   protected readonly clearable = toggle('clearable', true);
   protected readonly disabled = toggle('disabled');
   protected readonly invalid = toggle('invalid');
-  protected readonly controls = [this.placeholder, this.size, this.clearable, this.disabled, this.invalid];
+  protected readonly controls = [
+    this.placeholder,
+    this.size,
+    this.clearable,
+    this.disabled,
+    this.invalid,
+  ];
   protected readonly code = computed(
     () =>
       `<kn-combobox [(value)]="city"${attrs({
@@ -68,7 +85,8 @@ export default {
     {
       source: 'async',
       title: 'Поиск на сервере',
-      description: 'filterMode="manual" отключает встроенный фильтр: приложение слушает [(query)] и само отдаёт варианты.',
+      description:
+        'filterMode="manual" отключает встроенный фильтр: приложение слушает [(query)] и само отдаёт варианты.',
       component: Async,
     },
   ],
@@ -79,7 +97,10 @@ export default {
     { keys: ['↓', '↑'], action: 'Открывают список и перемещают активный вариант по кругу.' },
     { keys: ['Enter'], action: 'Выбирает активный вариант.' },
     { keys: ['Esc'], action: 'Закрывает список; при закрытом списке очищает поле.' },
-    { keys: ['Tab'], action: 'Уходит из поля; несохранённый текст возвращается к выбранному значению.' },
+    {
+      keys: ['Tab'],
+      action: 'Уходит из поля; несохранённый текст возвращается к выбранному значению.',
+    },
   ],
   a11y: [
     'Паттерн APG «Editable Combobox With List Autocomplete»: input с role="combobox" и aria-autocomplete="list".',

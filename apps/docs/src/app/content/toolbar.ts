@@ -12,11 +12,21 @@ import Basic from '../demos/toolbar/basic.demo';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <docs-playground [controls]="controls" [code]="code()">
-      <kn-toolbar aria-label="Действия с письмом" [orientation]="orientation.value()" [variant]="variant.value()">
-        <button kn-icon-button size="sm" variant="ghost" tone="neutral" aria-label="В архив"><kn-icon name="archive" /></button>
-        <button kn-icon-button size="sm" variant="ghost" tone="neutral" aria-label="Отложить"><kn-icon name="clock" /></button>
+      <kn-toolbar
+        aria-label="Действия с письмом"
+        [orientation]="orientation.value()"
+        [variant]="variant.value()"
+      >
+        <button kn-icon-button size="sm" variant="ghost" tone="neutral" aria-label="В архив">
+          <kn-icon name="archive" />
+        </button>
+        <button kn-icon-button size="sm" variant="ghost" tone="neutral" aria-label="Отложить">
+          <kn-icon name="clock" />
+        </button>
         <kn-toolbar-separator />
-        <button kn-icon-button size="sm" variant="ghost" tone="danger" aria-label="Удалить"><kn-icon name="trash" /></button>
+        <button kn-icon-button size="sm" variant="ghost" tone="danger" aria-label="Удалить">
+          <kn-icon name="trash" />
+        </button>
       </kn-toolbar>
     </docs-playground>
   `,
@@ -46,7 +56,8 @@ export default {
     {
       source: 'basic',
       title: 'Панель форматирования',
-      description: 'Кнопки-переключатели сообщают состояние через aria-pressed. Распорка отодвигает главное действие к краю.',
+      description:
+        'Кнопки-переключатели сообщают состояние через aria-pressed. Распорка отодвигает главное действие к краю.',
       component: Basic,
     },
   ],
@@ -54,12 +65,16 @@ export default {
   slots: [
     {
       name: '(по умолчанию)',
-      description: 'Кнопки, ссылки, <kn-toolbar-separator> и <kn-toolbar-spacer>. Любой фокусируемый элемент становится элементом панели.',
+      description:
+        'Кнопки, ссылки, <kn-toolbar-separator> и <kn-toolbar-spacer>. Любой фокусируемый элемент становится элементом панели.',
     },
   ],
   keyboard: [
     { keys: ['Tab'], action: 'Входит в панель (на последний активный элемент) и выходит из неё.' },
-    { keys: ['→', '←'], action: 'Следующий и предыдущий элемент, по кругу (↓ и ↑ для вертикальной панели).' },
+    {
+      keys: ['→', '←'],
+      action: 'Следующий и предыдущий элемент, по кругу (↓ и ↑ для вертикальной панели).',
+    },
     { keys: ['Home', 'End'], action: 'Первый и последний элемент.' },
   ],
   a11y: [

@@ -15,7 +15,9 @@ import { KnEmptyState } from '@kenny/ui/empty-state';
         [headingLevel]="1"
       >
         <a kn-button routerLink="/">На главную</a>
-        <a kn-button variant="ghost" tone="neutral" routerLink="/components/button">К компонентам</a>
+        <a kn-button variant="ghost" tone="neutral" routerLink="/components/button"
+          >К компонентам</a
+        >
       </kn-empty-state>
     </main>
   `,

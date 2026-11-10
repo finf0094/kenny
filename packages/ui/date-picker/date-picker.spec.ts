@@ -40,12 +40,16 @@ describe('KnCalendar', () => {
     expect(screen.getByRole('grid', { name: /март 2026/i })).toBeInTheDocument();
     const selected = screen.getByRole('gridcell', { selected: true });
     expect(within(selected).getByRole('button')).toHaveAttribute('tabindex', '0');
-    expect(screen.getAllByRole('button').filter((b) => b.tabIndex === 0 && b.dataset['date'])).toHaveLength(1);
+    expect(
+      screen.getAllByRole('button').filter((b) => b.tabIndex === 0 && b.dataset['date']),
+    ).toHaveLength(1);
   });
 
   it('moves focus by day, week and month from the keyboard', async () => {
     const { user } = await setup();
-    within(screen.getByRole('gridcell', { selected: true })).getByRole('button').focus();
+    within(screen.getByRole('gridcell', { selected: true }))
+      .getByRole('button')
+      .focus();
     await user.keyboard('{ArrowRight}');
     await waitFor(() => expect(document.activeElement).toHaveAttribute('data-date', '2026-03-16'));
     await user.keyboard('{ArrowDown}');
@@ -79,7 +83,12 @@ describe('KnDatePicker', () => {
       },
     );
     await stable();
-    return { control, user: userEvent.setup(), input: screen.getByLabelText<HTMLInputElement>('Дата'), ...view };
+    return {
+      control,
+      user: userEvent.setup(),
+      input: screen.getByLabelText<HTMLInputElement>('Дата'),
+      ...view,
+    };
   }
 
   it('formats the value for the locale', async () => {

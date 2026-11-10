@@ -1,5 +1,5 @@
 // Accessibility and runtime audit of the built documentation site.
-/* global document, window */
+/* global document, window, getComputedStyle */
 //
 //   node tools/audit.mjs [distDir] [--only=/components/button,/docs/tokens] [--theme=light|dark]
 //
@@ -28,7 +28,10 @@ const manifest = JSON.parse(await readFile(join(distDir, 'prerendered-routes.jso
 const only = typeof flags.only === 'string' ? flags.only.split(',') : null;
 const routes = Object.keys(manifest.routes).filter((route) => !only || only.includes(route));
 const themes = typeof flags.theme === 'string' ? [flags.theme] : ['light', 'dark'];
-const axeSource = await readFile(createRequire(import.meta.url).resolve('axe-core/axe.min.js'), 'utf8');
+const axeSource = await readFile(
+  createRequire(import.meta.url).resolve('axe-core/axe.min.js'),
+  'utf8',
+);
 
 const server = await serve(join(distDir, 'browser'));
 const browser = await puppeteer.launch({ executablePath: chromePath, args: chromeArgs });
@@ -56,12 +59,17 @@ try {
       const { page, errors } = await open(route, theme, 1280, 900);
       await page.evaluate(axeSource);
       const result = await page.evaluate(() =>
-        window.axe.run(document, { runOnly: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'best-practice'] }),
+        window.axe.run(document, {
+          runOnly: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'best-practice'],
+        }),
       );
       for (const violation of result.violations) {
         const nodes = violation.nodes
           .slice(0, 4)
-          .map((node) => `      ${node.target.join(' ')}\n        ${node.failureSummary?.split('\n').slice(1, 2).join(' ').trim()}`);
+          .map(
+            (node) =>
+              `      ${node.target.join(' ')}\n        ${node.failureSummary?.split('\n').slice(1, 2).join(' ').trim()}`,
+          );
         problems.push(
           `${route} [${theme}] ${violation.id} (${violation.impact}), ${violation.nodes.length} node(s)\n${nodes.join('\n')}`,
         );
@@ -89,12 +97,21 @@ try {
         const rect = el.getBoundingClientRect();
         if (rect.width === 0 || rect.right <= width + 1 || clipped(el)) continue;
         if (culprits.some((c) => c.el.contains(el))) continue;
-        culprits.push({ el, text: `${el.tagName.toLowerCase()}${el.id ? '#' + el.id : ''}.${String(el.className.baseVal ?? el.className).trim().replace(/\s+/g, '.')} (${Math.round(rect.width)}px wide)` });
+        culprits.push({
+          el,
+          text: `${el.tagName.toLowerCase()}${el.id ? '#' + el.id : ''}.${String(
+            el.className.baseVal ?? el.className,
+          )
+            .trim()
+            .replace(/\s+/g, '.')} (${Math.round(rect.width)}px wide)`,
+        });
       }
       return { amount, culprits: culprits.slice(0, 3).map((c) => c.text) };
     });
     if (overflow) {
-      problems.push(`${route} [375px] page overflows horizontally by ${overflow.amount}px\n      ${overflow.culprits.join('\n      ')}`);
+      problems.push(
+        `${route} [375px] page overflows horizontally by ${overflow.amount}px\n      ${overflow.culprits.join('\n      ')}`,
+      );
     }
     for (const error of new Set(errors)) problems.push(`${route} [375px] console: ${error}`);
     await page.close();

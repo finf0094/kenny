@@ -50,7 +50,9 @@ interface Cell {
       <thead>
         <tr>
           @for (weekday of weekdays(); track weekday.long) {
-            <th scope="col"><abbr [title]="weekday.long">{{ weekday.short }}</abbr></th>
+            <th scope="col">
+              <abbr [title]="weekday.long">{{ weekday.short }}</abbr>
+            </th>
           }
         </tr>
       </thead>
@@ -260,7 +262,9 @@ export class KnCalendar {
   );
 
   protected readonly title = computed(() =>
-    new Intl.DateTimeFormat(this.locale(), { month: 'long', year: 'numeric' }).format(this.focused()),
+    new Intl.DateTimeFormat(this.locale(), { month: 'long', year: 'numeric' }).format(
+      this.focused(),
+    ),
   );
 
   protected readonly weekdays = computed(() => {

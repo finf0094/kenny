@@ -10,7 +10,12 @@ import Context from '../demos/menu/context.demo';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <docs-playground [controls]="controls" [code]="code()">
-      <div class="area" tabindex="0" [knContextMenu]="menu" [knContextMenuDisabled]="disabled.value()">
+      <div
+        class="area"
+        tabindex="0"
+        [knContextMenu]="menu"
+        [knContextMenuDisabled]="disabled.value()"
+      >
         Правый клик здесь<br /><small>{{ last() }}</small>
       </div>
       <ng-template #menu>
@@ -68,7 +73,8 @@ export default {
     {
       source: 'context',
       title: 'Меню файла',
-      description: 'В шаблон меню можно передать данные через [knContextMenuData] — здесь это имя файла.',
+      description:
+        'В шаблон меню можно передать данные через [knContextMenuData] — здесь это имя файла.',
       component: Context,
     },
   ],

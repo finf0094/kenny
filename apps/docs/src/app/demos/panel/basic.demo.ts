@@ -9,7 +9,14 @@ import { KnPanel } from '@kenny/ui/panel';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <kn-panel heading="Фильтры" description="Статус и исполнитель" [(expanded)]="filtersOpen">
-      <button knPanelActions kn-icon-button size="sm" variant="ghost" tone="neutral" aria-label="Сбросить фильтры">
+      <button
+        knPanelActions
+        kn-icon-button
+        size="sm"
+        variant="ghost"
+        tone="neutral"
+        aria-label="Сбросить фильтры"
+      >
         <kn-icon name="refresh" />
       </button>
       <div class="stack">

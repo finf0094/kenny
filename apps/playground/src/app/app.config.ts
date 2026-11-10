@@ -2,5 +2,9 @@ import { ApplicationConfig, LOCALE_ID, provideBrowserGlobalErrorListeners } from
 import { docsIcons } from '../../../docs/src/app/core/icons';
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideBrowserGlobalErrorListeners(), docsIcons, { provide: LOCALE_ID, useValue: 'ru' }],
+  providers: [
+    provideBrowserGlobalErrorListeners(),
+    docsIcons,
+    { provide: LOCALE_ID, useValue: 'ru' },
+  ],
 };

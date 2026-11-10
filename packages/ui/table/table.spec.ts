@@ -80,7 +80,9 @@ describe('KnTable', () => {
 
   it('sorts numbers numerically', async () => {
     await render(Host);
-    await userEvent.click(within(screen.getByRole('columnheader', { name: /Сумма/ })).getByRole('button'));
+    await userEvent.click(
+      within(screen.getByRole('columnheader', { name: /Сумма/ })).getByRole('button'),
+    );
     await stable();
     expect(names()).toEqual(['Гамма', 'Бета', 'Альфа']);
   });

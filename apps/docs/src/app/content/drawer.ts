@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component, computed, inject, TemplateRef, viewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  TemplateRef,
+  viewChild,
+} from '@angular/core';
 import { KnButton } from '@kenny/ui/button';
 import { KnDrawer, KnDrawerBody, KnDrawerHeader } from '@kenny/ui/drawer';
 import { data as dialog } from '../../generated/dialog';
@@ -58,13 +65,17 @@ export default {
     {
       source: 'basic',
       title: 'Четыре стороны',
-      description: 'start и end учитывают направление письма. Содержимое — шаблон или компонент, как у Dialog.',
+      description:
+        'start и end учитывают направление письма. Содержимое — шаблон или компонент, как у Dialog.',
       component: Basic,
     },
   ],
   playground: Playground,
   slots: [
-    { name: 'kn-drawer-header', description: 'Заголовок, описание и кнопка закрытия. То же, что kn-dialog-header.' },
+    {
+      name: 'kn-drawer-header',
+      description: 'Заголовок, описание и кнопка закрытия. То же, что kn-dialog-header.',
+    },
     { name: 'kn-drawer-body', description: 'Прокручиваемое содержимое.' },
     { name: 'kn-drawer-footer', description: 'Действия внизу панели.' },
   ],

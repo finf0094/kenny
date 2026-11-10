@@ -235,7 +235,6 @@ import { KnIcon } from '@kenny/ui/icon';
     :host([data-orientation='vertical']) .step[data-state='done'] .line-fill {
       transform: none;
     }
-
   `,
 })
 export class KnStepper {

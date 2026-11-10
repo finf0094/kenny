@@ -9,7 +9,12 @@ import { KnInput } from '@kenny/ui/input';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <kn-field label="Почта коллеги" hint="Отправим приглашение в команду">
-      <input knInput type="email" [value]="email()" (input)="email.set($any($event.target).value)" />
+      <input
+        knInput
+        type="email"
+        [value]="email()"
+        (input)="email.set($any($event.target).value)"
+      />
     </kn-field>
     <button kn-button [disabled]="!email()" (click)="invite()">Пригласить</button>
   `,

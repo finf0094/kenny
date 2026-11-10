@@ -23,7 +23,12 @@ import { KnSidebar, KnSidebarGroup, KnSidebarItem } from '@kenny/ui/sidebar';
 
       <kn-sidebar-group label="Работа">
         @for (item of work; track item.id) {
-          <button kn-sidebar-item type="button" [active]="current() === item.id" (click)="current.set(item.id)">
+          <button
+            kn-sidebar-item
+            type="button"
+            [active]="current() === item.id"
+            (click)="current.set(item.id)"
+          >
             <kn-icon knSidebarIcon [name]="item.icon" />
             {{ item.label }}
             @if (item.count) {
@@ -34,16 +39,28 @@ import { KnSidebar, KnSidebarGroup, KnSidebarItem } from '@kenny/ui/sidebar';
       </kn-sidebar-group>
 
       <kn-sidebar-group label="Команда">
-        <button kn-sidebar-item type="button" [active]="current() === 'people'" (click)="current.set('people')">
+        <button
+          kn-sidebar-item
+          type="button"
+          [active]="current() === 'people'"
+          (click)="current.set('people')"
+        >
           <kn-icon knSidebarIcon name="user" /> Участники
         </button>
-        <button kn-sidebar-item type="button" [active]="current() === 'settings'" (click)="current.set('settings')">
+        <button
+          kn-sidebar-item
+          type="button"
+          [active]="current() === 'settings'"
+          (click)="current.set('settings')"
+        >
           <kn-icon knSidebarIcon name="sliders" /> Настройки
         </button>
       </kn-sidebar-group>
     </kn-sidebar>
 
-    <p>Открыт раздел: <strong>{{ current() }}</strong></p>
+    <p>
+      Открыт раздел: <strong>{{ current() }}</strong>
+    </p>
   `,
   styles: `
     :host {

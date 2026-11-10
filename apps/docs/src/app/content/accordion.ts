@@ -10,10 +10,18 @@ import Basic from '../demos/accordion/basic.demo';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <docs-playground [controls]="controls" [code]="code()">
-      <kn-accordion style="inline-size: 22rem" [multiple]="multiple.value()" [headingLevel]="level.value()">
-        <kn-accordion-item heading="Доставка" [expanded]="true">Курьером за 1–2 дня или в пункт выдачи.</kn-accordion-item>
+      <kn-accordion
+        style="inline-size: 22rem"
+        [multiple]="multiple.value()"
+        [headingLevel]="level.value()"
+      >
+        <kn-accordion-item heading="Доставка" [expanded]="true"
+          >Курьером за 1–2 дня или в пункт выдачи.</kn-accordion-item
+        >
         <kn-accordion-item heading="Оплата">Картой, по счёту или при получении.</kn-accordion-item>
-        <kn-accordion-item heading="Возврат" [disabled]="disabled.value()">В течение 14 дней.</kn-accordion-item>
+        <kn-accordion-item heading="Возврат" [disabled]="disabled.value()"
+          >В течение 14 дней.</kn-accordion-item
+        >
       </kn-accordion>
     </docs-playground>
   `,
@@ -41,14 +49,18 @@ export default {
     {
       source: 'basic',
       title: 'Одна или несколько открытых секций',
-      description: 'По умолчанию открытие секции закрывает остальные; multiple снимает это ограничение.',
+      description:
+        'По умолчанию открытие секции закрывает остальные; multiple снимает это ограничение.',
       component: Basic,
     },
   ],
   playground: Playground,
   slots: [
     { name: '(по умолчанию, kn-accordion-item)', description: 'Содержимое секции.' },
-    { name: 'knAccordionHeading', description: 'Разметка заголовка вместо текста из входа heading.' },
+    {
+      name: 'knAccordionHeading',
+      description: 'Разметка заголовка вместо текста из входа heading.',
+    },
   ],
   keyboard: [
     { keys: ['Enter', 'Пробел'], action: 'Раскрывает или сворачивает секцию.' },

@@ -44,11 +44,32 @@ export const routes: Routes = [
   {
     path: 'examples',
     children: [
-      { path: '', pathMatch: 'full', title: 'Примеры · Kenny', loadComponent: () => import('./pages/examples') },
-      { path: 'dashboard', title: 'Дашборд · Kenny', loadComponent: () => import('./pages/example-dashboard') },
-      { path: 'settings', title: 'Настройки · Kenny', loadComponent: () => import('./pages/example-settings') },
-      { path: 'kanban', title: 'Канбан · Kenny', loadComponent: () => import('./pages/example-kanban') },
+      {
+        path: '',
+        pathMatch: 'full',
+        title: 'Примеры · Kenny',
+        loadComponent: () => import('./pages/examples'),
+      },
+      {
+        path: 'dashboard',
+        title: 'Дашборд · Kenny',
+        loadComponent: () => import('./pages/example-dashboard'),
+      },
+      {
+        path: 'settings',
+        title: 'Настройки · Kenny',
+        loadComponent: () => import('./pages/example-settings'),
+      },
+      {
+        path: 'kanban',
+        title: 'Канбан · Kenny',
+        loadComponent: () => import('./pages/example-kanban'),
+      },
     ],
   },
-  { path: '**', title: 'Страница не найдена · Kenny', loadComponent: () => import('./pages/not-found') },
+  {
+    path: '**',
+    title: 'Страница не найдена · Kenny',
+    loadComponent: () => import('./pages/not-found'),
+  },
 ];

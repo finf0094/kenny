@@ -6,7 +6,9 @@ import { KnTab, KnTabs } from '@kenny/ui/tabs';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <kn-tabs variant="underline" aria-label="Разделы проекта">
-      <kn-tab value="overview" label="Обзор" icon="home">Линия-индикатор едет под активную вкладку.</kn-tab>
+      <kn-tab value="overview" label="Обзор" icon="home"
+        >Линия-индикатор едет под активную вкладку.</kn-tab
+      >
       <kn-tab value="files" label="Файлы" icon="folder">Файлы проекта.</kn-tab>
       <kn-tab value="settings" label="Настройки" icon="sliders">Настройки проекта.</kn-tab>
     </kn-tabs>

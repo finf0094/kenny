@@ -18,7 +18,11 @@ export type RangeControl = Base<'range', number> & { min: number; max: number; s
 export type PlaygroundControl = ChoiceControl<string> | ToggleControl | TextControl | RangeControl;
 
 /** A control that picks one of several string values (variant, size, placement…). */
-export function choice<const T extends string>(label: string, options: readonly T[], initial: T = options[0]): ChoiceControl<T> {
+export function choice<const T extends string>(
+  label: string,
+  options: readonly T[],
+  initial: T = options[0],
+): ChoiceControl<T> {
   return { kind: 'choice', label, options, value: signal<T>(initial) };
 }
 
@@ -30,7 +34,13 @@ export function text(label: string, initial = ''): TextControl {
   return { kind: 'text', label, value: signal(initial) };
 }
 
-export function range(label: string, initial: number, min: number, max: number, step = 1): RangeControl {
+export function range(
+  label: string,
+  initial: number,
+  min: number,
+  max: number,
+  step = 1,
+): RangeControl {
   return { kind: 'range', label, value: signal(initial), min, max, step };
 }
 
@@ -61,7 +71,11 @@ export function attrs(values: Record<string, [value: unknown, fallback?: unknown
           @switch (control.kind) {
             @case ('choice') {
               <kn-field [label]="control.label">
-                <kn-select size="sm" [value]="control.value()" (valueChange)="control.value.set($any($event))">
+                <kn-select
+                  size="sm"
+                  [value]="control.value()"
+                  (valueChange)="control.value.set($any($event))"
+                >
                   @for (option of control.options; track option) {
                     <kn-option [value]="option">{{ option }}</kn-option>
                   }
@@ -69,13 +83,22 @@ export function attrs(values: Record<string, [value: unknown, fallback?: unknown
               </kn-field>
             }
             @case ('toggle') {
-              <kn-switch size="sm" [checked]="control.value()" (checkedChange)="control.value.set($event)">
+              <kn-switch
+                size="sm"
+                [checked]="control.value()"
+                (checkedChange)="control.value.set($event)"
+              >
                 {{ control.label }}
               </kn-switch>
             }
             @case ('text') {
               <kn-field [label]="control.label">
-                <input knInput knSize="sm" [value]="control.value()" (input)="control.value.set($any($event.target).value)" />
+                <input
+                  knInput
+                  knSize="sm"
+                  [value]="control.value()"
+                  (input)="control.value.set($any($event.target).value)"
+                />
               </kn-field>
             }
             @case ('range') {

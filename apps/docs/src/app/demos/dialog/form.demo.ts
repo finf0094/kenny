@@ -1,12 +1,34 @@
-import { ChangeDetectionStrategy, Component, inject, signal, TemplateRef, viewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  signal,
+  TemplateRef,
+  viewChild,
+} from '@angular/core';
 import { KnButton } from '@kenny/ui/button';
-import { KnDialog, KnDialogBody, KnDialogFooter, KnDialogHeader, KnDialogRef } from '@kenny/ui/dialog';
+import {
+  KnDialog,
+  KnDialogBody,
+  KnDialogFooter,
+  KnDialogHeader,
+  KnDialogRef,
+} from '@kenny/ui/dialog';
 import { KnField } from '@kenny/ui/field';
 import { KnInput } from '@kenny/ui/input';
 import { KnOption, KnSelect } from '@kenny/ui/select';
 
 @Component({
-  imports: [KnButton, KnDialogHeader, KnDialogBody, KnDialogFooter, KnField, KnInput, KnSelect, KnOption],
+  imports: [
+    KnButton,
+    KnDialogHeader,
+    KnDialogBody,
+    KnDialogFooter,
+    KnField,
+    KnInput,
+    KnSelect,
+    KnOption,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <button kn-button (click)="open()">Пригласить участника</button>
@@ -15,7 +37,10 @@ import { KnOption, KnSelect } from '@kenny/ui/select';
     }
 
     <ng-template #invite let-ref>
-      <kn-dialog-header heading="Пригласить в команду" description="Мы отправим письмо со ссылкой" />
+      <kn-dialog-header
+        heading="Пригласить в команду"
+        description="Мы отправим письмо со ссылкой"
+      />
       <kn-dialog-body>
         <form id="invite-form" (submit)="$event.preventDefault(); send(ref, email.value)">
           <kn-field label="Почта">

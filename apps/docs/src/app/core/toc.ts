@@ -29,7 +29,11 @@ export class TocService {
     this.observer?.disconnect();
     const elements = Array.from(root.querySelectorAll<HTMLElement>('h2[id], h3[id]'));
     this.headings.set(
-      elements.map((el) => ({ id: el.id, text: el.textContent?.trim() ?? '', level: el.tagName === 'H2' ? 2 : 3 })),
+      elements.map((el) => ({
+        id: el.id,
+        text: el.textContent?.trim() ?? '',
+        level: el.tagName === 'H2' ? 2 : 3,
+      })),
     );
     this.active.set(elements[0]?.id ?? '');
     this.path.set(this.document.location?.pathname ?? '');
@@ -37,7 +41,9 @@ export class TocService {
     if (!view || !('IntersectionObserver' in view)) return;
     this.observer = new IntersectionObserver(
       (entries) => {
-        const visible = entries.filter((e) => e.isIntersecting).sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
         if (visible[0]) this.active.set(visible[0].target.id);
       },
       { rootMargin: '-96px 0px -65% 0px' },
@@ -62,7 +68,10 @@ export class TocService {
         <ul>
           @for (heading of toc.headings(); track heading.id) {
             <li [attr.data-level]="heading.level">
-              <a [href]="toc.path() + '#' + heading.id" [attr.aria-current]="toc.active() === heading.id ? 'location' : null">
+              <a
+                [href]="toc.path() + '#' + heading.id"
+                [attr.aria-current]="toc.active() === heading.id ? 'location' : null"
+              >
                 {{ heading.text }}
               </a>
             </li>

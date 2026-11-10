@@ -249,7 +249,10 @@ export class KnButton {
           this.element.hasAttribute(a),
         );
         if (!named) {
-          console.warn('[kenny] kn-icon-button needs an accessible name (aria-label).', this.element);
+          console.warn(
+            '[kenny] kn-icon-button needs an accessible name (aria-label).',
+            this.element,
+          );
         }
       });
     }

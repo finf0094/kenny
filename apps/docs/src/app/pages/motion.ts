@@ -7,16 +7,32 @@ import { KnTab, KnTabs } from '@kenny/ui/tabs';
 import { DocsCode } from '../core/code-block';
 
 const CURVES = [
-  { token: '--kn-ease-standard', name: 'standard', use: 'Наведение, смена цвета слоя, простые появления.' },
+  {
+    token: '--kn-ease-standard',
+    name: 'standard',
+    use: 'Наведение, смена цвета слоя, простые появления.',
+  },
   { token: '--kn-ease-out', name: 'out', use: 'Раскрытие высоты, выезд панелей, каскад списков.' },
-  { token: '--kn-ease-spring', name: 'spring', use: 'То, что пользователь двигает: переключатель, индикатор вкладок, окна.' },
-  { token: '--kn-ease-spring-bouncy', name: 'spring-bouncy', use: 'Мелкие подтверждения: галочка, отметка шага.' },
+  {
+    token: '--kn-ease-spring',
+    name: 'spring',
+    use: 'То, что пользователь двигает: переключатель, индикатор вкладок, окна.',
+  },
+  {
+    token: '--kn-ease-spring-bouncy',
+    name: 'spring-bouncy',
+    use: 'Мелкие подтверждения: галочка, отметка шага.',
+  },
 ];
 
 const DURATIONS = [
   { token: '--kn-duration-instant', value: '80 мс', use: 'Отклик на нажатие.' },
   { token: '--kn-duration-fast', value: '140 мс', use: 'Наведение, закрытие оверлеев.' },
-  { token: '--kn-duration-normal', value: '220 мс', use: 'Открытие меню и поповеров, смена панели.' },
+  {
+    token: '--kn-duration-normal',
+    value: '220 мс',
+    use: 'Открытие меню и поповеров, смена панели.',
+  },
   { token: '--kn-duration-slow', value: '360 мс', use: 'Пружины, диалоги, раскрытие высоты.' },
   { token: '--kn-duration-slower', value: '560 мс', use: 'Редкие крупные переходы.' },
 ];
@@ -28,32 +44,32 @@ const DURATIONS = [
     <article class="prose">
       <h1>Motion</h1>
       <p class="lead">
-        У движения в Kenny одна задача — показать, что изменилось и откуда оно взялось. Всё остальное
-        вырезано.
+        У движения в Kenny одна задача — показать, что изменилось и откуда оно взялось. Всё
+        остальное вырезано.
       </p>
 
       <h2 id="rules">Правила</h2>
       <ul>
         <li>
-          <strong>Только <code>transform</code> и <code>opacity</code>.</strong> Они не вызывают пересчёта
-          раскладки и идут на композиторе. Наведение — это прозрачность отдельного слоя, а не перекраска
-          заливки.
+          <strong>Только <code>transform</code> и <code>opacity</code>.</strong> Они не вызывают
+          пересчёта раскладки и идут на композиторе. Наведение — это прозрачность отдельного слоя, а
+          не перекраска заливки.
         </li>
         <li>
-          <strong>Частое — быстро.</strong> Наведение и нажатие укладываются в 80–140 мс. Меню закрывается
-          мгновенно: после выбора пункта ждать нечего.
+          <strong>Частое — быстро.</strong> Наведение и нажатие укладываются в 80–140 мс. Меню
+          закрывается мгновенно: после выбора пункта ждать нечего.
         </li>
         <li>
-          <strong>Выход короче входа.</strong> Поверхность появляется за 220–360 мс и уходит за 140: интерфейс
-          не должен задерживать человека, который уже принял решение.
+          <strong>Выход короче входа.</strong> Поверхность появляется за 220–360 мс и уходит за 140:
+          интерфейс не должен задерживать человека, который уже принял решение.
         </li>
         <li>
           <strong>Пружины — для прямого действия.</strong> Переключатель, индикатор вкладок, галочка
           подчиняются руке и слегка перелетают цель. Информационные переходы идут по обычным кривым.
         </li>
         <li>
-          <strong>Одна система.</strong> Длительности и кривые — токены. Компоненты не содержат собственных
-          чисел, поэтому характер движения меняется в одном месте.
+          <strong>Одна система.</strong> Длительности и кривые — токены. Компоненты не содержат
+          собственных чисел, поэтому характер движения меняется в одном месте.
         </li>
       </ul>
 
@@ -67,7 +83,11 @@ const DURATIONS = [
           <div class="lane">
             <code>{{ curve.name }}</code>
             <div class="track">
-              <span class="ball" [class.moved]="moved()" [style.transition-timing-function]="'var(' + curve.token + ')'"></span>
+              <span
+                class="ball"
+                [class.moved]="moved()"
+                [style.transition-timing-function]="'var(' + curve.token + ')'"
+              ></span>
             </div>
           </div>
         }
@@ -83,7 +103,9 @@ const DURATIONS = [
           <tbody>
             @for (curve of curves; track curve.token) {
               <tr>
-                <th scope="row"><code>{{ curve.token }}</code></th>
+                <th scope="row">
+                  <code>{{ curve.token }}</code>
+                </th>
                 <td>{{ curve.use }}</td>
               </tr>
             }
@@ -91,8 +113,8 @@ const DURATIONS = [
         </table>
       </div>
       <p>
-        Пружины записаны функцией <code>linear()</code> — это отсчёты настоящего затухающего колебания
-        (коэффициент затухания 0,62 и 0,45), а не приближение кривой Безье.
+        Пружины записаны функцией <code>linear()</code> — это отсчёты настоящего затухающего
+        колебания (коэффициент затухания 0,62 и 0,45), а не приближение кривой Безье.
       </p>
 
       <h2 id="durations">Длительности</h2>
@@ -108,7 +130,9 @@ const DURATIONS = [
           <tbody>
             @for (duration of durations; track duration.token) {
               <tr>
-                <th scope="row"><code>{{ duration.token }}</code></th>
+                <th scope="row">
+                  <code>{{ duration.token }}</code>
+                </th>
                 <td>{{ duration.value }}</td>
                 <td>{{ duration.use }}</td>
               </tr>
@@ -118,7 +142,10 @@ const DURATIONS = [
       </div>
 
       <h2 id="micro">Микровзаимодействия</h2>
-      <p>Нажмите на каждый элемент. Ползунок растягивается под пальцем, галочка появляется с перелётом, индикатор вкладок переезжает.</p>
+      <p>
+        Нажмите на каждый элемент. Ползунок растягивается под пальцем, галочка появляется с
+        перелётом, индикатор вкладок переезжает.
+      </p>
       <div class="stage kn-wallpaper-sm">
         <kn-switch [checked]="true">Переключатель</kn-switch>
         <kn-checkbox [checked]="true">Флажок</kn-checkbox>
@@ -132,36 +159,45 @@ const DURATIONS = [
 
       <h2 id="height">Высота</h2>
       <p>
-        Высоту нельзя анимировать через <code>transform</code>, не исказив содержимое. Вместо измерений в
-        JavaScript <code>&lt;kn-collapse&gt;</code> анимирует строку сетки от <code>0fr</code> до
-        <code>1fr</code> — это единственное исключение из правила «только transform и opacity», и оно
-        ограничено одним компонентом. На нём стоят Accordion, Panel и стопка Toast.
+        Высоту нельзя анимировать через <code>transform</code>, не исказив содержимое. Вместо
+        измерений в JavaScript <code>&lt;kn-collapse&gt;</code> анимирует строку сетки от
+        <code>0fr</code> до <code>1fr</code> — это единственное исключение из правила «только
+        transform и opacity», и оно ограничено одним компонентом. На нём стоят Accordion, Panel и
+        стопка Toast.
       </p>
       <div class="collapse-demo">
-        <button kn-button size="sm" variant="soft" [attr.aria-expanded]="open()" (click)="open.set(!open())">
+        <button
+          kn-button
+          size="sm"
+          variant="soft"
+          [attr.aria-expanded]="open()"
+          (click)="open.set(!open())"
+        >
           {{ open() ? 'Свернуть' : 'Развернуть' }}
         </button>
         <kn-collapse [open]="open()">
           <p>
-            Содержимое любой высоты. Пока блок свёрнут, оно помечено <code>inert</code>: до него нельзя
-            дойти клавишей Tab, и скринридер его не читает.
+            Содержимое любой высоты. Пока блок свёрнут, оно помечено <code>inert</code>: до него
+            нельзя дойти клавишей Tab, и скринридер его не читает.
           </p>
         </kn-collapse>
       </div>
 
       <h2 id="enter-exit">Вход и выход оверлеев</h2>
       <p>
-        Вход — обычная CSS-анимация, которая играет при вставке элемента. Для выхода компонент ставит
-        атрибут <code>data-kn-state="closing"</code>, дожидается окончания анимаций через Web Animations API
-        и только потом удаляет элемент. Общие keyframes (<code>kn-pop-in</code>, <code>kn-rise-in</code>,
-        <code>kn-slide-in</code> и парные <code>-out</code>) лежат в токенах.
+        Вход — обычная CSS-анимация, которая играет при вставке элемента. Для выхода компонент
+        ставит атрибут <code>data-kn-state="closing"</code>, дожидается окончания анимаций через Web
+        Animations API и только потом удаляет элемент. Общие keyframes (<code>kn-pop-in</code>,
+        <code>kn-rise-in</code>, <code>kn-slide-in</code> и парные <code>-out</code>) лежат в
+        токенах.
       </p>
       <docs-code snippet="motion-usage.css" label="Использование токенов движения" />
 
       <h2 id="stagger">Каскад</h2>
       <p>
-        Строки таблицы и пункты палитры появляются друг за другом с шагом <code>--kn-stagger</code> (28 мс).
-        Каскад играет один раз — при появлении списка, а не при каждом обновлении.
+        Строки таблицы и пункты палитры появляются друг за другом с шагом
+        <code>--kn-stagger</code> (28 мс). Каскад играет один раз — при появлении списка, а не при
+        каждом обновлении.
       </p>
       <div class="stagger-demo">
         <button kn-button size="sm" variant="soft" (click)="replay()">Проиграть ещё раз</button>
@@ -177,10 +213,10 @@ const DURATIONS = [
 
       <h2 id="reduced">Уменьшение движения</h2>
       <p>
-        При <code>prefers-reduced-motion: reduce</code> токены длительности становятся практически нулевыми —
-        и вместе с ними все переходы библиотеки и ваши собственные, если они используют токены. Остаются
-        только индикаторы ожидания: Spinner и неопределённый Progress замедляются, но не останавливаются,
-        потому что движение в них и есть сообщение.
+        При <code>prefers-reduced-motion: reduce</code> токены длительности становятся практически
+        нулевыми — и вместе с ними все переходы библиотеки и ваши собственные, если они используют
+        токены. Остаются только индикаторы ожидания: Spinner и неопределённый Progress замедляются,
+        но не останавливаются, потому что движение в них и есть сообщение.
       </p>
     </article>
   `,

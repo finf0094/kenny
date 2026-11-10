@@ -35,7 +35,20 @@ const STATUS: Record<Status, { label: string; tone: 'success' | 'warning' | 'dan
   overdue: { label: 'Просрочен', tone: 'danger' },
 };
 
-const CLIENTS = ['Орбита', 'Северный ветер', 'Лаборатория Ч', 'Гринфилд', 'Мост', 'Атлас', 'Полярная звезда', 'Квант', 'Берег', 'Фабрика идей', 'Маяк', 'Сигнал'];
+const CLIENTS = [
+  'Орбита',
+  'Северный ветер',
+  'Лаборатория Ч',
+  'Гринфилд',
+  'Мост',
+  'Атлас',
+  'Полярная звезда',
+  'Квант',
+  'Берег',
+  'Фабрика идей',
+  'Маяк',
+  'Сигнал',
+];
 const MANAGERS = ['Анна Орлова', 'Борис Ким', 'Вера Соколова', 'Глеб Назаров'];
 const STATUSES: Status[] = ['paid', 'pending', 'paid', 'overdue', 'paid', 'pending'];
 
@@ -108,16 +121,24 @@ const PAGE_SIZE = 6;
           <kn-icon name="panel-left" />
         </button>
         <kn-sidebar-group label="Финансы">
-          <button kn-sidebar-item type="button" active><kn-icon knSidebarIcon name="chart" /> Обзор</button>
+          <button kn-sidebar-item type="button" active>
+            <kn-icon knSidebarIcon name="chart" /> Обзор
+          </button>
           <button kn-sidebar-item type="button">
             <kn-icon knSidebarIcon name="file" /> Счета
             <kn-badge knSidebarEnd tone="accent">{{ invoices().length }}</kn-badge>
           </button>
-          <button kn-sidebar-item type="button"><kn-icon knSidebarIcon name="user" /> Клиенты</button>
+          <button kn-sidebar-item type="button">
+            <kn-icon knSidebarIcon name="user" /> Клиенты
+          </button>
         </kn-sidebar-group>
         <kn-sidebar-group label="Система">
-          <a kn-sidebar-item routerLink="/examples/settings"><kn-icon knSidebarIcon name="sliders" /> Настройки</a>
-          <a kn-sidebar-item routerLink="/examples"><kn-icon knSidebarIcon name="arrow-left" /> Все примеры</a>
+          <a kn-sidebar-item routerLink="/examples/settings"
+            ><kn-icon knSidebarIcon name="sliders" /> Настройки</a
+          >
+          <a kn-sidebar-item routerLink="/examples"
+            ><kn-icon knSidebarIcon name="arrow-left" /> Все примеры</a
+          >
         </kn-sidebar-group>
       </kn-sidebar>
 
@@ -166,27 +187,61 @@ const PAGE_SIZE = 6;
           </kn-panel>
 
           <kn-panel heading="Цели квартала" [headingLevel]="2" [expanded]="true">
-            <button knPanelActions kn-icon-button size="sm" variant="ghost" tone="neutral" aria-label="Обновить цели" knTooltip="Обновить" (click)="refreshGoals()">
+            <button
+              knPanelActions
+              kn-icon-button
+              size="sm"
+              variant="ghost"
+              tone="neutral"
+              aria-label="Обновить цели"
+              knTooltip="Обновить"
+              (click)="refreshGoals()"
+            >
               <kn-icon name="refresh" />
             </button>
             <div class="goals">
               @for (goal of goals(); track goal.label) {
                 <div class="goal">
-                  <div class="goal-head"><span>{{ goal.label }}</span><span>{{ goal.value }}%</span></div>
-                  <kn-progress [aria-label]="goal.label" [value]="goal.value" [tone]="goal.value >= 100 ? 'success' : goal.value < 40 ? 'warning' : 'accent'" />
+                  <div class="goal-head">
+                    <span>{{ goal.label }}</span
+                    ><span>{{ goal.value }}%</span>
+                  </div>
+                  <kn-progress
+                    [aria-label]="goal.label"
+                    [value]="goal.value"
+                    [tone]="goal.value >= 100 ? 'success' : goal.value < 40 ? 'warning' : 'accent'"
+                  />
                 </div>
               }
             </div>
           </kn-panel>
         </div>
 
-        <kn-panel heading="Счета" [headingLevel]="2" [description]="filtered().length + ' из ' + invoices().length">
+        <kn-panel
+          heading="Счета"
+          [headingLevel]="2"
+          [description]="filtered().length + ' из ' + invoices().length"
+        >
           <div class="filters">
             <kn-input-group size="sm" class="search">
               <kn-icon knPrefix name="search" [size]="16" />
-              <input knInput knSize="sm" type="search" aria-label="Поиск по клиенту или номеру" placeholder="Клиент или номер" [value]="query()" (input)="setQuery($any($event.target).value)" />
+              <input
+                knInput
+                knSize="sm"
+                type="search"
+                aria-label="Поиск по клиенту или номеру"
+                placeholder="Клиент или номер"
+                [value]="query()"
+                (input)="setQuery($any($event.target).value)"
+              />
             </kn-input-group>
-            <kn-select class="status" size="sm" aria-label="Статус" [value]="status()" (valueChange)="setStatus($event)">
+            <kn-select
+              class="status"
+              size="sm"
+              aria-label="Статус"
+              [value]="status()"
+              (valueChange)="setStatus($event)"
+            >
               <kn-option value="all">Все статусы</kn-option>
               <kn-option value="paid">Оплачен</kn-option>
               <kn-option value="pending">Ожидает</kn-option>
@@ -195,7 +250,9 @@ const PAGE_SIZE = 6;
             <span class="grow"></span>
             @if (selected().length) {
               <span class="selected-note">Выбрано: {{ selected().length }}</span>
-              <button kn-button size="sm" variant="soft" (click)="markPaid(selected())">Отметить оплаченными</button>
+              <button kn-button size="sm" variant="soft" (click)="markPaid(selected())">
+                Отметить оплаченными
+              </button>
             }
           </div>
 
@@ -212,7 +269,9 @@ const PAGE_SIZE = 6;
             [(selection)]="selected"
           >
             <ng-template knCell="client" let-row>
-              <span class="client"><kn-avatar size="sm" [name]="row.client" /> {{ row.client }}</span>
+              <span class="client"
+                ><kn-avatar size="sm" [name]="row.client" /> {{ row.client }}</span
+              >
             </ng-template>
             <ng-template knCell="status" let-row>
               <kn-badge dot [tone]="statusOf(row).tone">{{ statusOf(row).label }}</kn-badge>
@@ -220,18 +279,38 @@ const PAGE_SIZE = 6;
             <ng-template knCell="amount" let-value="value">{{ money.format(value) }}</ng-template>
             <ng-template knCell="due" let-value="value">{{ date.format(value) }}</ng-template>
             <ng-template knCell="actions" let-row>
-              <button kn-icon-button size="sm" variant="ghost" tone="neutral" [attr.aria-label]="'Действия со счётом ' + row.id" [knMenuTrigger]="rowMenu" [knMenuData]="{ $implicit: row }">
+              <button
+                kn-icon-button
+                size="sm"
+                variant="ghost"
+                tone="neutral"
+                [attr.aria-label]="'Действия со счётом ' + row.id"
+                [knMenuTrigger]="rowMenu"
+                [knMenuData]="{ $implicit: row }"
+              >
                 <kn-icon name="more" />
               </button>
             </ng-template>
-            <kn-empty-state knTableEmpty icon="filter" heading="Счета не найдены" description="Измените запрос или сбросьте фильтр по статусу.">
-              <button kn-button size="sm" variant="soft" (click)="resetFilters()">Сбросить фильтры</button>
+            <kn-empty-state
+              knTableEmpty
+              icon="filter"
+              heading="Счета не найдены"
+              description="Измените запрос или сбросьте фильтр по статусу."
+            >
+              <button kn-button size="sm" variant="soft" (click)="resetFilters()">
+                Сбросить фильтры
+              </button>
             </kn-empty-state>
           </kn-table>
 
           <div class="table-foot">
             <span>Страница {{ page() }} из {{ pageCount() }}</span>
-            <kn-pagination size="sm" [total]="filtered().length" [pageSize]="pageSize" [(page)]="page" />
+            <kn-pagination
+              size="sm"
+              [total]="filtered().length"
+              [pageSize]="pageSize"
+              [(page)]="page"
+            />
           </div>
         </kn-panel>
       </main>
@@ -239,10 +318,16 @@ const PAGE_SIZE = 6;
 
     <ng-template #rowMenu let-row>
       <kn-menu>
-        <button kn-menu-item (triggered)="markPaid([row])"><kn-icon name="check" [size]="16" /> Отметить оплаченным</button>
-        <button kn-menu-item (triggered)="remind(row)"><kn-icon name="mail" [size]="16" /> Напомнить клиенту</button>
+        <button kn-menu-item (triggered)="markPaid([row])">
+          <kn-icon name="check" [size]="16" /> Отметить оплаченным
+        </button>
+        <button kn-menu-item (triggered)="remind(row)">
+          <kn-icon name="mail" [size]="16" /> Напомнить клиенту
+        </button>
         <kn-menu-separator />
-        <button kn-menu-item tone="danger" (triggered)="remove(row)"><kn-icon name="trash" [size]="16" /> Удалить</button>
+        <button kn-menu-item tone="danger" (triggered)="remove(row)">
+          <kn-icon name="trash" [size]="16" /> Удалить
+        </button>
       </kn-menu>
     </ng-template>
   `,
@@ -459,7 +544,11 @@ const PAGE_SIZE = 6;
 export default class DashboardExample {
   private readonly toaster = inject(KnToaster);
 
-  protected readonly money = new Intl.NumberFormat('ru', { style: 'currency', currency: 'RUB', maximumFractionDigits: 0 });
+  protected readonly money = new Intl.NumberFormat('ru', {
+    style: 'currency',
+    currency: 'RUB',
+    maximumFractionDigits: 0,
+  });
   protected readonly date = new Intl.DateTimeFormat('ru', { day: 'numeric', month: 'short' });
   protected readonly weeks = WEEKS;
   protected readonly maxWeek = Math.max(...WEEKS.map((w) => w.value));
@@ -495,7 +584,9 @@ export default class DashboardExample {
     return this.invoices().filter(
       (invoice) =>
         (status === 'all' || invoice.status === status) &&
-        (!query || invoice.client.toLowerCase().includes(query) || invoice.id.toLowerCase().includes(query)),
+        (!query ||
+          invoice.client.toLowerCase().includes(query) ||
+          invoice.id.toLowerCase().includes(query)),
     );
   });
 
@@ -515,7 +606,9 @@ export default class DashboardExample {
     });
   });
 
-  protected readonly pageCount = computed(() => Math.max(1, Math.ceil(this.filtered().length / PAGE_SIZE)));
+  protected readonly pageCount = computed(() =>
+    Math.max(1, Math.ceil(this.filtered().length / PAGE_SIZE)),
+  );
   protected readonly pageRows = computed(() => {
     const page = Math.min(this.page(), this.pageCount());
     return this.sorted().slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
@@ -523,13 +616,34 @@ export default class DashboardExample {
 
   protected readonly metrics = computed(() => {
     const invoices = this.invoices();
-    const sum = (status: Status) => invoices.filter((i) => i.status === status).reduce((total, i) => total + i.amount, 0);
+    const sum = (status: Status) =>
+      invoices.filter((i) => i.status === status).reduce((total, i) => total + i.amount, 0);
     const compact = new Intl.NumberFormat('ru', { notation: 'compact', maximumFractionDigits: 1 });
     return [
-      { label: 'Оплачено', value: `${compact.format(sum('paid'))} ₽`, delta: '+12% к октябрю', tone: 'success' as const },
-      { label: 'Ожидает оплаты', value: `${compact.format(sum('pending'))} ₽`, delta: `${invoices.filter((i) => i.status === 'pending').length} счетов`, tone: 'warning' as const },
-      { label: 'Просрочено', value: `${compact.format(sum('overdue'))} ₽`, delta: `${invoices.filter((i) => i.status === 'overdue').length} счёта`, tone: 'danger' as const },
-      { label: 'Всего счетов', value: String(invoices.length), delta: 'за период', tone: 'neutral' as const },
+      {
+        label: 'Оплачено',
+        value: `${compact.format(sum('paid'))} ₽`,
+        delta: '+12% к октябрю',
+        tone: 'success' as const,
+      },
+      {
+        label: 'Ожидает оплаты',
+        value: `${compact.format(sum('pending'))} ₽`,
+        delta: `${invoices.filter((i) => i.status === 'pending').length} счетов`,
+        tone: 'warning' as const,
+      },
+      {
+        label: 'Просрочено',
+        value: `${compact.format(sum('overdue'))} ₽`,
+        delta: `${invoices.filter((i) => i.status === 'overdue').length} счёта`,
+        tone: 'danger' as const,
+      },
+      {
+        label: 'Всего счетов',
+        value: String(invoices.length),
+        delta: 'за период',
+        tone: 'neutral' as const,
+      },
     ];
   });
 
@@ -556,11 +670,16 @@ export default class DashboardExample {
   protected markPaid(rows: readonly Invoice[]): void {
     const ids = new Set(rows.map((row) => row.id));
     const before = this.invoices();
-    this.invoices.update((all) => all.map((i) => (ids.has(i.id) ? { ...i, status: 'paid' as const } : i)));
+    this.invoices.update((all) =>
+      all.map((i) => (ids.has(i.id) ? { ...i, status: 'paid' as const } : i)),
+    );
     this.selected.set([]);
     this.toaster.show({
       tone: 'success',
-      title: rows.length === 1 ? `Счёт ${rows[0].id} отмечен оплаченным` : `Отмечено оплаченными: ${rows.length}`,
+      title:
+        rows.length === 1
+          ? `Счёт ${rows[0].id} отмечен оплаченным`
+          : `Отмечено оплаченными: ${rows.length}`,
       action: { label: 'Отменить', run: () => this.invoices.set(before) },
     });
   }
@@ -584,6 +703,8 @@ export default class DashboardExample {
   }
 
   protected refreshGoals(): void {
-    this.goals.update((goals) => goals.map((goal) => ({ ...goal, value: Math.min(100, goal.value + 6) })));
+    this.goals.update((goals) =>
+      goals.map((goal) => ({ ...goal, value: Math.min(100, goal.value + 6) })),
+    );
   }
 }

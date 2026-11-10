@@ -32,7 +32,13 @@ class Playground {
   protected readonly minRows = range('minRows', 3, 1, 6);
   protected readonly maxRows = range('maxRows', 8, 2, 12);
   protected readonly disabled = toggle('disabled');
-  protected readonly controls = [this.size, this.autosize, this.minRows, this.maxRows, this.disabled];
+  protected readonly controls = [
+    this.size,
+    this.autosize,
+    this.minRows,
+    this.maxRows,
+    this.disabled,
+  ];
   protected readonly code = computed(
     () =>
       `<textarea knTextarea${attrs({
@@ -58,7 +64,8 @@ export default {
     {
       source: 'basic',
       title: 'Авторазмер и счётчик',
-      description: 'Высоту считает CdkTextareaAutosize. Входы autosize, minRows и maxRows пробрасываются на него.',
+      description:
+        'Высоту считает CdkTextareaAutosize. Входы autosize, minRows и maxRows пробрасываются на него.',
       component: Basic,
     },
   ],

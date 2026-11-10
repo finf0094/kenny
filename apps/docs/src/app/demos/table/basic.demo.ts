@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, signal } from '@angular/core';
 import { KnAvatar } from '@kenny/ui/avatar';
 import { KnBadge } from '@kenny/ui/badge';
 import { KnCell, KnColumn, KnSort, KnTable } from '@kenny/ui/table';
@@ -39,12 +39,7 @@ const STATUS = {
       <ng-template knCell="amount" let-value="value">{{ money.format(value) }}</ng-template>
       <ng-template knCell="due" let-value="value">{{ date.format(value) }}</ng-template>
     </kn-table>
-    <p>
-      Выбрано: {{ selected().length }}
-      @if (sort(); as s) {
-        , сортировка: {{ s.key }} ({{ s.direction }})
-      }
-    </p>
+    <p>{{ summary() }}</p>
   `,
   styles: `
     .client {
@@ -61,11 +56,27 @@ const STATUS = {
   `,
 })
 export default class TableBasicDemo {
-  protected readonly status = STATUS as Record<string, { label: string; tone: 'success' | 'warning' | 'danger' }>;
-  protected readonly money = new Intl.NumberFormat('ru', { style: 'currency', currency: 'RUB', maximumFractionDigits: 0 });
+  protected readonly status = STATUS as Record<
+    string,
+    { label: string; tone: 'success' | 'warning' | 'danger' }
+  >;
+  protected readonly money = new Intl.NumberFormat('ru', {
+    style: 'currency',
+    currency: 'RUB',
+    maximumFractionDigits: 0,
+  });
   protected readonly date = new Intl.DateTimeFormat('ru', { day: 'numeric', month: 'short' });
   protected readonly sort = signal<KnSort | null>({ key: 'due', direction: 'asc' });
   protected readonly selected = signal<readonly Invoice[]>([]);
+
+  /** One sentence under the table: what is selected and how the rows are ordered. */
+  protected readonly summary = computed(() => {
+    const sort = this.sort();
+    const column = this.columns.find((item) => item.key === sort?.key);
+    const order = sort?.direction === 'asc' ? 'по возрастанию' : 'по убыванию';
+    const sorting = column ? `, сортировка: «${column.header}» ${order}` : ', без сортировки';
+    return `Выбрано строк: ${this.selected().length}${sorting}`;
+  });
 
   protected readonly columns: KnColumn<Invoice>[] = [
     { key: 'client', header: 'Клиент', sortable: true },
@@ -75,10 +86,34 @@ export default class TableBasicDemo {
   ];
 
   protected readonly invoices: Invoice[] = [
-    { id: 'INV-1042', client: 'Орбита', status: 'paid', amount: 184000, due: new Date(2026, 10, 3) },
-    { id: 'INV-1043', client: 'Северный ветер', status: 'pending', amount: 42500, due: new Date(2026, 10, 14) },
-    { id: 'INV-1044', client: 'Лаборатория Ч', status: 'overdue', amount: 9800, due: new Date(2026, 9, 28) },
-    { id: 'INV-1045', client: 'Гринфилд', status: 'pending', amount: 310000, due: new Date(2026, 10, 21) },
+    {
+      id: 'INV-1042',
+      client: 'Орбита',
+      status: 'paid',
+      amount: 184000,
+      due: new Date(2026, 10, 3),
+    },
+    {
+      id: 'INV-1043',
+      client: 'Северный ветер',
+      status: 'pending',
+      amount: 42500,
+      due: new Date(2026, 10, 14),
+    },
+    {
+      id: 'INV-1044',
+      client: 'Лаборатория Ч',
+      status: 'overdue',
+      amount: 9800,
+      due: new Date(2026, 9, 28),
+    },
+    {
+      id: 'INV-1045',
+      client: 'Гринфилд',
+      status: 'pending',
+      amount: 310000,
+      due: new Date(2026, 10, 21),
+    },
     { id: 'INV-1046', client: 'Мост', status: 'paid', amount: 76300, due: new Date(2026, 10, 9) },
   ];
 }

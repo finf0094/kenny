@@ -5,7 +5,17 @@ import angular from 'angular-eslint';
 import prettier from 'eslint-config-prettier';
 
 export default tseslint.config(
-  { ignores: ['dist/', 'out-tsc/', '.angular/', 'node_modules/', '**/generated/**', 'tools/shots/', 'apps/docs/src/app/snippets/'] },
+  {
+    ignores: [
+      'dist/',
+      'out-tsc/',
+      '.angular/',
+      'node_modules/',
+      '**/generated/**',
+      'tools/shots/',
+      'apps/docs/src/app/snippets/',
+    ],
+  },
   {
     files: ['**/*.ts'],
     extends: [
@@ -42,7 +52,12 @@ export default tseslint.config(
     files: ['tools/**/*.mjs', '*.mjs', 'packages/tokens/*.mjs'],
     extends: [eslint.configs.recommended],
     languageOptions: {
-      globals: { console: 'readonly', process: 'readonly', URL: 'readonly', setTimeout: 'readonly' },
+      globals: {
+        console: 'readonly',
+        process: 'readonly',
+        URL: 'readonly',
+        setTimeout: 'readonly',
+      },
     },
   },
 );

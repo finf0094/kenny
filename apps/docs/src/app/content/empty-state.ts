@@ -11,7 +11,11 @@ import Basic from '../demos/empty-state/basic.demo';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <docs-playground [controls]="controls" [code]="code()">
-      <kn-empty-state [icon]="icon.value()" [heading]="heading.value()" [description]="description.value()">
+      <kn-empty-state
+        [icon]="icon.value()"
+        [heading]="heading.value()"
+        [description]="description.value()"
+      >
         @if (action.value()) {
           <button kn-button size="sm">Сбросить фильтры</button>
         }
@@ -22,7 +26,10 @@ import Basic from '../demos/empty-state/basic.demo';
 class Playground {
   protected readonly icon = choice('icon', ['search', 'inbox', 'folder', 'filter', 'bell']);
   protected readonly heading = text('heading', 'Ничего не найдено');
-  protected readonly description = text('description', 'Попробуйте изменить запрос или сбросить фильтры.');
+  protected readonly description = text(
+    'description',
+    'Попробуйте изменить запрос или сбросить фильтры.',
+  );
   protected readonly action = toggle('Кнопка действия', true);
   protected readonly controls = [this.icon, this.heading, this.description, this.action];
   protected readonly code = computed(

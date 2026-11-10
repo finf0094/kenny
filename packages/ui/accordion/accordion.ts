@@ -90,7 +90,9 @@ export class KnAccordion {
         [attr.aria-controls]="panelId"
         (click)="toggle()"
       >
-        <span class="title"><ng-content select="[knAccordionHeading]">{{ heading() }}</ng-content></span>
+        <span class="title"
+          ><ng-content select="[knAccordionHeading]">{{ heading() }}</ng-content></span
+        >
         <kn-icon class="chevron" name="chevron-down" />
       </button>
     </div>

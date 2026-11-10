@@ -6,9 +6,12 @@ import { KnSlider } from './slider';
 
 describe('KnSlider', () => {
   it('exposes a native slider with range attributes', async () => {
-    await render(`<kn-slider aria-label="Громкость" [min]="0" [max]="10" [step]="2" [value]="4" />`, {
-      imports: [KnSlider],
-    });
+    await render(
+      `<kn-slider aria-label="Громкость" [min]="0" [max]="10" [step]="2" [value]="4" />`,
+      {
+        imports: [KnSlider],
+      },
+    );
     const slider = screen.getByRole('slider', { name: 'Громкость' });
     expect(slider).toHaveAttribute('min', '0');
     expect(slider).toHaveAttribute('max', '10');
@@ -29,7 +32,9 @@ describe('KnSlider', () => {
     control.setValue(10);
     await fixture.whenStable();
     expect(slider).toHaveValue('10');
-    expect(fixture.nativeElement.querySelector('kn-slider').style.getPropertyValue('--_ratio')).toBe('0.1');
+    expect(
+      fixture.nativeElement.querySelector('kn-slider').style.getPropertyValue('--_ratio'),
+    ).toBe('0.1');
   });
 
   it('announces formatted values', async () => {

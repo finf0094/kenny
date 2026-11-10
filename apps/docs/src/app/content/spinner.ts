@@ -41,7 +41,8 @@ export default {
     {
       source: 'basic',
       title: 'Размеры и цвет',
-      description: 'Цвет наследуется от текста (currentColor), размер можно задать переменной --kn-spinner-size.',
+      description:
+        'Цвет наследуется от текста (currentColor), размер можно задать переменной --kn-spinner-size.',
       component: Basic,
     },
   ],

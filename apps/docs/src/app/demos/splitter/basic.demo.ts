@@ -7,7 +7,9 @@ import { KnSplitter, KnSplitterHandle, KnSplitterPanel } from '@kenny/ui/splitte
   template: `
     <kn-splitter class="frame">
       <kn-splitter-panel [(size)]="nav" [min]="15" [max]="40">
-        <div class="pane">Навигация<br /><small>{{ nav() }}%</small></div>
+        <div class="pane">
+          Навигация<br /><small>{{ nav() }}%</small>
+        </div>
       </kn-splitter-panel>
       <kn-splitter-handle aria-label="Ширина навигации" />
       <kn-splitter-panel [min]="30">
@@ -17,7 +19,9 @@ import { KnSplitter, KnSplitterHandle, KnSplitterPanel } from '@kenny/ui/splitte
           </kn-splitter-panel>
           <kn-splitter-handle aria-label="Высота терминала" />
           <kn-splitter-panel [(size)]="terminal" [min]="20" [max]="60">
-            <div class="pane">Терминал<br /><small>{{ terminal() }}%</small></div>
+            <div class="pane">
+              Терминал<br /><small>{{ terminal() }}%</small>
+            </div>
           </kn-splitter-panel>
         </kn-splitter>
       </kn-splitter-panel>

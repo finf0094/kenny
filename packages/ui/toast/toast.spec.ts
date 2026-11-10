@@ -32,7 +32,9 @@ describe('KnToaster', () => {
     const ref = toaster.show({ title: 'Первое', duration: 0 });
     toaster.show({ title: 'Второе', duration: 0 });
     await stable();
-    await userEvent.click(within(screen.getByText('Второе').closest('.toast') as HTMLElement).getByRole('button'));
+    await userEvent.click(
+      within(screen.getByText('Второе').closest('.toast') as HTMLElement).getByRole('button'),
+    );
     await waitFor(() => expect(screen.queryByText('Второе')).not.toBeInTheDocument());
     ref.dismiss();
     await waitFor(() => expect(screen.queryByText('Первое')).not.toBeInTheDocument());

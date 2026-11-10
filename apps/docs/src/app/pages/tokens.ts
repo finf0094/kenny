@@ -41,12 +41,18 @@ type Preview = 'color' | 'space' | 'radius' | 'shadow' | 'text' | 'none';
     <article class="prose">
       <h1>Токены</h1>
       <p class="lead">
-        Все {{ total }} токенов пакета <code>&#64;kenny/tokens</code>. Таблицы собраны из исходных CSS-файлов,
-        образцы показывают значение в текущей теме.
+        Все {{ total }} токенов пакета <code>&#64;kenny/tokens</code>. Таблицы собраны из исходных
+        CSS-файлов, образцы показывают значение в текущей теме.
       </p>
       <kn-input-group class="search">
         <kn-icon knPrefix name="search" />
-        <input knInput type="search" aria-label="Фильтр токенов" placeholder="Фильтр: glass, radius, duration…" (input)="query.set($any($event.target).value)" />
+        <input
+          knInput
+          type="search"
+          aria-label="Фильтр токенов"
+          placeholder="Фильтр: glass, radius, duration…"
+          (input)="query.set($any($event.target).value)"
+        />
       </kn-input-group>
 
       @for (group of groups(); track group.id) {
@@ -67,19 +73,33 @@ type Preview = 'color' | 'space' | 'radius' | 'shadow' | 'text' | 'none';
                   <td>
                     @switch (preview(token)) {
                       @case ('color') {
-                        <span class="chip color" [style.background]="'var(' + token.name + ')'"></span>
+                        <span
+                          class="chip color"
+                          [style.background]="'var(' + token.name + ')'"
+                        ></span>
                       }
                       @case ('space') {
-                        <span class="chip space" [style.inline-size]="'var(' + token.name + ')'"></span>
+                        <span
+                          class="chip space"
+                          [style.inline-size]="'var(' + token.name + ')'"
+                        ></span>
                       }
                       @case ('radius') {
-                        <span class="chip radius" [style.border-radius]="'var(' + token.name + ')'"></span>
+                        <span
+                          class="chip radius"
+                          [style.border-radius]="'var(' + token.name + ')'"
+                        ></span>
                       }
                       @case ('shadow') {
-                        <span class="chip shadow" [style.box-shadow]="'var(' + token.name + ')'"></span>
+                        <span
+                          class="chip shadow"
+                          [style.box-shadow]="'var(' + token.name + ')'"
+                        ></span>
                       }
                       @case ('text') {
-                        <span class="chip text" [style.font-size]="'var(' + token.name + ')'">Аа</span>
+                        <span class="chip text" [style.font-size]="'var(' + token.name + ')'"
+                          >Аа</span
+                        >
                       }
                     }
                   </td>
@@ -89,7 +109,9 @@ type Preview = 'color' | 'space' | 'radius' | 'shadow' | 'text' | 'none';
                       <span class="comment">{{ token.comment }}</span>
                     }
                   </th>
-                  <td><code class="value">{{ token.value }}</code></td>
+                  <td>
+                    <code class="value">{{ token.value }}</code>
+                  </td>
                 </tr>
               }
             </tbody>
@@ -220,14 +242,21 @@ export default class TokensPage {
     return GROUPS.map((group) => ({
       ...group,
       tokens: tokens.filter(
-        (token) => token.group === group.id && (!query || token.name.includes(query) || token.value.toLowerCase().includes(query)),
+        (token) =>
+          token.group === group.id &&
+          (!query || token.name.includes(query) || token.value.toLowerCase().includes(query)),
       ),
     })).filter((group) => group.tokens.length > 0);
   });
 
   protected preview(token: TokenDoc): Preview {
     const name = token.name;
-    if (/^--kn-(accent|ink|color)-/.test(name) || /^--kn-glass-(bg|border|edge|specular)/.test(name) || name.startsWith('--kn-shadow-color')) return 'color';
+    if (
+      /^--kn-(accent|ink|color)-/.test(name) ||
+      /^--kn-glass-(bg|border|edge|specular)/.test(name) ||
+      name.startsWith('--kn-shadow-color')
+    )
+      return 'color';
     if (/^--kn-(space|size)-/.test(name)) return 'space';
     if (name.startsWith('--kn-radius-')) return 'radius';
     if (name.startsWith('--kn-shadow-') || name === '--kn-glass-rim') return 'shadow';

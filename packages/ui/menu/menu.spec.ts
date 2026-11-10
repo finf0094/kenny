@@ -13,7 +13,14 @@ import {
 } from './index';
 
 @Component({
-  imports: [KnMenu, KnMenuItem, KnMenuItemCheckbox, KnMenuSeparator, KnMenuTrigger, KnContextMenuTrigger],
+  imports: [
+    KnMenu,
+    KnMenuItem,
+    KnMenuItemCheckbox,
+    KnMenuSeparator,
+    KnMenuTrigger,
+    KnContextMenuTrigger,
+  ],
   template: `
     <button type="button" [knMenuTrigger]="actions">Действия</button>
     <div data-testid="area" [knContextMenu]="actions">Область</div>
@@ -22,7 +29,9 @@ import {
       <kn-menu>
         <button kn-menu-item (triggered)="log('rename')">Переименовать</button>
         <button kn-menu-item [knMenuTrigger]="move">Переместить</button>
-        <button kn-menu-item-checkbox [checked]="pinned()" (triggered)="pinned.set(!pinned())">Закрепить</button>
+        <button kn-menu-item-checkbox [checked]="pinned()" (triggered)="pinned.set(!pinned())">
+          Закрепить
+        </button>
         <kn-menu-separator />
         <button kn-menu-item disabled (triggered)="log('archive')">Архивировать</button>
         <button kn-menu-item tone="danger" (triggered)="log('delete')">Удалить</button>
@@ -54,8 +63,14 @@ describe('KnMenu', () => {
     const menu = await screen.findByRole('menu');
     expect(trigger).toHaveAttribute('aria-expanded', 'true');
     expect(screen.getAllByRole('menuitem')).toHaveLength(4);
-    expect(screen.getByRole('menuitemcheckbox', { name: 'Закрепить' })).toHaveAttribute('aria-checked', 'false');
-    expect(screen.getByRole('menuitem', { name: 'Архивировать' })).toHaveAttribute('aria-disabled', 'true');
+    expect(screen.getByRole('menuitemcheckbox', { name: 'Закрепить' })).toHaveAttribute(
+      'aria-checked',
+      'false',
+    );
+    expect(screen.getByRole('menuitem', { name: 'Архивировать' })).toHaveAttribute(
+      'aria-disabled',
+      'true',
+    );
     await expectNoA11yViolations(menu);
   });
 
@@ -67,7 +82,9 @@ describe('KnMenu', () => {
     // click (it checks event.isTrusted), which synthetic events cannot reproduce.
     await user.keyboard('{ArrowDown}');
     await screen.findByRole('menu');
-    await waitFor(() => expect(screen.getByRole('menuitem', { name: 'Переименовать' })).toHaveFocus());
+    await waitFor(() =>
+      expect(screen.getByRole('menuitem', { name: 'Переименовать' })).toHaveFocus(),
+    );
     await user.keyboard('{ArrowDown}');
     expect(screen.getByRole('menuitem', { name: 'Переместить' })).toHaveFocus();
     await user.keyboard('{ArrowUp}');
@@ -86,7 +103,9 @@ describe('KnMenu', () => {
     screen.getByRole('menuitem', { name: 'Переместить' }).focus();
     await user.keyboard('{ArrowRight}');
     await waitFor(() => expect(screen.getAllByRole('menu')).toHaveLength(2));
-    await waitFor(() => expect(screen.getByRole('menuitem', { name: 'Во входящие' })).toHaveFocus());
+    await waitFor(() =>
+      expect(screen.getByRole('menuitem', { name: 'Во входящие' })).toHaveFocus(),
+    );
     await user.keyboard('{ArrowLeft}');
     await waitFor(() => expect(screen.getAllByRole('menu')).toHaveLength(1));
   });
@@ -101,7 +120,10 @@ describe('KnMenu', () => {
     await user.click(screen.getByRole('button', { name: 'Действия' }));
     await screen.findByRole('menu');
     await stable();
-    expect(screen.getByRole('menuitemcheckbox', { name: 'Закрепить' })).toHaveAttribute('aria-checked', 'true');
+    expect(screen.getByRole('menuitemcheckbox', { name: 'Закрепить' })).toHaveAttribute(
+      'aria-checked',
+      'true',
+    );
     await user.keyboard('{Escape}');
     await waitFor(() => expect(screen.queryByRole('menu')).not.toBeInTheDocument());
   });

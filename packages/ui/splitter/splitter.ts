@@ -135,7 +135,8 @@ export class KnSplitterPanel {
     role: 'separator',
     tabindex: '0',
     '[attr.aria-label]': 'ariaLabel()',
-    '[attr.aria-orientation]': 'splitter.orientation() === "horizontal" ? "vertical" : "horizontal"',
+    '[attr.aria-orientation]':
+      'splitter.orientation() === "horizontal" ? "vertical" : "horizontal"',
     '[attr.aria-controls]': 'previous()?.id ?? null',
     '[attr.aria-valuenow]': 'valueNow()',
     '[attr.aria-valuemin]': 'previous()?.min() ?? 0',
@@ -219,7 +220,9 @@ export class KnSplitterHandle {
   protected readonly active = signal(false);
   private readonly index = computed(() => this.splitter.handles().indexOf(this));
   protected readonly previous = computed(() => this.splitter.panels()[this.index()]);
-  protected readonly valueNow = computed(() => Math.round(this.splitter.sizes()[this.index()] ?? 0));
+  protected readonly valueNow = computed(() =>
+    Math.round(this.splitter.sizes()[this.index()] ?? 0),
+  );
 
   private initial: (number | undefined)[] | null = null;
   private pointerOrigin = 0;

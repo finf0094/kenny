@@ -2,9 +2,21 @@
   "name": "@kenny/ui",
   "version": "0.1.0",
   "description": "Kenny — стеклянная UI-библиотека для Angular: доступные компоненты, signals, продуманная анимация.",
-  "keywords": ["angular", "ui", "components", "design-system", "glass", "a11y", "signals"],
+  "keywords": [
+    "angular",
+    "ui",
+    "components",
+    "design-system",
+    "glass",
+    "a11y",
+    "signals"
+  ],
   "license": "MIT",
-  "repository": { "type": "git", "url": "git+https://github.com/OWNER/kenny.git", "directory": "packages/ui" },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/finf0094/kenny.git",
+    "directory": "packages/ui"
+  },
   "peerDependencies": {
     "@angular/cdk": "^22.2.0",
     "@angular/common": "^22.2.0",
@@ -16,5 +28,11 @@
     "tslib": "^2.3.0"
   },
   "sideEffects": false,
-  "publishConfig": { "access": "public" }
+  "publishConfig": {
+    "access": "public"
+  },
+  "homepage": "https://github.com/finf0094/kenny#readme",
+  "bugs": {
+    "url": "https://github.com/finf0094/kenny/issues"
+  }
 }

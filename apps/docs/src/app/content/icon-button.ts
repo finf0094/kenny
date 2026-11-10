@@ -31,7 +31,14 @@ class Playground {
   protected readonly tone = choice('tone', ['accent', 'neutral', 'danger'], 'neutral');
   protected readonly size = choice('size', ['sm', 'md', 'lg'], 'md');
   protected readonly disabled = toggle('disabled');
-  protected readonly controls = [this.icon, this.label, this.variant, this.tone, this.size, this.disabled];
+  protected readonly controls = [
+    this.icon,
+    this.label,
+    this.variant,
+    this.tone,
+    this.size,
+    this.disabled,
+  ];
   protected readonly code = computed(
     () =>
       `<button kn-icon-button aria-label="${this.label.value()}"${attrs({

@@ -58,7 +58,10 @@ export default {
   playground: Playground,
   slots: [
     { name: '(по умолчанию)', description: 'Содержимое панели.' },
-    { name: 'knPanelActions', description: 'Кнопки в шапке справа. Находятся вне кнопки-заголовка.' },
+    {
+      name: 'knPanelActions',
+      description: 'Кнопки в шапке справа. Находятся вне кнопки-заголовка.',
+    },
   ],
   keyboard: [
     { keys: ['Enter', 'Пробел'], action: 'Сворачивает и разворачивает панель.' },

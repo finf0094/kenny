@@ -24,6 +24,8 @@ const KEY_CODES: Record<string, number> = {
 Object.defineProperty(KeyboardEvent.prototype, 'keyCode', {
   configurable: true,
   get(this: KeyboardEvent) {
-    return KEY_CODES[this.key] ?? (this.key.length === 1 ? this.key.toUpperCase().charCodeAt(0) : 0);
+    return (
+      KEY_CODES[this.key] ?? (this.key.length === 1 ? this.key.toUpperCase().charCodeAt(0) : 0)
+    );
   },
 });

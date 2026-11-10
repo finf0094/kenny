@@ -13,8 +13,19 @@ import Validation from '../demos/input/validation.demo';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <docs-playground [controls]="controls" [code]="code()">
-      <kn-field style="inline-size: 18rem" [label]="label.value()" [hint]="hint.value()" [error]="error.value() || null" [required]="required.value()">
-        <input knInput [knSize]="size.value()" [placeholder]="placeholder.value()" [disabled]="disabled.value()" />
+      <kn-field
+        style="inline-size: 18rem"
+        [label]="label.value()"
+        [hint]="hint.value()"
+        [error]="error.value() || null"
+        [required]="required.value()"
+      >
+        <input
+          knInput
+          [knSize]="size.value()"
+          [placeholder]="placeholder.value()"
+          [disabled]="disabled.value()"
+        />
       </kn-field>
     </docs-playground>
   `,
@@ -27,7 +38,15 @@ class Playground {
   protected readonly size = choice('knSize', ['sm', 'md', 'lg'], 'md');
   protected readonly required = toggle('required');
   protected readonly disabled = toggle('disabled');
-  protected readonly controls = [this.label, this.placeholder, this.hint, this.error, this.size, this.required, this.disabled];
+  protected readonly controls = [
+    this.label,
+    this.placeholder,
+    this.hint,
+    this.error,
+    this.size,
+    this.required,
+    this.disabled,
+  ];
   protected readonly code = computed(
     () =>
       `<kn-field${attrs({
@@ -57,7 +76,8 @@ export default {
     {
       source: 'basic',
       title: 'Поле с подписью',
-      description: '<kn-field> сам связывает label, подсказку и поле — id и aria-describedby писать не нужно.',
+      description:
+        '<kn-field> сам связывает label, подсказку и поле — id и aria-describedby писать не нужно.',
       component: Basic,
     },
     {
@@ -71,10 +91,15 @@ export default {
   playground: Playground,
   slots: [
     { name: 'knPrefix (kn-input-group)', description: 'Иконка или текст перед полем.' },
-    { name: 'knSuffix (kn-input-group)', description: 'Единица измерения, домен или кнопка после поля.' },
+    {
+      name: 'knSuffix (kn-input-group)',
+      description: 'Единица измерения, домен или кнопка после поля.',
+    },
     { name: '(по умолчанию, kn-field)', description: 'Сам контрол: input, select, slider и т. д.' },
   ],
-  keyboard: [{ keys: ['Tab'], action: 'Фокус на поле. Остальное — стандартное редактирование текста.' }],
+  keyboard: [
+    { keys: ['Tab'], action: 'Фокус на поле. Остальное — стандартное редактирование текста.' },
+  ],
   a11y: [
     'Подпись — настоящий <label for>, клик по ней ставит курсор в поле.',
     'Пока задан error, поле получает aria-invalid="true", а текст ошибки привязан через aria-describedby и объявляется в aria-live-области.',

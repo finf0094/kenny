@@ -38,7 +38,9 @@ type Mark = 'bold' | 'italic' | 'underline';
         </button>
       }
       <kn-toolbar-separator />
-      <button kn-button size="sm" variant="ghost" tone="neutral"><kn-icon name="link" /> Ссылка</button>
+      <button kn-button size="sm" variant="ghost" tone="neutral">
+        <kn-icon name="link" /> Ссылка
+      </button>
       <kn-toolbar-spacer />
       <button kn-button size="sm">Опубликовать</button>
     </kn-toolbar>

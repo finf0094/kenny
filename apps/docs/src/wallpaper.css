@@ -35,8 +35,20 @@
   --_r-c: clamp(2.75rem, 10vw, 5.5rem);
   background-color: light-dark(#e9eef9, #080d1f);
   background-image:
-    radial-gradient(circle at 100% 0%, var(--_disc-a) 0 var(--_r-a), transparent calc(var(--_r-a) + 1px)),
-    radial-gradient(circle at 64% 100%, var(--_disc-b) 0 var(--_r-b), transparent calc(var(--_r-b) + 1px)),
-    radial-gradient(circle at 0% 100%, var(--_disc-c) 0 var(--_r-c), transparent calc(var(--_r-c) + 1px));
+    radial-gradient(
+      circle at 100% 0%,
+      var(--_disc-a) 0 var(--_r-a),
+      transparent calc(var(--_r-a) + 1px)
+    ),
+    radial-gradient(
+      circle at 64% 100%,
+      var(--_disc-b) 0 var(--_r-b),
+      transparent calc(var(--_r-b) + 1px)
+    ),
+    radial-gradient(
+      circle at 0% 100%,
+      var(--_disc-c) 0 var(--_r-c),
+      transparent calc(var(--_r-c) + 1px)
+    );
   background-repeat: no-repeat;
 }

@@ -59,29 +59,42 @@ describe('KnPopover', () => {
 
 describe('KnTooltip', () => {
   it('describes its host for assistive technology at all times', async () => {
-    await render(`<button type="button" aria-label="Архив" knTooltip="Переместить в архив">A</button>`, {
-      imports: [KnTooltip],
-    });
+    await render(
+      `<button type="button" aria-label="Архив" knTooltip="Переместить в архив">A</button>`,
+      {
+        imports: [KnTooltip],
+      },
+    );
     await stable();
-    expect(screen.getByRole('button', { name: 'Архив' })).toHaveAccessibleDescription('Переместить в архив');
+    expect(screen.getByRole('button', { name: 'Архив' })).toHaveAccessibleDescription(
+      'Переместить в архив',
+    );
   });
 
   it('shows on hover after the delay and hides on leave', async () => {
-    await render(`<button type="button" knTooltip="Подсказка" [knTooltipDelay]="0">Кнопка</button>`, {
-      imports: [KnTooltip],
-    });
+    await render(
+      `<button type="button" knTooltip="Подсказка" [knTooltipDelay]="0">Кнопка</button>`,
+      {
+        imports: [KnTooltip],
+      },
+    );
     const user = userEvent.setup();
     const button = screen.getByRole('button');
     await user.hover(button);
-    await waitFor(() => expect(document.querySelector('kn-tooltip-panel')).toHaveTextContent('Подсказка'));
+    await waitFor(() =>
+      expect(document.querySelector('kn-tooltip-panel')).toHaveTextContent('Подсказка'),
+    );
     await user.unhover(button);
     await waitFor(() => expect(document.querySelector('kn-tooltip-panel')).toBeNull());
   });
 
   it('hides on Escape', async () => {
-    await render(`<button type="button" knTooltip="Подсказка" [knTooltipDelay]="0">Кнопка</button>`, {
-      imports: [KnTooltip],
-    });
+    await render(
+      `<button type="button" knTooltip="Подсказка" [knTooltipDelay]="0">Кнопка</button>`,
+      {
+        imports: [KnTooltip],
+      },
+    );
     const user = userEvent.setup();
     await user.hover(screen.getByRole('button'));
     await waitFor(() => expect(document.querySelector('kn-tooltip-panel')).not.toBeNull());

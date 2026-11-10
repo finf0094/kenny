@@ -10,9 +10,12 @@ import { KnBadge } from './badge';
 
 describe('KnBadge', () => {
   it('reflects tone and variant and can show a status dot', async () => {
-    const { container } = await render(`<kn-badge tone="success" variant="solid" dot>Оплачен</kn-badge>`, {
-      imports: [KnBadge],
-    });
+    const { container } = await render(
+      `<kn-badge tone="success" variant="solid" dot>Оплачен</kn-badge>`,
+      {
+        imports: [KnBadge],
+      },
+    );
     const badge = container.querySelector('kn-badge')!;
     expect(badge).toHaveAttribute('data-tone', 'success');
     expect(badge).toHaveAttribute('data-variant', 'solid');
@@ -29,9 +32,12 @@ describe('KnAvatar', () => {
   });
 
   it('renders the image with alt text and recovers when it fails to load', async () => {
-    const { container, fixture } = await render(`<kn-avatar name="Борис Ким" src="/missing.png" />`, {
-      imports: [KnAvatar],
-    });
+    const { container, fixture } = await render(
+      `<kn-avatar name="Борис Ким" src="/missing.png" />`,
+      {
+        imports: [KnAvatar],
+      },
+    );
     const image = screen.getByAltText('Борис Ким');
     image.dispatchEvent(new Event('error'));
     await fixture.whenStable();
@@ -79,9 +85,12 @@ describe('KnSkeleton / KnSpinner', () => {
   });
 
   it('spinner is a labelled progressbar unless decorative', async () => {
-    const { container } = await render(`<kn-spinner label="Сохраняем" /><kn-spinner decorative />`, {
-      imports: [KnSpinner],
-    });
+    const { container } = await render(
+      `<kn-spinner label="Сохраняем" /><kn-spinner decorative />`,
+      {
+        imports: [KnSpinner],
+      },
+    );
     expect(screen.getAllByRole('progressbar')).toHaveLength(1);
     expect(screen.getByRole('progressbar', { name: 'Сохраняем' })).toBeInTheDocument();
     expect(container.querySelectorAll('kn-spinner')[1]).toHaveAttribute('aria-hidden', 'true');

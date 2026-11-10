@@ -16,15 +16,28 @@ describe('KnCommandPalette', () => {
         provideKnCommandPalette({
           commands: [
             { id: 'home', label: 'Главная', group: 'Разделы', run: () => run('home') },
-            { id: 'tokens', label: 'Токены', group: 'Разделы', keywords: ['цвета'], run: () => run('tokens') },
-            { id: 'theme', label: 'Сменить тему', group: 'Действия', shortcut: ['⌘', 'T'], run: () => run('theme') },
+            {
+              id: 'tokens',
+              label: 'Токены',
+              group: 'Разделы',
+              keywords: ['цвета'],
+              run: () => run('tokens'),
+            },
+            {
+              id: 'theme',
+              label: 'Сменить тему',
+              group: 'Действия',
+              shortcut: ['⌘', 'T'],
+              run: () => run('theme'),
+            },
           ],
         }),
       ],
     });
     palette = TestBed.inject(KnCommandPalette);
     // App initializers (command registration, hotkey) run on bootstrap.
-    await TestBed.inject(await import('@angular/core').then((m) => m.ApplicationInitStatus)).donePromise;
+    await TestBed.inject(await import('@angular/core').then((m) => m.ApplicationInitStatus))
+      .donePromise;
   });
 
   afterEach(async () => {

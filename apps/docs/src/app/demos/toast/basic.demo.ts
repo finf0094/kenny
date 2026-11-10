@@ -29,7 +29,10 @@ export default class ToastBasicDemo {
   protected archived(): void {
     this.toaster.show({
       title: 'Письмо перемещено в архив',
-      action: { label: 'Отменить', run: () => this.toaster.show({ title: 'Письмо возвращено во входящие' }) },
+      action: {
+        label: 'Отменить',
+        run: () => this.toaster.show({ title: 'Письмо возвращено во входящие' }),
+      },
     });
   }
 

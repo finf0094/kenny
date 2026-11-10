@@ -1,6 +1,12 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { KnIcon } from '@kenny/ui/icon';
-import { KnContextMenuTrigger, KnMenu, KnMenuItem, KnMenuSeparator, KnMenuShortcut } from '@kenny/ui/menu';
+import {
+  KnContextMenuTrigger,
+  KnMenu,
+  KnMenuItem,
+  KnMenuSeparator,
+  KnMenuShortcut,
+} from '@kenny/ui/menu';
 
 @Component({
   imports: [KnContextMenuTrigger, KnMenu, KnMenuItem, KnMenuSeparator, KnMenuShortcut, KnIcon],
@@ -8,7 +14,13 @@ import { KnContextMenuTrigger, KnMenu, KnMenuItem, KnMenuSeparator, KnMenuShortc
   template: `
     <div class="files" role="list" aria-label="Файлы">
       @for (file of files(); track file) {
-        <div class="file" role="listitem" tabindex="0" [knContextMenu]="menu" [knContextMenuData]="{ $implicit: file }">
+        <div
+          class="file"
+          role="listitem"
+          tabindex="0"
+          [knContextMenu]="menu"
+          [knContextMenuData]="{ $implicit: file }"
+        >
           <kn-icon name="file" /> {{ file }}
         </div>
       } @empty {

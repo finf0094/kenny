@@ -1,0 +1,69 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    name: Lint and format
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm format:check
+
+  test:
+    name: Unit tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm test
+
+  build:
+    name: Build, accessibility and keyboard checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Build tokens, library, docs and playground
+        run: pnpm build
+      - name: Packages are publishable
+        run: |
+          pnpm --dir dist/tokens pack --pack-destination "$RUNNER_TEMP"
+          pnpm --dir dist/ui pack --pack-destination "$RUNNER_TEMP"
+      # Headless Chrome is preinstalled on the runner at /usr/bin/google-chrome
+      - name: Accessibility audit of every documentation page
+        run: pnpm check:a11y
+      - name: Keyboard scenarios
+        run: pnpm check:keyboard
+      - uses: actions/upload-artifact@v4
+        with:
+          name: docs
+          path: dist/docs/browser
+          retention-days: 7

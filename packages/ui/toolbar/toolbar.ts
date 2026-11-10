@@ -89,13 +89,22 @@ export class KnToolbar {
     const target = event.target as HTMLElement;
     // Text fields keep their own caret keys; a select keeps Home/End for its list.
     if (target.matches('input:not([type=checkbox]):not([type=radio]), textarea')) return;
-    if (target.matches('[role="combobox"]') && (event.key === 'Home' || event.key === 'End')) return;
+    if (target.matches('[role="combobox"]') && (event.key === 'Home' || event.key === 'End'))
+      return;
     const items = this.items();
     const index = items.indexOf(target.closest<HTMLElement>(FOCUSABLE) ?? target);
     if (index === -1) return;
     const horizontal = this.orientation() === 'horizontal';
-    const forward = horizontal ? (this.dir?.value === 'rtl' ? 'ArrowLeft' : 'ArrowRight') : 'ArrowDown';
-    const backward = horizontal ? (this.dir?.value === 'rtl' ? 'ArrowRight' : 'ArrowLeft') : 'ArrowUp';
+    const forward = horizontal
+      ? this.dir?.value === 'rtl'
+        ? 'ArrowLeft'
+        : 'ArrowRight'
+      : 'ArrowDown';
+    const backward = horizontal
+      ? this.dir?.value === 'rtl'
+        ? 'ArrowRight'
+        : 'ArrowLeft'
+      : 'ArrowUp';
     let next: HTMLElement | undefined;
     if (event.key === forward) next = items[(index + 1) % items.length];
     else if (event.key === backward) next = items[(index - 1 + items.length) % items.length];

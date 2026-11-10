@@ -14,7 +14,9 @@ const PATH = ['Главная', 'Проекты', 'Kenny', 'Документац
     <docs-playground [controls]="controls" [code]="code()">
       <kn-breadcrumbs aria-label="Навигационная цепочка, настраиваемый пример">
         @for (item of items(); track item) {
-          <kn-breadcrumb><a href="#" (click)="$event.preventDefault()">{{ item }}</a></kn-breadcrumb>
+          <kn-breadcrumb
+            ><a href="#" (click)="$event.preventDefault()">{{ item }}</a></kn-breadcrumb
+          >
         }
         <kn-breadcrumb current>{{ current.value() }}</kn-breadcrumb>
       </kn-breadcrumbs>
@@ -30,7 +32,9 @@ class Playground {
     () =>
       `<kn-breadcrumbs>\n${this.items()
         .map((item) => `  <kn-breadcrumb><a routerLink="…">${item}</a></kn-breadcrumb>`)
-        .join('\n')}\n  <kn-breadcrumb current>${this.current.value()}</kn-breadcrumb>\n</kn-breadcrumbs>`,
+        .join(
+          '\n',
+        )}\n  <kn-breadcrumb current>${this.current.value()}</kn-breadcrumb>\n</kn-breadcrumbs>`,
   );
 }
 
@@ -51,7 +55,12 @@ export default {
     },
   ],
   playground: Playground,
-  slots: [{ name: '(по умолчанию, kn-breadcrumb)', description: 'Ссылка <a>; для текущей страницы — текст.' }],
+  slots: [
+    {
+      name: '(по умолчанию, kn-breadcrumb)',
+      description: 'Ссылка <a>; для текущей страницы — текст.',
+    },
+  ],
   keyboard: [
     { keys: ['Tab'], action: 'Перемещается по ссылкам пути.' },
     { keys: ['Enter'], action: 'Переходит по ссылке.' },

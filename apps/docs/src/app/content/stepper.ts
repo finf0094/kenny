@@ -12,13 +12,20 @@ import Basic from '../demos/stepper/basic.demo';
   template: `
     <docs-playground [controls]="controls" [code]="code()">
       <div style="display: grid; gap: 1rem; justify-items: start; min-inline-size: 20rem">
-        <kn-stepper #stepper [orientation]="orientation.value()" [linear]="linear.value()" [(step)]="step">
+        <kn-stepper
+          #stepper
+          [orientation]="orientation.value()"
+          [linear]="linear.value()"
+          [(step)]="step"
+        >
           <kn-step label="Корзина">Проверьте состав заказа.</kn-step>
           <kn-step label="Доставка" [invalid]="invalid.value()">Укажите адрес.</kn-step>
           <kn-step label="Оплата">Выберите способ оплаты.</kn-step>
         </kn-stepper>
         <div style="display: flex; gap: 0.5rem">
-          <button kn-button size="sm" variant="soft" tone="neutral" (click)="stepper.previous()">Назад</button>
+          <button kn-button size="sm" variant="soft" tone="neutral" (click)="stepper.previous()">
+            Назад
+          </button>
           <button kn-button size="sm" (click)="stepper.next()">Далее</button>
         </div>
       </div>
@@ -58,7 +65,9 @@ export default {
     },
   ],
   playground: Playground,
-  slots: [{ name: '(по умолчанию, kn-step)', description: 'Содержимое шага; видно, пока шаг активен.' }],
+  slots: [
+    { name: '(по умолчанию, kn-step)', description: 'Содержимое шага; видно, пока шаг активен.' },
+  ],
   keyboard: [
     { keys: ['Tab'], action: 'Перемещается по доступным шагам в шапке, затем в содержимое.' },
     { keys: ['Enter', 'Пробел'], action: 'Переходит к шагу в фокусе.' },

@@ -23,7 +23,12 @@ async function setup(initial: string | null = null) {
     componentProperties: { control },
   });
   const user = userEvent.setup();
-  return { control, user, input: screen.getByRole<HTMLInputElement>('combobox', { name: 'Страна' }), ...view };
+  return {
+    control,
+    user,
+    input: screen.getByRole<HTMLInputElement>('combobox', { name: 'Страна' }),
+    ...view,
+  };
 }
 
 const visibleOptions = () => screen.getAllByRole('option').map((o) => o.textContent?.trim());

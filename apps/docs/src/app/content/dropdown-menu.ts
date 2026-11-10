@@ -18,9 +18,17 @@ import Dropdown from '../demos/menu/dropdown.demo';
       <ng-template #menu>
         <kn-menu>
           <button kn-menu-item (triggered)="last.set('Открыть')">Открыть</button>
-          <button kn-menu-item [disabled]="disabled.value()" (triggered)="last.set('Переименовать')">Переименовать</button>
+          <button
+            kn-menu-item
+            [disabled]="disabled.value()"
+            (triggered)="last.set('Переименовать')"
+          >
+            Переименовать
+          </button>
           <kn-menu-separator />
-          <button kn-menu-item [tone]="tone.value()" (triggered)="last.set('Удалить')">Удалить</button>
+          <button kn-menu-item [tone]="tone.value()" (triggered)="last.set('Удалить')">
+            Удалить
+          </button>
         </kn-menu>
       </ng-template>
     </docs-playground>
@@ -45,8 +53,24 @@ export default {
     'Список действий, раскрывающийся из кнопки: команды, флажки, переключатели и вложенные меню. Для выбора значения поля используйте Select.',
   api: data.api,
   sources: data.sources,
-  apiClasses: ['KnMenu', 'KnMenuItem', 'KnMenuItemCheckbox', 'KnMenuItemRadio', 'KnMenuGroup', 'KnMenuTrigger'],
-  imports: ['KnMenu', 'KnMenuItem', 'KnMenuTrigger', 'KnMenuSeparator', 'KnMenuShortcut', 'KnMenuGroup', 'KnMenuItemCheckbox', 'KnMenuItemRadio'],
+  apiClasses: [
+    'KnMenu',
+    'KnMenuItem',
+    'KnMenuItemCheckbox',
+    'KnMenuItemRadio',
+    'KnMenuGroup',
+    'KnMenuTrigger',
+  ],
+  imports: [
+    'KnMenu',
+    'KnMenuItem',
+    'KnMenuTrigger',
+    'KnMenuSeparator',
+    'KnMenuShortcut',
+    'KnMenuGroup',
+    'KnMenuItemCheckbox',
+    'KnMenuItemRadio',
+  ],
   demos: [
     {
       source: 'dropdown',
@@ -63,7 +87,10 @@ export default {
     { name: 'kn-menu-shortcut', description: 'Подсказка о горячей клавише справа от пункта.' },
   ],
   keyboard: [
-    { keys: ['Enter', 'Пробел', '↓'], action: 'На кнопке: открывает меню, фокус на первом пункте.' },
+    {
+      keys: ['Enter', 'Пробел', '↓'],
+      action: 'На кнопке: открывает меню, фокус на первом пункте.',
+    },
     { keys: ['↓', '↑'], action: 'Следующий и предыдущий пункт, по кругу.' },
     { keys: ['→'], action: 'Открывает вложенное меню (в RTL — ←).' },
     { keys: ['←'], action: 'Закрывает вложенное меню и возвращается к родительскому пункту.' },

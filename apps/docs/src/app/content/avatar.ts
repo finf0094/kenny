@@ -10,7 +10,11 @@ import Basic from '../demos/avatar/basic.demo';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <docs-playground [controls]="controls" [code]="code()">
-      <kn-avatar [name]="name.value()" [size]="size.value()" [status]="status.value() === 'нет' ? null : $any(status.value())" />
+      <kn-avatar
+        [name]="name.value()"
+        [size]="size.value()"
+        [status]="status.value() === 'нет' ? null : $any(status.value())"
+      />
     </docs-playground>
   `,
 })

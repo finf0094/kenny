@@ -7,7 +7,9 @@ import { KnTab, KnTabs } from '@kenny/ui/tabs';
   template: `
     <kn-tabs aria-label="Период" [(value)]="period">
       <kn-tab value="day" label="День">Сегодня: 1 284 визита, на 6% больше, чем вчера.</kn-tab>
-      <kn-tab value="week" label="Неделя">За неделю: 8 912 визитов. Пик пришёлся на четверг.</kn-tab>
+      <kn-tab value="week" label="Неделя"
+        >За неделю: 8 912 визитов. Пик пришёлся на четверг.</kn-tab
+      >
       <kn-tab value="month" label="Месяц">За месяц: 36 540 визитов и 412 регистраций.</kn-tab>
       <kn-tab value="year" label="Год" disabled>Данные появятся после первого года.</kn-tab>
     </kn-tabs>

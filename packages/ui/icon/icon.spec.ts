@@ -13,23 +13,30 @@ describe('KnIcon', () => {
   });
 
   it('becomes a named image when it carries meaning on its own', async () => {
-    const { container } = await render(`<kn-icon name="alert" label="Ошибка оплаты" />`, { imports: [KnIcon] });
+    const { container } = await render(`<kn-icon name="alert" label="Ошибка оплаты" />`, {
+      imports: [KnIcon],
+    });
     const icon = screen.getByRole('img', { name: 'Ошибка оплаты' });
     expect(icon).not.toHaveAttribute('aria-hidden');
     await expectNoA11yViolations(container);
   });
 
   it('sizes itself from a number of pixels or any CSS length', async () => {
-    const { container } = await render(`<kn-icon name="check" [size]="18" /><kn-icon name="check" size="1.5rem" />`, {
-      imports: [KnIcon],
-    });
+    const { container } = await render(
+      `<kn-icon name="check" [size]="18" /><kn-icon name="check" size="1.5rem" />`,
+      {
+        imports: [KnIcon],
+      },
+    );
     const [px, rem] = Array.from(container.querySelectorAll<HTMLElement>('kn-icon'));
     expect(px.style.getPropertyValue('--kn-icon-size')).toBe('18px');
     expect(rem.style.getPropertyValue('--kn-icon-size')).toBe('1.5rem');
   });
 
   it('passes the stroke width to the drawing', async () => {
-    const { container } = await render(`<kn-icon name="check" [strokeWidth]="2.5" />`, { imports: [KnIcon] });
+    const { container } = await render(`<kn-icon name="check" [strokeWidth]="2.5" />`, {
+      imports: [KnIcon],
+    });
     expect(container.querySelector('svg')).toHaveAttribute('stroke-width', '2.5');
   });
 
@@ -38,7 +45,9 @@ describe('KnIcon', () => {
       imports: [KnIcon],
       providers: [
         provideKnIcons({ rocket: '<circle cx="12" cy="12" r="4" data-icon="rocket"/>' }),
-        provideKnIcons({ check: '<rect x="4" y="4" width="16" height="16" data-icon="custom-check"/>' }),
+        provideKnIcons({
+          check: '<rect x="4" y="4" width="16" height="16" data-icon="custom-check"/>',
+        }),
       ],
     });
     expect(container.querySelector('[data-icon="rocket"]')).toBeInTheDocument();

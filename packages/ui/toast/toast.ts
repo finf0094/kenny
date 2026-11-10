@@ -14,12 +14,7 @@ import { KnIcon } from '@kenny/ui/icon';
 
 export type KnToastTone = 'neutral' | 'success' | 'warning' | 'danger';
 export type KnToastPosition =
-  | 'top-start'
-  | 'top-center'
-  | 'top-end'
-  | 'bottom-start'
-  | 'bottom-center'
-  | 'bottom-end';
+  'top-start' | 'top-center' | 'top-end' | 'bottom-start' | 'bottom-center' | 'bottom-end';
 
 export interface KnToastOptions {
   /** Основной текст. */
@@ -83,7 +78,10 @@ export class KnToaster {
   private readonly config = inject(KN_TOASTER_CONFIG, { optional: true }) ?? {};
   private overlayRef: OverlayRef | null = null;
   private nextId = 0;
-  private readonly timers = new Map<number, { timer?: ReturnType<typeof setTimeout>; left: number; since: number }>();
+  private readonly timers = new Map<
+    number,
+    { timer?: ReturnType<typeof setTimeout>; left: number; since: number }
+  >();
 
   /** @internal */
   readonly items = signal<ToastItem[]>([]);
@@ -156,7 +154,10 @@ export class KnToaster {
 
   private ensureViewport(): void {
     if (this.overlayRef) return;
-    const [block, inline] = this.position.split('-') as ['top' | 'bottom', 'start' | 'center' | 'end'];
+    const [block, inline] = this.position.split('-') as [
+      'top' | 'bottom',
+      'start' | 'center' | 'end',
+    ];
     const position = createGlobalPositionStrategy(this.injector);
     if (block === 'top') position.top();
     else position.bottom();
@@ -182,23 +183,36 @@ export class KnToaster {
     @for (toast of toaster.items(); track toast.id) {
       <div class="slot" animate.leave="leaving">
         <div class="wrap">
-        <div class="toast" [attr.data-tone]="toast.tone" [attr.role]="toast.tone === 'danger' ? 'alert' : 'status'">
-          <kn-icon class="icon" [name]="icons[toast.tone]" />
-          <div class="text">
-            <div class="title">{{ toast.title }}</div>
-            @if (toast.description) {
-              <div class="description">{{ toast.description }}</div>
+          <div
+            class="toast"
+            [attr.data-tone]="toast.tone"
+            [attr.role]="toast.tone === 'danger' ? 'alert' : 'status'"
+          >
+            <kn-icon class="icon" [name]="icons[toast.tone]" />
+            <div class="text">
+              <div class="title">{{ toast.title }}</div>
+              @if (toast.description) {
+                <div class="description">{{ toast.description }}</div>
+              }
+            </div>
+            @if (toast.action; as action) {
+              <button
+                class="action"
+                type="button"
+                (click)="action.run(); toaster.dismiss(toast.id)"
+              >
+                {{ action.label }}
+              </button>
             }
-          </div>
-          @if (toast.action; as action) {
-            <button class="action" type="button" (click)="action.run(); toaster.dismiss(toast.id)">
-              {{ action.label }}
+            <button
+              class="close"
+              type="button"
+              aria-label="Закрыть уведомление"
+              (click)="toaster.dismiss(toast.id)"
+            >
+              <kn-icon name="x" />
             </button>
-          }
-          <button class="close" type="button" aria-label="Закрыть уведомление" (click)="toaster.dismiss(toast.id)">
-            <kn-icon name="x" />
-          </button>
-        </div>
+          </div>
         </div>
       </div>
     }

@@ -34,5 +34,7 @@ import { KnTextarea } from '@kenny/ui/textarea';
   `,
 })
 export default class TextareaBasicDemo {
-  protected readonly text = signal('Починили дрожание индикатора вкладок при быстром переключении.');
+  protected readonly text = signal(
+    'Починили дрожание индикатора вкладок при быстром переключении.',
+  );
 }

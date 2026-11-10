@@ -28,10 +28,12 @@ class Playground {
   protected readonly controls = [this.value, this.indeterminate, this.tone, this.size];
   protected readonly code = computed(
     () =>
-      `<kn-progress aria-label="Загрузка"${this.indeterminate.value() ? '' : ` [value]="${this.value.value()}"`}${attrs({
-        tone: [this.tone.value(), 'accent'],
-        size: [this.size.value(), 'md'],
-      })} />`,
+      `<kn-progress aria-label="Загрузка"${this.indeterminate.value() ? '' : ` [value]="${this.value.value()}"`}${attrs(
+        {
+          tone: [this.tone.value(), 'accent'],
+          size: [this.size.value(), 'md'],
+        },
+      )} />`,
   );
 }
 

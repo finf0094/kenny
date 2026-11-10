@@ -33,9 +33,21 @@ function position(side: KnSide, align: Align, offset: number): ConnectedPosition
   const vertical = { start: 'top', center: 'center', end: 'bottom' } as const;
   switch (side) {
     case 'top':
-      return { originX: align, overlayX: align, originY: 'top', overlayY: 'bottom', offsetY: -offset };
+      return {
+        originX: align,
+        overlayX: align,
+        originY: 'top',
+        overlayY: 'bottom',
+        offsetY: -offset,
+      };
     case 'bottom':
-      return { originX: align, overlayX: align, originY: 'bottom', overlayY: 'top', offsetY: offset };
+      return {
+        originX: align,
+        overlayX: align,
+        originY: 'bottom',
+        overlayY: 'top',
+        offsetY: offset,
+      };
     case 'start':
       return {
         originX: 'start',
@@ -62,7 +74,10 @@ function position(side: KnSide, align: Align, offset: number): ConnectedPosition
 export function knPositions(placement: KnPlacement, offset = 8): ConnectedPosition[] {
   const [side, alignment] = placement.split('-') as [KnSide, 'start' | 'end' | undefined];
   const align: Align = alignment ?? 'center';
-  const aligns: Align[] = [align, ...(['start', 'center', 'end'] as const).filter((a) => a !== align)];
+  const aligns: Align[] = [
+    align,
+    ...(['start', 'center', 'end'] as const).filter((a) => a !== align),
+  ];
   const sides: KnSide[] = [side, OPPOSITE[side]];
   return sides.flatMap((s) => aligns.map((a) => position(s, a, offset)));
 }

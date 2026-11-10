@@ -13,7 +13,10 @@ const template = `
 
 describe('KnCollapse', () => {
   it('makes collapsed content inert: unreachable by keyboard and screen readers', async () => {
-    const { container } = await render(template, { imports: [KnCollapse], componentProperties: { open: false } });
+    const { container } = await render(template, {
+      imports: [KnCollapse],
+      componentProperties: { open: false },
+    });
     const host = container.querySelector('kn-collapse')!;
     expect(host).not.toHaveAttribute('data-open');
     expect(host.querySelector('.inner')).toHaveAttribute('inert');
@@ -39,7 +42,9 @@ describe('KnCollapse', () => {
   });
 
   it('accepts the attribute form', async () => {
-    const { container } = await render(`<kn-collapse open><p>Текст</p></kn-collapse>`, { imports: [KnCollapse] });
+    const { container } = await render(`<kn-collapse open><p>Текст</p></kn-collapse>`, {
+      imports: [KnCollapse],
+    });
     expect(container.querySelector('kn-collapse')).toHaveAttribute('data-open');
   });
 

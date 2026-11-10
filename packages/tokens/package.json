@@ -3,16 +3,36 @@
   "version": "0.1.0",
   "description": "Дизайн-токены Kenny: цвет, типографика, отступы, тени, стекло и motion в виде CSS custom properties.",
   "license": "MIT",
-  "repository": { "type": "git", "url": "git+https://github.com/OWNER/kenny.git", "directory": "packages/tokens" },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/finf0094/kenny.git",
+    "directory": "packages/tokens"
+  },
   "style": "./kenny.css",
   "exports": {
-    ".": { "style": "./kenny.css", "default": "./kenny.css" },
+    ".": {
+      "style": "./kenny.css",
+      "default": "./kenny.css"
+    },
     "./kenny.css": "./kenny.css",
     "./tokens.css": "./tokens.css",
     "./base.css": "./base.css",
     "./tokens.json": "./tokens.json"
   },
-  "files": ["*.css", "tokens.json", "README.md"],
-  "sideEffects": ["*.css"],
-  "publishConfig": { "access": "public", "directory": "../../dist/tokens" }
+  "files": [
+    "*.css",
+    "tokens.json",
+    "README.md",
+    "LICENSE"
+  ],
+  "sideEffects": [
+    "*.css"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "homepage": "https://github.com/finf0094/kenny#readme",
+  "bugs": {
+    "url": "https://github.com/finf0094/kenny/issues"
+  }
 }

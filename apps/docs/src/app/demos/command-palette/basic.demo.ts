@@ -41,9 +41,29 @@ export default class CommandPaletteBasicDemo {
   constructor() {
     // Commands live as long as this component: register() returns the cleanup.
     const unregister = this.palette.register([
-      { id: 'demo.invite', group: 'Демо', label: 'Пригласить участника', icon: 'user', keywords: ['команда'], run: () => this.last.set('Пригласить участника') },
-      { id: 'demo.export', group: 'Демо', label: 'Экспортировать отчёт', icon: 'download', shortcut: ['⌘', 'E'], run: () => this.last.set('Экспортировать отчёт') },
-      { id: 'demo.archive', group: 'Демо', label: 'Архивировать проект', icon: 'archive', run: () => this.last.set('Архивировать проект') },
+      {
+        id: 'demo.invite',
+        group: 'Демо',
+        label: 'Пригласить участника',
+        icon: 'user',
+        keywords: ['команда'],
+        run: () => this.last.set('Пригласить участника'),
+      },
+      {
+        id: 'demo.export',
+        group: 'Демо',
+        label: 'Экспортировать отчёт',
+        icon: 'download',
+        shortcut: ['⌘', 'E'],
+        run: () => this.last.set('Экспортировать отчёт'),
+      },
+      {
+        id: 'demo.archive',
+        group: 'Демо',
+        label: 'Архивировать проект',
+        icon: 'archive',
+        run: () => this.last.set('Архивировать проект'),
+      },
     ]);
     inject(DestroyRef).onDestroy(unregister);
   }

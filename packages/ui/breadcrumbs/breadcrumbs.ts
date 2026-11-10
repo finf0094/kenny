@@ -7,7 +7,9 @@ import { booleanAttribute, ChangeDetectionStrategy, Component, input } from '@an
   host: { '[attr.aria-label]': 'null' },
   template: `
     <nav [attr.aria-label]="ariaLabel()">
-      <ol><ng-content /></ol>
+      <ol>
+        <ng-content />
+      </ol>
     </nav>
   `,
   styles: `
@@ -40,7 +42,9 @@ export class KnBreadcrumbs {
 @Component({
   selector: 'kn-breadcrumb',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `<span class="item" [attr.aria-current]="current() ? 'page' : null"><ng-content /></span>`,
+  template: `<span class="item" [attr.aria-current]="current() ? 'page' : null"
+    ><ng-content
+  /></span>`,
   host: { role: 'listitem', '[attr.data-current]': 'current() ? "" : null' },
   styles: `
     :host {

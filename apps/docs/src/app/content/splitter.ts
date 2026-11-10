@@ -46,10 +46,12 @@ class Playground {
   protected readonly controls = [this.orientation, this.min, this.max, this.step];
   protected readonly code = computed(
     () =>
-      `<kn-splitter${attrs({ orientation: [this.orientation.value(), 'horizontal'] })}>\n  <kn-splitter-panel [(size)]="size"${attrs({
-        min: [this.min.value(), 10],
-        max: [this.max.value(), 90],
-      })}>…</kn-splitter-panel>\n  <kn-splitter-handle aria-label="Размер первой панели"${attrs({ step: [this.step.value(), 2] })} />\n  <kn-splitter-panel>…</kn-splitter-panel>\n</kn-splitter>`,
+      `<kn-splitter${attrs({ orientation: [this.orientation.value(), 'horizontal'] })}>\n  <kn-splitter-panel [(size)]="size"${attrs(
+        {
+          min: [this.min.value(), 10],
+          max: [this.max.value(), 90],
+        },
+      )}>…</kn-splitter-panel>\n  <kn-splitter-handle aria-label="Размер первой панели"${attrs({ step: [this.step.value(), 2] })} />\n  <kn-splitter-panel>…</kn-splitter-panel>\n</kn-splitter>`,
   );
 }
 
@@ -65,17 +67,27 @@ export default {
     {
       source: 'basic',
       title: 'Вложенные сплиттеры',
-      description: 'Размеры в процентах привязаны через [(size)] — их легко сохранить и восстановить.',
+      description:
+        'Размеры в процентах привязаны через [(size)] — их легко сохранить и восстановить.',
       component: Basic,
     },
   ],
   playground: Playground,
   slots: [
-    { name: '(по умолчанию, kn-splitter)', description: 'Чередование <kn-splitter-panel> и <kn-splitter-handle>.' },
-    { name: '(по умолчанию, kn-splitter-panel)', description: 'Содержимое панели; при переполнении прокручивается.' },
+    {
+      name: '(по умолчанию, kn-splitter)',
+      description: 'Чередование <kn-splitter-panel> и <kn-splitter-handle>.',
+    },
+    {
+      name: '(по умолчанию, kn-splitter-panel)',
+      description: 'Содержимое панели; при переполнении прокручивается.',
+    },
   ],
   keyboard: [
-    { keys: ['←', '→'], action: 'Горизонтальный сплиттер: сдвигает разделитель на шаг (в RTL наоборот).' },
+    {
+      keys: ['←', '→'],
+      action: 'Горизонтальный сплиттер: сдвигает разделитель на шаг (в RTL наоборот).',
+    },
     { keys: ['↑', '↓'], action: 'Вертикальный сплиттер: сдвигает разделитель на шаг.' },
     { keys: ['Shift', 'стрелка'], action: 'Шаг в пять раз больше.' },
     { keys: ['Home', 'End'], action: 'Минимальный и максимальный размер предыдущей панели.' },

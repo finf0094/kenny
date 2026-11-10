@@ -1,7 +1,16 @@
 import { CdkDrag, CdkDragDrop, CdkDropList, CdkDropListGroup } from '@angular/cdk/drag-drop';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { NgTemplateOutlet } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, inject, signal, TemplateRef, viewChild, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  signal,
+  TemplateRef,
+  viewChild,
+  ViewEncapsulation,
+} from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
 import { KnAvatar } from '@kenny/ui/avatar';
@@ -10,13 +19,27 @@ import { KnBreadcrumb, KnBreadcrumbs } from '@kenny/ui/breadcrumbs';
 import { KnButton } from '@kenny/ui/button';
 import { KnCombobox } from '@kenny/ui/combobox';
 import { KnDatePicker } from '@kenny/ui/date-picker';
-import { KnDialog, KnDialogBody, KnDialogFooter, KnDialogHeader, KnDialogRef } from '@kenny/ui/dialog';
+import {
+  KnDialog,
+  KnDialogBody,
+  KnDialogFooter,
+  KnDialogHeader,
+  KnDialogRef,
+} from '@kenny/ui/dialog';
 import { KnDrawer, KnDrawerBody, KnDrawerHeader } from '@kenny/ui/drawer';
 import { KnEmptyState } from '@kenny/ui/empty-state';
 import { KnField } from '@kenny/ui/field';
 import { KnIcon } from '@kenny/ui/icon';
 import { KnInput } from '@kenny/ui/input';
-import { KnContextMenuTrigger, KnMenu, KnMenuGroup, KnMenuItem, KnMenuItemRadio, KnMenuSeparator, KnMenuTrigger } from '@kenny/ui/menu';
+import {
+  KnContextMenuTrigger,
+  KnMenu,
+  KnMenuGroup,
+  KnMenuItem,
+  KnMenuItemRadio,
+  KnMenuSeparator,
+  KnMenuTrigger,
+} from '@kenny/ui/menu';
 import { KnRadio, KnRadioGroup } from '@kenny/ui/radio';
 import { KnOption, KnSelect } from '@kenny/ui/select';
 import { KnSplitter, KnSplitterHandle, KnSplitterPanel } from '@kenny/ui/splitter';
@@ -52,13 +75,69 @@ const PRIORITY: Record<Priority, { label: string; tone: 'neutral' | 'warning' | 
 };
 
 const TASKS: Task[] = [
-  { id: 1, title: 'Собрать палитру тёмной темы', column: 'done', assignee: 'Зоя Мельникова', priority: 'medium', due: new Date(2026, 10, 4), notes: 'Кобальтовая ночь вместо чёрного.' },
-  { id: 2, title: 'Пружина для индикатора вкладок', column: 'review', assignee: 'Борис Ким', priority: 'high', due: new Date(2026, 10, 11), notes: 'FLIP через WAAPI, только transform.' },
-  { id: 3, title: 'Клавиатура для сплиттера', column: 'doing', assignee: 'Анна Орлова', priority: 'high', due: new Date(2026, 10, 13), notes: 'Стрелки, Home/End, шаг ×5 с Shift.' },
-  { id: 4, title: 'Проверить контраст бейджей', column: 'doing', assignee: 'Вера Соколова', priority: 'medium', due: new Date(2026, 10, 14), notes: '' },
-  { id: 5, title: 'Описать токены движения', column: 'todo', assignee: null, priority: 'low', due: null, notes: '' },
-  { id: 6, title: 'RTL для календаря', column: 'todo', assignee: 'Глеб Назаров', priority: 'medium', due: new Date(2026, 10, 20), notes: 'Стрелки и анимация смены месяца.' },
-  { id: 7, title: 'Каскад строк в таблице', column: 'todo', assignee: 'Дина Ахметова', priority: 'low', due: new Date(2026, 10, 24), notes: '' },
+  {
+    id: 1,
+    title: 'Собрать палитру тёмной темы',
+    column: 'done',
+    assignee: 'Зоя Мельникова',
+    priority: 'medium',
+    due: new Date(2026, 10, 4),
+    notes: 'Кобальтовая ночь вместо чёрного.',
+  },
+  {
+    id: 2,
+    title: 'Пружина для индикатора вкладок',
+    column: 'review',
+    assignee: 'Борис Ким',
+    priority: 'high',
+    due: new Date(2026, 10, 11),
+    notes: 'FLIP через WAAPI, только transform.',
+  },
+  {
+    id: 3,
+    title: 'Клавиатура для сплиттера',
+    column: 'doing',
+    assignee: 'Анна Орлова',
+    priority: 'high',
+    due: new Date(2026, 10, 13),
+    notes: 'Стрелки, Home/End, шаг ×5 с Shift.',
+  },
+  {
+    id: 4,
+    title: 'Проверить контраст бейджей',
+    column: 'doing',
+    assignee: 'Вера Соколова',
+    priority: 'medium',
+    due: new Date(2026, 10, 14),
+    notes: '',
+  },
+  {
+    id: 5,
+    title: 'Описать токены движения',
+    column: 'todo',
+    assignee: null,
+    priority: 'low',
+    due: null,
+    notes: '',
+  },
+  {
+    id: 6,
+    title: 'RTL для календаря',
+    column: 'todo',
+    assignee: 'Глеб Назаров',
+    priority: 'medium',
+    due: new Date(2026, 10, 20),
+    notes: 'Стрелки и анимация смены месяца.',
+  },
+  {
+    id: 7,
+    title: 'Каскад строк в таблице',
+    column: 'todo',
+    assignee: 'Дина Ахметова',
+    priority: 'low',
+    due: new Date(2026, 10, 24),
+    notes: '',
+  },
 ];
 
 @Component({
@@ -121,7 +200,9 @@ const TASKS: Task[] = [
         <div class="kb-frame"><ng-container [ngTemplateOutlet]="board" /></div>
       } @else {
         <kn-splitter class="kb-frame">
-          <kn-splitter-panel [min]="45"><ng-container [ngTemplateOutlet]="board" /></kn-splitter-panel>
+          <kn-splitter-panel [min]="45"
+            ><ng-container [ngTemplateOutlet]="board"
+          /></kn-splitter-panel>
           <kn-splitter-handle aria-label="Ширина панели задачи" />
           <kn-splitter-panel [min]="22" [max]="50" [(size)]="detailsSize">
             <ng-container [ngTemplateOutlet]="details" />
@@ -129,8 +210,8 @@ const TASKS: Task[] = [
         </kn-splitter>
       }
       <p class="kb-hint">
-        Карточки перетаскиваются между колонками. С клавиатуры то же самое делает меню карточки (кнопка «⋯»
-        или Shift + F10) — пункт «Переместить».
+        Карточки перетаскиваются между колонками. С клавиатуры то же самое делает меню карточки
+        (кнопка «⋯» или Shift + F10) — пункт «Переместить».
       </p>
     </main>
 
@@ -141,7 +222,12 @@ const TASKS: Task[] = [
             <h2 [id]="'kb-' + column.id">
               {{ column.title }} <kn-badge>{{ tasksOf(column.id).length }}</kn-badge>
             </h2>
-            <div class="kb-list" cdkDropList [cdkDropListData]="column.id" (cdkDropListDropped)="drop($event)">
+            <div
+              class="kb-list"
+              cdkDropList
+              [cdkDropListData]="column.id"
+              (cdkDropListDropped)="drop($event)"
+            >
               @for (task of tasksOf(column.id); track task.id) {
                 <article
                   class="kb-card"
@@ -152,7 +238,12 @@ const TASKS: Task[] = [
                   [knContextMenuData]="{ $implicit: task }"
                 >
                   <div class="kb-card-top">
-                    <button class="kb-card-open" type="button" [attr.aria-pressed]="task.id === selectedId()" (click)="open(task)">
+                    <button
+                      class="kb-card-open"
+                      type="button"
+                      [attr.aria-pressed]="task.id === selectedId()"
+                      (click)="open(task)"
+                    >
                       {{ task.title }}
                     </button>
                     <button
@@ -168,9 +259,13 @@ const TASKS: Task[] = [
                     </button>
                   </div>
                   <div class="kb-card-meta">
-                    <kn-badge [tone]="priority[task.priority].tone">{{ priority[task.priority].label }}</kn-badge>
+                    <kn-badge [tone]="priority[task.priority].tone">{{
+                      priority[task.priority].label
+                    }}</kn-badge>
                     @if (task.due) {
-                      <span class="kb-due"><kn-icon name="calendar" [size]="14" /> {{ date.format(task.due) }}</span>
+                      <span class="kb-due"
+                        ><kn-icon name="calendar" [size]="14" /> {{ date.format(task.due) }}</span
+                      >
                     }
                     @if (task.assignee) {
                       <kn-avatar class="kb-assignee" size="sm" [name]="task.assignee" />
@@ -192,13 +287,24 @@ const TASKS: Task[] = [
           <div class="kb-details-head">
             <kn-badge tone="accent">{{ columnTitle(task.column) }}</kn-badge>
             @if (!compact()) {
-              <button kn-icon-button size="sm" variant="ghost" tone="neutral" aria-label="Закрыть задачу" (click)="selectedId.set(null)">
+              <button
+                kn-icon-button
+                size="sm"
+                variant="ghost"
+                tone="neutral"
+                aria-label="Закрыть задачу"
+                (click)="selectedId.set(null)"
+              >
                 <kn-icon name="x" />
               </button>
             }
           </div>
           <kn-field label="Название">
-            <input knInput [value]="task.title" (input)="patch(task.id, { title: $any($event.target).value })" />
+            <input
+              knInput
+              [value]="task.title"
+              (input)="patch(task.id, { title: $any($event.target).value })"
+            />
           </kn-field>
           <kn-field label="Колонка">
             <kn-select [value]="task.column" (valueChange)="move(task, $any($event))">
@@ -208,7 +314,12 @@ const TASKS: Task[] = [
             </kn-select>
           </kn-field>
           <kn-field label="Исполнитель">
-            <kn-combobox clearable placeholder="Не назначен" [value]="task.assignee" (valueChange)="patch(task.id, { assignee: $any($event) })">
+            <kn-combobox
+              clearable
+              placeholder="Не назначен"
+              [value]="task.assignee"
+              (valueChange)="patch(task.id, { assignee: $any($event) })"
+            >
               @for (person of people; track person) {
                 <kn-option [value]="person">{{ person }}</kn-option>
               }
@@ -218,18 +329,33 @@ const TASKS: Task[] = [
             <kn-date-picker [value]="task.due" (valueChange)="patch(task.id, { due: $event })" />
           </kn-field>
           <kn-field label="Приоритет">
-            <kn-radio-group orientation="horizontal" [value]="task.priority" (valueChange)="patch(task.id, { priority: $any($event) })">
+            <kn-radio-group
+              orientation="horizontal"
+              [value]="task.priority"
+              (valueChange)="patch(task.id, { priority: $any($event) })"
+            >
               <kn-radio value="low">Низкий</kn-radio>
               <kn-radio value="medium">Средний</kn-radio>
               <kn-radio value="high">Высокий</kn-radio>
             </kn-radio-group>
           </kn-field>
           <kn-field label="Заметки">
-            <textarea knTextarea [minRows]="3" [value]="task.notes" (input)="patch(task.id, { notes: $any($event.target).value })"></textarea>
+            <textarea
+              knTextarea
+              [minRows]="3"
+              [value]="task.notes"
+              (input)="patch(task.id, { notes: $any($event.target).value })"
+            ></textarea>
           </kn-field>
-          <button kn-button variant="soft" tone="danger" (click)="remove(task)"><kn-icon name="trash" /> Удалить задачу</button>
+          <button kn-button variant="soft" tone="danger" (click)="remove(task)">
+            <kn-icon name="trash" /> Удалить задачу
+          </button>
         } @else {
-          <kn-empty-state icon="columns" heading="Задача не выбрана" description="Нажмите на карточку, чтобы увидеть и изменить детали." />
+          <kn-empty-state
+            icon="columns"
+            heading="Задача не выбрана"
+            description="Нажмите на карточку, чтобы увидеть и изменить детали."
+          />
         }
       </aside>
     </ng-template>
@@ -241,15 +367,25 @@ const TASKS: Task[] = [
 
     <ng-template #taskMenu let-task>
       <kn-menu>
-        <button kn-menu-item (triggered)="open(task)"><kn-icon name="edit" [size]="16" /> Открыть</button>
+        <button kn-menu-item (triggered)="open(task)">
+          <kn-icon name="edit" [size]="16" /> Открыть
+        </button>
         <kn-menu-separator />
         <kn-menu-group label="Переместить">
           @for (column of columns; track column.id) {
-            <button kn-menu-item-radio [checked]="task.column === column.id" (triggered)="move(task, column.id)">{{ column.title }}</button>
+            <button
+              kn-menu-item-radio
+              [checked]="task.column === column.id"
+              (triggered)="move(task, column.id)"
+            >
+              {{ column.title }}
+            </button>
           }
         </kn-menu-group>
         <kn-menu-separator />
-        <button kn-menu-item tone="danger" (triggered)="remove(task)"><kn-icon name="trash" [size]="16" /> Удалить</button>
+        <button kn-menu-item tone="danger" (triggered)="remove(task)">
+          <kn-icon name="trash" [size]="16" /> Удалить
+        </button>
       </kn-menu>
     </ng-template>
 
@@ -258,7 +394,12 @@ const TASKS: Task[] = [
       <kn-dialog-body>
         <form id="kb-create" class="kb-form" (submit)="$event.preventDefault(); create(ref)">
           <kn-field label="Название" [error]="draftError()">
-            <input knInput placeholder="Что нужно сделать" [value]="draftTitle()" (input)="draftTitle.set($any($event.target).value); draftError.set(null)" />
+            <input
+              knInput
+              placeholder="Что нужно сделать"
+              [value]="draftTitle()"
+              (input)="draftTitle.set($any($event.target).value); draftError.set(null)"
+            />
           </kn-field>
           <kn-field label="Колонка">
             <kn-select [(value)]="draftColumn">
@@ -540,7 +681,9 @@ export default class KanbanExample {
   protected readonly tasks = signal<Task[]>(TASKS);
   protected readonly selectedId = signal<number | null>(3);
   protected readonly detailsSize = signal<number | undefined>(30);
-  protected readonly selected = computed(() => this.tasks().find((task) => task.id === this.selectedId()) ?? null);
+  protected readonly selected = computed(
+    () => this.tasks().find((task) => task.id === this.selectedId()) ?? null,
+  );
 
   protected readonly draftTitle = signal('');
   protected readonly draftColumn = signal<ColumnId | null>('todo');
@@ -562,7 +705,9 @@ export default class KanbanExample {
   }
 
   protected patch(id: number, changes: Partial<Task>): void {
-    this.tasks.update((tasks) => tasks.map((task) => (task.id === id ? { ...task, ...changes } : task)));
+    this.tasks.update((tasks) =>
+      tasks.map((task) => (task.id === id ? { ...task, ...changes } : task)),
+    );
   }
 
   /** Reorders within a column or moves across columns, keeping the flat task list in column order. */
@@ -588,7 +733,10 @@ export default class KanbanExample {
     this.tasks.update((tasks) => tasks.filter((t) => t.id !== task.id));
     if (this.selectedId() === task.id) this.selectedId.set(null);
     void this.sheetRef?.close();
-    this.toaster.show({ title: 'Задача удалена', action: { label: 'Отменить', run: () => this.tasks.set(before) } });
+    this.toaster.show({
+      title: 'Задача удалена',
+      action: { label: 'Отменить', run: () => this.tasks.set(before) },
+    });
   }
 
   protected openCreate(): void {
@@ -603,7 +751,15 @@ export default class KanbanExample {
       this.draftError.set('Дайте задаче название');
       return;
     }
-    const task: Task = { id: this.nextId++, title, column: this.draftColumn() ?? 'todo', assignee: null, priority: 'medium', due: null, notes: '' };
+    const task: Task = {
+      id: this.nextId++,
+      title,
+      column: this.draftColumn() ?? 'todo',
+      assignee: null,
+      priority: 'medium',
+      due: null,
+      notes: '',
+    };
     this.tasks.update((tasks) => [...tasks, task]);
     this.selectedId.set(task.id);
     void ref.close();

@@ -11,7 +11,12 @@ import { KnField } from '@kenny/ui/field';
     </kn-field>
 
     <kn-field label="Доставка" hint="Только будни в ближайшие 30 дней">
-      <kn-date-picker [(value)]="delivery" [min]="today" [max]="inMonth" [dateFilter]="weekdaysOnly" />
+      <kn-date-picker
+        [(value)]="delivery"
+        [min]="today"
+        [max]="inMonth"
+        [dateFilter]="weekdaysOnly"
+      />
     </kn-field>
   `,
   styles: `

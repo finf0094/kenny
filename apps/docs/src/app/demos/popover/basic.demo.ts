@@ -22,7 +22,9 @@ import { KnSwitch } from '@kenny/ui/switch';
       </div>
     </kn-popover>
 
-    <button kn-button variant="ghost" tone="neutral" [knPopoverTrigger]="info">Сверху по центру</button>
+    <button kn-button variant="ghost" tone="neutral" [knPopoverTrigger]="info">
+      Сверху по центру
+    </button>
     <kn-popover #info placement="top" aria-label="Подробности" width="15rem">
       Панель сама перевернётся, если сверху не хватит места.
     </kn-popover>

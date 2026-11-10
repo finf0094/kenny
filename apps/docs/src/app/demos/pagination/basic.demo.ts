@@ -7,7 +7,13 @@ import { KnPagination } from '@kenny/ui/pagination';
   template: `
     <kn-pagination [total]="total" [pageSize]="pageSize" [(page)]="page" />
     <p>Записи {{ range() }} из {{ total }}</p>
-    <kn-pagination size="sm" aria-label="Страницы, компактно" [total]="48" [pageSize]="12" [page]="2" />
+    <kn-pagination
+      size="sm"
+      aria-label="Страницы, компактно"
+      [total]="48"
+      [pageSize]="12"
+      [page]="2"
+    />
   `,
   styles: `
     :host {

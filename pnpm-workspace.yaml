@@ -1,6 +1,8 @@
 packages:
   - 'packages/*'
-  - 'apps/*'
+
+# @kenny/ui has @kenny/tokens as a peer: resolve it to the package next door, not the registry
+linkWorkspacePackages: true
 
 allowBuilds:
   '@parcel/watcher': false

@@ -42,7 +42,8 @@ export interface KnSort {
 export class KnCell<T = unknown> {
   /** Ключ колонки, для которой предназначен шаблон. */
   readonly key = input.required<string>({ alias: 'knCell' });
-  readonly template = inject<TemplateRef<{ $implicit: T; value: unknown; index: number }>>(TemplateRef);
+  readonly template =
+    inject<TemplateRef<{ $implicit: T; value: unknown; index: number }>>(TemplateRef);
 }
 
 /**
@@ -96,7 +97,10 @@ export class KnCell<T = unknown> {
       </thead>
       <tbody>
         @for (row of rows(); track trackRow(row, $index); let i = $index) {
-          <tr [attr.data-selected]="selectable() && isSelected(row) ? '' : null" [style.--kn-index]="i">
+          <tr
+            [attr.data-selected]="selectable() && isSelected(row) ? '' : null"
+            [style.--kn-index]="i"
+          >
             @if (selectable()) {
               <td class="check">
                 <kn-checkbox
@@ -112,7 +116,11 @@ export class KnCell<T = unknown> {
                 @if (cellTemplate(column.key); as template) {
                   <ng-container
                     [ngTemplateOutlet]="template"
-                    [ngTemplateOutletContext]="{ $implicit: row, value: cellValue(row, column), index: i }"
+                    [ngTemplateOutletContext]="{
+                      $implicit: row,
+                      value: cellValue(row, column),
+                      index: i,
+                    }"
                   />
                 } @else {
                   {{ cellValue(row, column) }}
@@ -130,7 +138,11 @@ export class KnCell<T = unknown> {
       </tbody>
     </table>
   `,
-  host: { '[attr.aria-label]': 'null', '[attr.data-size]': 'size()', '[attr.data-sticky]': 'stickyHeader() ? "" : null' },
+  host: {
+    '[attr.aria-label]': 'null',
+    '[attr.data-size]': 'size()',
+    '[attr.data-sticky]': 'stickyHeader() ? "" : null',
+  },
   styles: `
     :host {
       --_pad-block: var(--kn-space-3);
@@ -329,12 +341,17 @@ export class KnTable<T = unknown> {
     });
   });
 
-  private readonly selectedIds = computed(() => new Set(this.selection().map((row) => this.identify(row))));
+  private readonly selectedIds = computed(
+    () => new Set(this.selection().map((row) => this.identify(row))),
+  );
   protected readonly allSelected = computed(
-    () => this.data().length > 0 && this.data().every((row) => this.selectedIds().has(this.identify(row))),
+    () =>
+      this.data().length > 0 &&
+      this.data().every((row) => this.selectedIds().has(this.identify(row))),
   );
   protected readonly someSelected = computed(
-    () => !this.allSelected() && this.data().some((row) => this.selectedIds().has(this.identify(row))),
+    () =>
+      !this.allSelected() && this.data().some((row) => this.selectedIds().has(this.identify(row))),
   );
 
   protected cellTemplate(key: string) {

@@ -11,7 +11,9 @@ import Basic from '../demos/toast/basic.demo';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <docs-playground [controls]="controls" [code]="code()">
-      <button kn-button variant="glass" tone="neutral" (click)="show()">Показать уведомление</button>
+      <button kn-button variant="glass" tone="neutral" (click)="show()">
+        Показать уведомление
+      </button>
     </docs-playground>
   `,
 })
@@ -22,7 +24,13 @@ class Playground {
   protected readonly tone = choice('tone', ['neutral', 'success', 'warning', 'danger']);
   protected readonly duration = range('duration, с (0 — не закрывать)', 5, 0, 15);
   protected readonly action = toggle('Кнопка действия');
-  protected readonly controls = [this.title, this.description, this.tone, this.duration, this.action];
+  protected readonly controls = [
+    this.title,
+    this.description,
+    this.tone,
+    this.duration,
+    this.action,
+  ];
   protected readonly code = computed(
     () =>
       `this.toaster.show({\n  title: '${this.title.value()}',${this.description.value() ? `\n  description: '${this.description.value()}',` : ''}${this.tone.value() === 'neutral' ? '' : `\n  tone: '${this.tone.value()}',`}${this.duration.value() === 5 ? '' : `\n  duration: ${this.duration.value() * 1000},`}${this.action.value() ? "\n  action: { label: 'Отменить', run: () => this.undo() }," : ''}\n});`,
@@ -34,7 +42,9 @@ class Playground {
       description: this.description.value() || undefined,
       tone: this.tone.value(),
       duration: this.duration.value() * 1000,
-      action: this.action.value() ? { label: 'Отменить', run: () => this.toaster.show({ title: 'Действие отменено' }) } : undefined,
+      action: this.action.value()
+        ? { label: 'Отменить', run: () => this.toaster.show({ title: 'Действие отменено' }) }
+        : undefined,
     });
   }
 }
@@ -52,13 +62,17 @@ export default {
     {
       source: 'basic',
       title: 'Тоны и действие «Отменить»',
-      description: 'Одновременно видно не больше четырёх уведомлений; наведите курсор на стопку — таймеры встанут на паузу.',
+      description:
+        'Одновременно видно не больше четырёх уведомлений; наведите курсор на стопку — таймеры встанут на паузу.',
       component: Basic,
     },
   ],
   playground: Playground,
   keyboard: [
-    { keys: ['Tab'], action: 'Стопка стоит в конце документа: до кнопок уведомления можно дойти с клавиатуры.' },
+    {
+      keys: ['Tab'],
+      action: 'Стопка стоит в конце документа: до кнопок уведомления можно дойти с клавиатуры.',
+    },
     { keys: ['Enter', 'Пробел'], action: 'Нажимает кнопку действия или закрытия.' },
   ],
   a11y: [

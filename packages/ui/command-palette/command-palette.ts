@@ -67,7 +67,8 @@ export class KnCommandPalette {
   register(commands: KnCommand[]): () => void {
     const ids = new Set(commands.map((command) => command.id));
     this.commands.update((all) => [...all.filter((c) => !ids.has(c.id)), ...commands]);
-    return () => this.commands.update((all) => all.filter((command) => !commands.includes(command)));
+    return () =>
+      this.commands.update((all) => all.filter((command) => !commands.includes(command)));
   }
 
   /** Открывает палитру. */
@@ -152,9 +153,20 @@ interface Group {
       />
       <kbd>Esc</kbd>
     </div>
-    <div #list class="list" role="listbox" aria-label="Команды" [id]="listId" [attr.data-fresh]="query() ? null : ''">
+    <div
+      #list
+      class="list"
+      role="listbox"
+      aria-label="Команды"
+      [id]="listId"
+      [attr.data-fresh]="query() ? null : ''"
+    >
       @for (group of groups(); track group.id) {
-        <div class="group" role="group" [attr.aria-labelledby]="group.label ? listId + group.id : null">
+        <div
+          class="group"
+          role="group"
+          [attr.aria-labelledby]="group.label ? listId + group.id : null"
+        >
           @if (group.label) {
             <div class="group-label" [id]="listId + group.id">{{ group.label }}</div>
           }
@@ -352,9 +364,14 @@ export class KnCommandPaletteView {
     const scored = commands
       .map((command) => {
         const label = command.label.toLowerCase();
-        const haystack = [label, command.group ?? '', ...(command.keywords ?? [])].join(' ').toLowerCase();
+        const haystack = [label, command.group ?? '', ...(command.keywords ?? [])]
+          .join(' ')
+          .toLowerCase();
         if (!words.every((word) => haystack.includes(word))) return null;
-        return { command, score: label.startsWith(words[0]) ? 0 : label.includes(words[0]) ? 1 : 2 };
+        return {
+          command,
+          score: label.startsWith(words[0]) ? 0 : label.includes(words[0]) ? 1 : 2,
+        };
       })
       .filter((entry) => entry !== null)
       .sort((a, b) => a.score - b.score);

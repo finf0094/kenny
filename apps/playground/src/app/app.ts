@@ -12,11 +12,20 @@ import { demos } from '../generated/demos';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <nav aria-label="Демо">
-      <input type="search" placeholder="Фильтр" [value]="filter()" (input)="filter.set($any($event.target).value)" />
+      <input
+        type="search"
+        placeholder="Фильтр"
+        [value]="filter()"
+        (input)="filter.set($any($event.target).value)"
+      />
       @for (group of groups(); track group.name) {
         <h2>{{ group.name }}</h2>
         @for (demo of group.items; track demo.id) {
-          <a [href]="'?demo=' + demo.id" [class.active]="demo.id === current()" (click)="select($event, demo.id)">
+          <a
+            [href]="'?demo=' + demo.id"
+            [class.active]="demo.id === current()"
+            (click)="select($event, demo.id)"
+          >
             {{ demo.name }}
           </a>
         }
@@ -27,9 +36,17 @@ import { demos } from '../generated/demos';
         <strong>{{ current() }}</strong>
         <span class="spacer"></span>
         @for (mode of modes; track mode) {
-          <button type="button" [class.active]="theme() === mode" (click)="theme.set(mode)">{{ mode }}</button>
+          <button type="button" [class.active]="theme() === mode" (click)="theme.set(mode)">
+            {{ mode }}
+          </button>
         }
-        <button type="button" [class.active]="dir() === 'rtl'" (click)="dir.set(dir() === 'rtl' ? 'ltr' : 'rtl')">rtl</button>
+        <button
+          type="button"
+          [class.active]="dir() === 'rtl'"
+          (click)="dir.set(dir() === 'rtl' ? 'ltr' : 'rtl')"
+        >
+          rtl
+        </button>
       </header>
       <div class="stages" [attr.dir]="dir()">
         @for (t of themes(); track t) {

@@ -33,8 +33,23 @@ import { KnIcon } from '@kenny/ui/icon';
 })
 export default class CardInteractiveDemo {
   protected readonly items = [
-    { icon: 'book', title: 'Руководство', text: 'С чего начать в Angular', href: 'https://angular.dev/overview' },
-    { icon: 'accessibility', title: 'APG', text: 'Паттерны доступности W3C', href: 'https://www.w3.org/WAI/ARIA/apg/' },
-    { icon: 'layers', title: 'CDK', text: 'Примитивы, на которых стоит Kenny', href: 'https://material.angular.dev/cdk' },
+    {
+      icon: 'book',
+      title: 'Руководство',
+      text: 'С чего начать в Angular',
+      href: 'https://angular.dev/overview',
+    },
+    {
+      icon: 'accessibility',
+      title: 'APG',
+      text: 'Паттерны доступности W3C',
+      href: 'https://www.w3.org/WAI/ARIA/apg/',
+    },
+    {
+      icon: 'layers',
+      title: 'CDK',
+      text: 'Примитивы, на которых стоит Kenny',
+      href: 'https://material.angular.dev/cdk',
+    },
   ];
 }

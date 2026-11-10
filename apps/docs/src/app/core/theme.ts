@@ -17,17 +17,53 @@ export const ACCENTS: AccentPreset[] = [
   {
     id: 'emerald',
     label: 'Изумруд',
-    scale: ['#e9f9f1', '#cff2e1', '#a0e4c4', '#77d9ab', '#4fd69c', '#1fae78', '#0f8a5c', '#0c7550', '#0a6143', '#073f2c', '#04261a'],
+    scale: [
+      '#e9f9f1',
+      '#cff2e1',
+      '#a0e4c4',
+      '#77d9ab',
+      '#4fd69c',
+      '#1fae78',
+      '#0f8a5c',
+      '#0c7550',
+      '#0a6143',
+      '#073f2c',
+      '#04261a',
+    ],
   },
   {
     id: 'amber',
     label: 'Янтарь',
-    scale: ['#fff6e5', '#ffeac2', '#ffd58a', '#ffc260', '#ffb23e', '#e08a1c', '#a85f00', '#8f5100', '#754300', '#4a2a00', '#2b1800'],
+    scale: [
+      '#fff6e5',
+      '#ffeac2',
+      '#ffd58a',
+      '#ffc260',
+      '#ffb23e',
+      '#e08a1c',
+      '#a85f00',
+      '#8f5100',
+      '#754300',
+      '#4a2a00',
+      '#2b1800',
+    ],
   },
   {
     id: 'coral',
     label: 'Коралл',
-    scale: ['#ffefee', '#ffdcda', '#ffb8b4', '#ff9d98', '#ff7f7a', '#ee5550', '#cf3a3a', '#b22f31', '#962729', '#5e181a', '#3a0d0f'],
+    scale: [
+      '#ffefee',
+      '#ffdcda',
+      '#ffb8b4',
+      '#ff9d98',
+      '#ff7f7a',
+      '#ee5550',
+      '#cf3a3a',
+      '#b22f31',
+      '#962729',
+      '#5e181a',
+      '#3a0d0f',
+    ],
   },
 ];
 
@@ -37,7 +73,9 @@ export class ThemeService {
   private readonly document = inject(DOCUMENT);
   private readonly storage = this.safeStorage();
 
-  readonly mode = signal<ThemeMode>((this.storage?.getItem('kn-theme') as ThemeMode | null) ?? 'system');
+  readonly mode = signal<ThemeMode>(
+    (this.storage?.getItem('kn-theme') as ThemeMode | null) ?? 'system',
+  );
   readonly accent = signal(this.storage?.getItem('kn-accent') ?? 'cobalt');
 
   constructor() {

@@ -33,7 +33,15 @@ class Playground {
   protected readonly loading = toggle('loading');
   protected readonly disabled = toggle('disabled');
   protected readonly block = toggle('block');
-  protected readonly controls = [this.label, this.variant, this.tone, this.size, this.loading, this.disabled, this.block];
+  protected readonly controls = [
+    this.label,
+    this.variant,
+    this.tone,
+    this.size,
+    this.loading,
+    this.disabled,
+    this.block,
+  ];
   protected readonly code = computed(
     () =>
       `<button kn-button${attrs({
@@ -72,7 +80,9 @@ export default {
     },
   ],
   playground: Playground,
-  slots: [{ name: '(по умолчанию)', description: 'Текст кнопки и иконки <kn-icon> до или после него.' }],
+  slots: [
+    { name: '(по умолчанию)', description: 'Текст кнопки и иконки <kn-icon> до или после него.' },
+  ],
   keyboard: [
     { keys: ['Enter', 'Пробел'], action: 'Нажимает кнопку.' },
     { keys: ['Tab'], action: 'Переводит фокус на кнопку и с неё.' },

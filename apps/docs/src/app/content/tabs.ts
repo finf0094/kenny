@@ -11,7 +11,13 @@ import Variants from '../demos/tabs/variants.demo';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <docs-playground [controls]="controls" [code]="code()">
-      <kn-tabs style="inline-size: 22rem" aria-label="Раздел" [variant]="variant.value()" [size]="size.value()" [stretch]="stretch.value()">
+      <kn-tabs
+        style="inline-size: 22rem"
+        aria-label="Раздел"
+        [variant]="variant.value()"
+        [size]="size.value()"
+        [stretch]="stretch.value()"
+      >
         <kn-tab value="a" label="Обзор">Сводка по проекту.</kn-tab>
         <kn-tab value="b" label="Задачи">Список задач.</kn-tab>
         <kn-tab value="c" label="Файлы" [disabled]="disabled.value()">Файлы проекта.</kn-tab>
@@ -47,7 +53,8 @@ export default {
     {
       source: 'basic',
       title: 'Сегментированный переключатель',
-      description: 'Стеклянный индикатор переезжает под активную вкладку пружиной. Значение привязано через [(value)].',
+      description:
+        'Стеклянный индикатор переезжает под активную вкладку пружиной. Значение привязано через [(value)].',
       component: Basic,
     },
     {
@@ -60,7 +67,10 @@ export default {
   slots: [{ name: '(по умолчанию, kn-tab)', description: 'Содержимое панели вкладки.' }],
   keyboard: [
     { keys: ['Tab'], action: 'Фокус на активную вкладку; следующий Tab — в панель.' },
-    { keys: ['→', '←'], action: 'Следующая и предыдущая вкладка, по кругу; вкладка сразу активируется.' },
+    {
+      keys: ['→', '←'],
+      action: 'Следующая и предыдущая вкладка, по кругу; вкладка сразу активируется.',
+    },
     { keys: ['Home', 'End'], action: 'Первая и последняя вкладка.' },
   ],
   a11y: [

@@ -23,7 +23,13 @@ interface Role {
       </kn-field>
       <div class="actions">
         <button kn-button type="submit">Пригласить</button>
-        <button kn-button type="button" variant="ghost" tone="neutral" (click)="form.reset(); roleError.set(null)">
+        <button
+          kn-button
+          type="button"
+          variant="ghost"
+          tone="neutral"
+          (click)="form.reset(); roleError.set(null)"
+        >
           Сбросить
         </button>
       </div>
@@ -63,6 +69,8 @@ export default class SelectFormsDemo {
 
   protected submit(): void {
     this.form.markAllAsTouched();
-    this.roleError.set(this.form.controls.role.invalid ? 'Выберите роль, чтобы отправить приглашение' : null);
+    this.roleError.set(
+      this.form.controls.role.invalid ? 'Выберите роль, чтобы отправить приглашение' : null,
+    );
   }
 }

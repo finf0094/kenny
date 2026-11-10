@@ -1,6 +1,19 @@
-import { ChangeDetectionStrategy, Component, computed, inject, TemplateRef, viewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  TemplateRef,
+  viewChild,
+} from '@angular/core';
 import { KnButton } from '@kenny/ui/button';
-import { KnDialog, KnDialogBody, KnDialogClose, KnDialogFooter, KnDialogHeader } from '@kenny/ui/dialog';
+import {
+  KnDialog,
+  KnDialogBody,
+  KnDialogClose,
+  KnDialogFooter,
+  KnDialogHeader,
+} from '@kenny/ui/dialog';
 import { data } from '../../generated/dialog';
 import { ComponentDoc } from '../core/doc-types';
 import { choice, DocsPlayground, text, toggle } from '../core/playground';
@@ -54,7 +67,15 @@ export default {
   api: data.api,
   sources: data.sources,
   apiClasses: ['KnDialog', 'KnDialogRef', 'KnDialogHeader', 'KnDialogClose'],
-  imports: ['KnDialog', 'KnDialogHeader', 'KnDialogBody', 'KnDialogFooter', 'KnDialogClose', 'KnDialogRef', 'KN_DIALOG_DATA'],
+  imports: [
+    'KnDialog',
+    'KnDialogHeader',
+    'KnDialogBody',
+    'KnDialogFooter',
+    'KnDialogClose',
+    'KnDialogRef',
+    'KN_DIALOG_DATA',
+  ],
   cssPrefix: '--kn-dialog',
   demos: [
     {
@@ -67,13 +88,17 @@ export default {
     {
       source: 'form',
       title: 'Форма из шаблона',
-      description: 'Шаблон получает ссылку на окно как let-ref. Фокус при открытии попадает в первое поле.',
+      description:
+        'Шаблон получает ссылку на окно как let-ref. Фокус при открытии попадает в первое поле.',
       component: Form,
     },
   ],
   playground: Playground,
   slots: [
-    { name: 'kn-dialog-header', description: 'Заголовок (становится именем окна), описание и кнопка закрытия.' },
+    {
+      name: 'kn-dialog-header',
+      description: 'Заголовок (становится именем окна), описание и кнопка закрытия.',
+    },
     { name: 'kn-dialog-body', description: 'Содержимое; прокручивается, если не помещается.' },
     { name: 'kn-dialog-footer', description: 'Кнопки действий, выровненные по концу строки.' },
   ],

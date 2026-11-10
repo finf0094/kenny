@@ -273,7 +273,8 @@ export class KnSelect<T = unknown> extends KnFormControl<T | null> implements Kn
   protected onKeydown(event: KeyboardEvent): void {
     const { key } = event;
     const open = this.overlay.isOpen();
-    const printable = key.length === 1 && key !== ' ' && !event.ctrlKey && !event.metaKey && !event.altKey;
+    const printable =
+      key.length === 1 && key !== ' ' && !event.ctrlKey && !event.metaKey && !event.altKey;
 
     if (!open) {
       if (['ArrowDown', 'ArrowUp', 'Enter', ' ', 'Home', 'End'].includes(key)) {

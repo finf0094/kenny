@@ -1,6 +1,19 @@
-import { ChangeDetectionStrategy, Component, inject, signal, TemplateRef, viewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  signal,
+  TemplateRef,
+  viewChild,
+} from '@angular/core';
 import { KnButton } from '@kenny/ui/button';
-import { KnDrawer, KnDrawerBody, KnDrawerFooter, KnDrawerHeader, KnDrawerSide } from '@kenny/ui/drawer';
+import {
+  KnDrawer,
+  KnDrawerBody,
+  KnDrawerFooter,
+  KnDrawerHeader,
+  KnDrawerSide,
+} from '@kenny/ui/drawer';
 import { KnSwitch } from '@kenny/ui/switch';
 
 @Component({
@@ -8,7 +21,9 @@ import { KnSwitch } from '@kenny/ui/switch';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @for (side of sides; track side.id) {
-      <button kn-button variant="glass" tone="neutral" (click)="open(side.id)">{{ side.label }}</button>
+      <button kn-button variant="glass" tone="neutral" (click)="open(side.id)">
+        {{ side.label }}
+      </button>
     }
 
     <ng-template #settings let-ref>
@@ -52,6 +67,9 @@ export default class DrawerBasicDemo {
   ];
 
   protected open(side: KnDrawerSide): void {
-    this.drawer.open(this.settings(), { side, size: side === 'top' || side === 'bottom' ? '18rem' : '22rem' });
+    this.drawer.open(this.settings(), {
+      side,
+      size: side === 'top' || side === 'bottom' ? '18rem' : '22rem',
+    });
   }
 }

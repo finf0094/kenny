@@ -10,14 +10,19 @@ import { KnSize } from '@kenny/ui/core';
 import { KnIcon } from '@kenny/ui/icon';
 
 /** Builds `[1, '…', 4, 5, 6, '…', 20]` for the given position. */
-export function paginationRange(current: number, count: number, siblings: number): (number | '…')[] {
+export function paginationRange(
+  current: number,
+  count: number,
+  siblings: number,
+): (number | '…')[] {
   const slots = siblings * 2 + 5;
   if (count <= slots) return Array.from({ length: count }, (_, i) => i + 1);
   const left = Math.max(current - siblings, 1);
   const right = Math.min(current + siblings, count);
   const showLeft = left > 2;
   const showRight = right < count - 1;
-  const range = (from: number, to: number) => Array.from({ length: to - from + 1 }, (_, i) => from + i);
+  const range = (from: number, to: number) =>
+    Array.from({ length: to - from + 1 }, (_, i) => from + i);
   if (!showLeft && showRight) return [...range(1, siblings * 2 + 3), '…', count];
   if (showLeft && !showRight) return [1, '…', ...range(count - siblings * 2 - 2, count)];
   return [1, '…', ...range(left, right), '…', count];
@@ -32,7 +37,13 @@ export function paginationRange(current: number, count: number, siblings: number
     <nav [attr.aria-label]="ariaLabel()">
       <ul>
         <li>
-          <button class="page nav" type="button" aria-label="Предыдущая страница" [disabled]="page() <= 1" (click)="go(page() - 1)">
+          <button
+            class="page nav"
+            type="button"
+            aria-label="Предыдущая страница"
+            [disabled]="page() <= 1"
+            (click)="go(page() - 1)"
+          >
             <kn-icon name="chevron-left" />
           </button>
         </li>
@@ -54,7 +65,13 @@ export function paginationRange(current: number, count: number, siblings: number
           </li>
         }
         <li>
-          <button class="page nav" type="button" aria-label="Следующая страница" [disabled]="page() >= pageCount()" (click)="go(page() + 1)">
+          <button
+            class="page nav"
+            type="button"
+            aria-label="Следующая страница"
+            [disabled]="page() >= pageCount()"
+            (click)="go(page() + 1)"
+          >
             <kn-icon name="chevron-right" />
           </button>
         </li>
@@ -181,7 +198,9 @@ export class KnPagination {
   readonly ariaLabel = input<string>('Страницы', { alias: 'aria-label' });
 
   /** Количество страниц. */
-  readonly pageCount = computed(() => Math.max(1, Math.ceil(this.total() / Math.max(1, this.pageSize()))));
+  readonly pageCount = computed(() =>
+    Math.max(1, Math.ceil(this.total() / Math.max(1, this.pageSize()))),
+  );
   protected readonly items = computed(() =>
     paginationRange(Math.min(this.page(), this.pageCount()), this.pageCount(), this.siblings()),
   );

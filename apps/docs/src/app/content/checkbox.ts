@@ -29,7 +29,13 @@ class Playground {
   protected readonly indeterminate = toggle('indeterminate');
   protected readonly disabled = toggle('disabled');
   protected readonly invalid = toggle('invalid');
-  protected readonly controls = [this.label, this.size, this.indeterminate, this.disabled, this.invalid];
+  protected readonly controls = [
+    this.label,
+    this.size,
+    this.indeterminate,
+    this.disabled,
+    this.invalid,
+  ];
   protected readonly code = computed(
     () =>
       `<kn-checkbox [(checked)]="remember"${attrs({
@@ -52,7 +58,8 @@ export default {
     {
       source: 'basic',
       title: 'Группа с «Выбрать все»',
-      description: 'Родительский флажок показывает промежуточное состояние, пока выбрана только часть пунктов.',
+      description:
+        'Родительский флажок показывает промежуточное состояние, пока выбрана только часть пунктов.',
       component: Basic,
     },
   ],
