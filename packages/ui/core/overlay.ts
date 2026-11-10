@@ -126,7 +126,12 @@ export class KnAnchoredOverlay {
 
   /** The rendered root element of the overlay content, if open. */
   get panel(): HTMLElement | null {
-    return (this.overlayRef?.overlayElement.firstElementChild as HTMLElement | null) ?? null;
+    // Skip the sentinel elements a focus trap inserts around the content.
+    return (
+      this.overlayRef?.overlayElement.querySelector<HTMLElement>(
+        ':scope > :not(.cdk-focus-trap-anchor)',
+      ) ?? null
+    );
   }
 
   open(options: KnOverlayOpenOptions): void {
