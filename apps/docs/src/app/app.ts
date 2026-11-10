@@ -150,7 +150,7 @@ const THEME_ICON = { system: 'monitor', light: 'sun', dark: 'moon' };
       transform: none;
     }
 
-    /* A floating glass capsule rather than a full-width bar */
+    /* A floating bar rather than a full-width one */
     .bar {
       position: sticky;
       inset-block-start: var(--kn-space-3);
@@ -183,7 +183,7 @@ const THEME_ICON = { system: 'monitor', light: 'sun', dark: 'moon' };
       text-decoration: none;
     }
 
-    /* The logo is the wallpaper in miniature: a cobalt field, an amber disc, a pane of glass */
+    /* The logo: a cobalt field, an amber disc and a pane in front of them */
     .mark {
       position: relative;
       inline-size: 1.5rem;

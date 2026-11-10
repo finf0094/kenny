@@ -112,7 +112,15 @@ function parseSignalMember(member, sf) {
     description: jsdoc(member),
   };
   if (required) result.required = true;
-  else if (kind !== 'output' && args[0]) result.default = args[0].getText(sf).replace(/\s+/g, ' ');
+  else if (kind !== 'output' && args[0]) {
+    const text = args[0].getText(sf).replace(/\s+/g, ' ');
+    // Defaults that an application can change with provideKnDefaults()
+    const configurable =
+      /^knDefaults\([^)]*\)\.\w+ \?\? (.+)$/.exec(text)?.[1] ??
+      (/^knDefaultSize\(/.test(text) ? "'md'" : null);
+    result.default = configurable ?? text;
+    if (configurable) result.configurable = true;
+  }
   return result;
 }
 
@@ -180,12 +188,23 @@ function parseFile(file, text, classes, aliases) {
         if (parsed) members.push(parsed);
       }
       const selector = objectProp(dec?.arg, 'selector', sf);
+      // Parts: the class names in the template are the hooks for styling from outside
+      const template = objectProp(dec?.arg, 'template', sf);
+      const parts = [];
+      if (template && ts.isStringLiteralLike(template)) {
+        for (const match of template.text.matchAll(/\sclass="([^"]+)"/g)) {
+          for (const name of match[1].split(/\s+/)) {
+            if (name && !name.startsWith('kn-') && !parts.includes(name)) parts.push(name);
+          }
+        }
+      }
       classes.set(node.name.text, {
         name: node.name.text,
         kind: dec ? (dec.name === 'Injectable' ? 'service' : dec.name.toLowerCase()) : 'class',
         selector: selector && ts.isStringLiteralLike(selector) ? selector.text : undefined,
         description: jsdoc(node),
         members,
+        parts,
         base,
         exported,
         file,
@@ -268,6 +287,7 @@ async function collectApi() {
         selector: c.selector,
         description: c.description,
         members: withBase(c),
+        parts: c.parts?.length ? c.parts : undefined,
       }));
     api.set(entry, { classes: list, cssVars: cssVars.get(entry) ?? [] });
   }

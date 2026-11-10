@@ -8,22 +8,22 @@ const GROUPS: { id: string; title: string; text: string }[] = [
   {
     id: 'color',
     title: 'Цвет',
-    text: 'Палитры (accent, ink) — сырьё; семантические токены (--kn-color-*, --kn-glass-*) — то, что читают компоненты. Переопределяйте палитру, чтобы перекрасить всё, или отдельный семантический токен, чтобы изменить одну роль.',
+    text: 'Палитры (accent, ink) — сырьё; семантические токены (--kn-color-*) — то, что читают компоненты. Переопределяйте палитру, чтобы перекрасить всё, или отдельный семантический токен, чтобы изменить одну роль.',
   },
   {
     id: 'typography',
     title: 'Типографика',
-    text: 'Шкала построена от основного текста 15 px. Заголовки используют тесный трекинг, цифры в таблицах — tabular-nums.',
+    text: 'По умолчанию — системный шрифт: ничего не нужно загружать. Шкала построена от основного текста 15 px; заголовки используют тесный трекинг, цифры в таблицах — tabular-nums.',
   },
   {
     id: 'layout',
     title: 'Отступы, размеры, радиусы',
-    text: 'Сетка 4 px. Три высоты контролов общие для кнопок, полей и вкладок. Радиусы концентрические: вложенный меньше внешнего на величину отступа.',
+    text: 'Сетка 4 px. Три высоты контролов общие для кнопок, полей и вкладок. Радиусы концентрические: вложенный меньше внешнего на величину отступа. Форма кнопок и вид полей — отдельные токены.',
   },
   {
     id: 'elevation',
-    title: 'Тени и стекло',
-    text: 'Тени тонированы кобальтом. Тени со словом glass включают блик и контур стеклянной кромки.',
+    title: 'Тени и высота',
+    text: 'Тени --kn-shadow-* — сырьё. Роли --kn-elevation-* говорят, чем поверхность отделяется от страницы: рамкой, тенью или и тем и другим. Компоненты используют роли.',
   },
   {
     id: 'motion',
@@ -50,7 +50,7 @@ type Preview = 'color' | 'space' | 'radius' | 'shadow' | 'text' | 'none';
           knInput
           type="search"
           aria-label="Фильтр токенов"
-          placeholder="Фильтр: glass, radius, duration…"
+          placeholder="Фильтр: surface, radius, duration…"
           (input)="query.set($any($event.target).value)"
         />
       </kn-input-group>
@@ -251,15 +251,11 @@ export default class TokensPage {
 
   protected preview(token: TokenDoc): Preview {
     const name = token.name;
-    if (
-      /^--kn-(accent|ink|color)-/.test(name) ||
-      /^--kn-glass-(bg|border|edge|specular)/.test(name) ||
-      name.startsWith('--kn-shadow-color')
-    )
+    if (/^--kn-(accent|ink|color)-/.test(name) || name.startsWith('--kn-shadow-color'))
       return 'color';
     if (/^--kn-(space|size)-/.test(name)) return 'space';
     if (name.startsWith('--kn-radius-')) return 'radius';
-    if (name.startsWith('--kn-shadow-') || name === '--kn-surface-rim') return 'shadow';
+    if (/^--kn-(shadow|elevation)-/.test(name) || name === '--kn-surface-rim') return 'shadow';
     if (name.startsWith('--kn-text-')) return 'text';
     return 'none';
   }

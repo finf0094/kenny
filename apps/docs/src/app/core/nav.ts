@@ -16,6 +16,7 @@ export const guides: NavItem[] = [
   { path: '/docs/getting-started', title: 'Начало работы', icon: 'zap' },
   { path: '/docs/installation', title: 'Установка', icon: 'box' },
   { path: '/docs/presets', title: 'Стили', icon: 'grid' },
+  { path: '/docs/builder', title: 'Конструктор стиля', icon: 'sliders' },
   { path: '/docs/theming', title: 'Темизация', icon: 'droplet' },
   { path: '/docs/tokens', title: 'Токены', icon: 'layers' },
   { path: '/docs/motion', title: 'Motion', icon: 'motion' },

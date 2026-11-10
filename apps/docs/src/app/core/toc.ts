@@ -85,9 +85,9 @@ export class TocService {
     nav {
       padding: var(--kn-space-4);
       border-radius: var(--kn-radius-lg);
-      background: var(--kn-color-surface-raised);
-      backdrop-filter: var(--kn-surface-filter-raised);
-      -webkit-backdrop-filter: var(--kn-surface-filter-raised);
+      background: var(--docs-sheet);
+      backdrop-filter: var(--docs-sheet-filter);
+      -webkit-backdrop-filter: var(--docs-sheet-filter);
       box-shadow: var(--kn-elevation-raised);
     }
 

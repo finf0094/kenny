@@ -12,7 +12,7 @@ import { KnSidebar } from '@kenny/ui/sidebar';
 import { DocsToc, TocService } from '../core/toc';
 import { DocsNav } from './docs-nav';
 
-/** Three columns: navigation, article on a glass sheet, table of contents. */
+/** Three columns: navigation, the article on a surface, table of contents. */
 @Component({
   selector: 'docs-layout',
   imports: [RouterOutlet, KnSidebar, DocsNav, DocsToc],
@@ -55,9 +55,9 @@ import { DocsNav } from './docs-nav';
       min-inline-size: 0;
       padding: clamp(var(--kn-space-5), 4vw, var(--kn-space-12));
       border-radius: var(--kn-radius-xl);
-      background: var(--kn-color-surface-raised);
-      backdrop-filter: var(--kn-surface-filter-raised);
-      -webkit-backdrop-filter: var(--kn-surface-filter-raised);
+      background: var(--docs-sheet);
+      backdrop-filter: var(--docs-sheet-filter);
+      -webkit-backdrop-filter: var(--docs-sheet-filter);
       box-shadow: var(--kn-elevation-card);
     }
 

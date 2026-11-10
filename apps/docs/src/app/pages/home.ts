@@ -50,17 +50,17 @@ const PERIODS = [
     <main id="content" class="home">
       <section class="hero" aria-labelledby="hero-title">
         <div class="pitch">
-          <h1 id="hero-title">Компоненты для Angular в четырёх стилях</h1>
+          <h1 id="hero-title">Компоненты для Angular в вашем стиле</h1>
           <p class="lead">
-            {{ count }} доступных компонентов на signals. Стекло, классика, тональный или строгий —
-            стиль меняется значениями токенов, компоненты те же. Светлая и тёмная темы, из
-            зависимостей — только Angular CDK.
+            {{ count }} доступных компонентов на signals. Нейтральная основа и готовые стили —
+            стекло, тональный, строгий, мягкий — или свой, собранный в конструкторе. Светлая и
+            тёмная темы, из зависимостей — только Angular CDK.
           </p>
           <div class="cta">
             <a kn-button size="lg" routerLink="/docs/getting-started">Начать работу</a>
-            <a kn-button size="lg" variant="outline" tone="neutral" routerLink="/components/button"
-              >Смотреть компоненты</a
-            >
+            <a kn-button size="lg" variant="outline" tone="neutral" routerLink="/docs/builder">
+              Собрать свой стиль
+            </a>
           </div>
           <button
             class="install"
@@ -158,6 +158,20 @@ const PERIODS = [
               <button kn-button size="sm" [loading]="saving()" (click)="save()">Сохранить</button>
             </div>
           </kn-card>
+
+          <div class="styles" role="group" aria-label="Стиль сайта">
+            <span class="styles-label">Тот же код в другом стиле</span>
+            @for (preset of presets; track preset.id) {
+              <button
+                class="chip"
+                type="button"
+                [attr.aria-pressed]="theme.preset() === preset.id"
+                (click)="theme.preset.set(preset.id)"
+              >
+                {{ preset.label }}
+              </button>
+            }
+          </div>
         </div>
       </section>
 
@@ -186,7 +200,7 @@ const PERIODS = [
             <code>data-kn-preset</code> переключает стиль, <code>data-theme</code> — тему, а шкала
             из одиннадцати значений перекрашивает акцент. Нажмите — изменится весь сайт.
           </p>
-          <a routerLink="/docs/presets">Стили и свой пресет</a>
+          <a routerLink="/docs/presets">Все стили и три уровня настройки</a>
         </div>
         <div class="tray plain choices">
           <div class="choice" role="group" aria-label="Стиль сайта">
@@ -347,11 +361,56 @@ const PERIODS = [
 
     .focus-card {
       --kn-card-radius: var(--kn-radius-2xl);
-      box-shadow: var(--kn-elevation-modal);
+      --kn-card-shadow: var(--kn-elevation-modal);
     }
 
     .focus-card ::ng-deep .body {
       gap: var(--kn-space-5);
+    }
+
+    /* The point of the library in one gesture: switch the style, the card stays the same code */
+    .styles {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--kn-space-1-5);
+      margin-block-start: var(--kn-space-5);
+    }
+
+    .styles-label {
+      flex-basis: 100%;
+      margin-block-end: var(--kn-space-1);
+      font-size: var(--kn-text-sm);
+      color: var(--kn-color-text-muted);
+    }
+
+    .chip {
+      block-size: var(--kn-size-sm);
+      padding: 0 var(--kn-space-3);
+      border: 0;
+      border-radius: var(--kn-radius-control);
+      background: var(--kn-color-surface);
+      box-shadow: var(--kn-elevation-raised);
+      color: var(--kn-color-text);
+      font: inherit;
+      font-size: var(--kn-text-sm);
+      font-weight: var(--kn-weight-medium);
+      cursor: pointer;
+    }
+
+    .chip:hover {
+      background: var(--kn-color-surface-sunken);
+    }
+
+    .chip[aria-pressed='true'] {
+      background: var(--kn-color-accent);
+      box-shadow: none;
+      color: var(--kn-color-on-accent);
+    }
+
+    .chip:focus-visible {
+      outline: var(--kn-focus-width) solid var(--kn-color-focus);
+      outline-offset: var(--kn-focus-offset);
     }
 
     .row {
@@ -529,9 +588,9 @@ const PERIODS = [
       margin-block: var(--kn-space-12) var(--kn-space-8);
       padding: clamp(var(--kn-space-6), 4vw, var(--kn-space-12));
       border-radius: var(--kn-radius-2xl);
-      background: var(--kn-color-surface-raised);
-      backdrop-filter: var(--kn-surface-filter-raised);
-      -webkit-backdrop-filter: var(--kn-surface-filter-raised);
+      background: var(--docs-sheet);
+      backdrop-filter: var(--docs-sheet-filter);
+      -webkit-backdrop-filter: var(--docs-sheet-filter);
       box-shadow: var(--kn-elevation-card);
     }
 

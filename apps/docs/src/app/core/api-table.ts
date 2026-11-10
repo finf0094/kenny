@@ -69,6 +69,11 @@ const KIND_LABEL: Record<string, string> = {
                   <td>
                     @if (member.default !== undefined) {
                       <code>{{ member.default }}</code>
+                      @if (member.configurable) {
+                        <span class="configurable" title="Меняется через provideKnDefaults()">
+                          настраивается
+                        </span>
+                      }
                     } @else {
                       <span class="none">—</span>
                     }
@@ -80,6 +85,14 @@ const KIND_LABEL: Record<string, string> = {
           </tbody>
         </table>
       </div>
+    }
+    @if (api().parts; as parts) {
+      <p class="parts">
+        <span class="parts-title">Части для своих стилей:</span>
+        @for (part of parts; track part) {
+          <code>{{ partSelector(part) }}</code>
+        }
+      </p>
     }
   `,
   styles: `
@@ -184,6 +197,28 @@ const KIND_LABEL: Record<string, string> = {
       line-height: var(--kn-leading-normal);
     }
 
+    .configurable {
+      display: block;
+      margin-block-start: 2px;
+      font-size: var(--kn-text-xs);
+      color: var(--kn-color-text-subtle);
+      white-space: nowrap;
+      cursor: help;
+    }
+
+    .parts {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--kn-space-1-5);
+      margin: var(--kn-space-3) 0 0;
+      font-size: var(--kn-text-sm);
+    }
+
+    .parts-title {
+      color: var(--kn-color-text-muted);
+    }
+
     .required {
       margin-inline-start: 2px;
       color: var(--kn-color-danger);
@@ -211,6 +246,12 @@ export class DocsApiTable {
       members: this.api().members.filter((member) => member.kind === kind),
     })).filter((group) => group.members.length > 0),
   );
+
+  /** A selector that reaches the part from outside: host selector, then the class. */
+  protected partSelector(part: string): string {
+    const host = (this.api().selector ?? '').split(',')[0].trim();
+    return `${host} .${part}`;
+  }
 
   protected display(member: ApiMember): string {
     if (member.kind === 'model') return `[(${member.name})]`;

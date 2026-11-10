@@ -15,6 +15,8 @@ export interface ApiMember {
   description: string;
   default?: string;
   required?: boolean;
+  /** The default can be changed for the whole application with `provideKnDefaults()`. */
+  configurable?: boolean;
 }
 
 export interface ApiClass {
@@ -23,6 +25,8 @@ export interface ApiClass {
   selector?: string;
   description: string;
   members: ApiMember[];
+  /** Class names inside the template: hooks for styling the component from outside. */
+  parts?: string[];
 }
 
 export interface CssVarDoc {

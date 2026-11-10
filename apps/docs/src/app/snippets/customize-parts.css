@@ -1,0 +1,15 @@
+/* Уровень 3. Свой CSS по частям компонента — когда переменных не хватает. */
+
+/* Часть — это класс внутри компонента. Начните селектор со стиля или с :root. */
+[data-kn-preset='brand'] kn-switch .thumb {
+  border-radius: 0.25rem;
+}
+
+:root kn-tabs .tab[aria-selected='true'] {
+  font-weight: 700;
+}
+
+/* Все поля разом: у колодца любого поля есть общий класс kn-control. */
+:root .kn-control {
+  transition: box-shadow 140ms;
+}

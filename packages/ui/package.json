@@ -1,13 +1,14 @@
 {
   "name": "@kenny/ui",
   "version": "0.1.0",
-  "description": "Kenny — стеклянная UI-библиотека для Angular: доступные компоненты, signals, продуманная анимация.",
+  "description": "Kenny — UI-библиотека для Angular: доступные компоненты на signals с настраиваемым стилем — от токенов до отдельных частей.",
   "keywords": [
     "angular",
     "ui",
     "components",
     "design-system",
-    "glass",
+    "theming",
+    "design-tokens",
     "a11y",
     "signals"
   ],

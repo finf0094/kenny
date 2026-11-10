@@ -22,6 +22,7 @@ export const routes: Routes = [
       guide('getting-started', 'Начало работы', () => import('./pages/getting-started')),
       guide('installation', 'Установка', () => import('./pages/installation')),
       guide('presets', 'Стили', () => import('./pages/presets')),
+      guide('builder', 'Конструктор стиля', () => import('./pages/builder')),
       guide('theming', 'Темизация', () => import('./pages/theming')),
       guide('tokens', 'Токены', () => import('./pages/tokens')),
       guide('motion', 'Motion', () => import('./pages/motion')),
