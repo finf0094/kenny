@@ -1,0 +1,131 @@
+/*
+ * Kenny tokens — motion.
+ *
+ * Rules of the system:
+ *  - animate only `transform` and `opacity` (height uses a grid-row trick, see Collapse);
+ *  - frequent actions use `fast`, surfaces entering the screen use `normal`/`slow`;
+ *  - springs are for things the user moves or toggles, standard curves for the rest;
+ *  - every duration is a token, so `prefers-reduced-motion` switches the whole system off here.
+ */
+:root {
+  --kn-duration-instant: 80ms;
+  --kn-duration-fast: 140ms;
+  --kn-duration-normal: 220ms;
+  --kn-duration-slow: 360ms;
+  --kn-duration-slower: 560ms;
+
+  --kn-ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --kn-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --kn-ease-in: cubic-bezier(0.4, 0, 1, 1);
+  /* Damped spring, ζ = 0.62: one soft overshoot (≈8%) */
+  --kn-ease-spring: linear(
+    0, 0.067, 0.223, 0.414, 0.603, 0.767, 0.896, 0.988, 1.045, 1.075, 1.084, 1.079, 1.066, 1.05,
+    1.034, 1.02, 1.009, 1.001, 0.996, 0.994, 0.993, 0.993, 0.994, 0.996, 0.997, 0.998, 0.999, 1, 1
+  );
+  /* Livelier spring, ζ = 0.45: for small toggles (switch thumb, checkmark) */
+  --kn-ease-spring-bouncy: linear(
+    0, 0.079, 0.27, 0.509, 0.744, 0.943, 1.087, 1.172, 1.204, 1.196, 1.161, 1.113, 1.064, 1.021,
+    0.988, 0.968, 0.959, 0.959, 0.965, 0.974, 0.984, 0.994, 1.001, 1.006, 1.008, 1.009, 1.008, 1.006,
+    1.004, 1.002, 1, 0.999, 0.998, 0.998, 0.998, 0.999, 1
+  );
+
+  /* Stagger step for list items: `animation-delay: calc(var(--kn-index) * var(--kn-stagger))` */
+  --kn-stagger: 28ms;
+
+  /* Inline direction multiplier, lets keyframes slide correctly in RTL */
+  --kn-dir: 1;
+}
+
+[dir='rtl'] {
+  --kn-dir: -1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --kn-duration-instant: 0.01ms;
+    --kn-duration-fast: 0.01ms;
+    --kn-duration-normal: 0.01ms;
+    --kn-duration-slow: 0.01ms;
+    --kn-duration-slower: 0.01ms;
+    --kn-stagger: 0ms;
+  }
+}
+
+/* Shared keyframes. Components reference them by name; all are transform/opacity only. */
+@keyframes kn-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes kn-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+/* Popovers, menus, selects: grow out of the trigger */
+@keyframes kn-pop-in {
+  from {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+}
+
+@keyframes kn-pop-out {
+  to {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+}
+
+/* Dialogs, command palette: rise and settle */
+@keyframes kn-rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.96);
+  }
+}
+
+@keyframes kn-rise-out {
+  to {
+    opacity: 0;
+    transform: translateY(10px) scale(0.97);
+  }
+}
+
+/* Drawers: `--kn-slide-x` / `--kn-slide-y` are set by the component (−100%, 0 or 100%) */
+@keyframes kn-slide-in {
+  from {
+    transform: translate(calc(var(--kn-slide-x, 0%) * var(--kn-dir)), var(--kn-slide-y, 0%));
+  }
+}
+
+@keyframes kn-slide-out {
+  to {
+    transform: translate(calc(var(--kn-slide-x, 0%) * var(--kn-dir)), var(--kn-slide-y, 0%));
+  }
+}
+
+/* Lists: items arrive one after another */
+@keyframes kn-stagger-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+@keyframes kn-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes kn-shimmer {
+  from {
+    transform: translateX(calc(-100% * var(--kn-dir)));
+  }
+  to {
+    transform: translateX(calc(100% * var(--kn-dir)));
+  }
+}

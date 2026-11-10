@@ -1,0 +1,33 @@
+/* Kenny tokens — typography. */
+:root {
+  --kn-font-sans:
+    'Onest Variable', 'Onest', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif;
+  --kn-font-mono:
+    'JetBrains Mono Variable', 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+
+  /* Scale: minor third from 15px body, rounded to the pixel grid */
+  --kn-text-xs: 0.75rem; /* 12 */
+  --kn-text-sm: 0.8125rem; /* 13 */
+  --kn-text-md: 0.9375rem; /* 15 */
+  --kn-text-lg: 1.0625rem; /* 17 */
+  --kn-text-xl: 1.25rem; /* 20 */
+  --kn-text-2xl: 1.5rem; /* 24 */
+  --kn-text-3xl: 2rem; /* 32 */
+  --kn-text-4xl: 2.75rem; /* 44 */
+  --kn-text-5xl: 3.75rem; /* 60 */
+
+  --kn-leading-tight: 1.1;
+  --kn-leading-snug: 1.3;
+  --kn-leading-normal: 1.5;
+  --kn-leading-relaxed: 1.65;
+
+  --kn-weight-regular: 400;
+  --kn-weight-medium: 500;
+  --kn-weight-semibold: 600;
+  --kn-weight-bold: 700;
+
+  --kn-tracking-tight: -0.035em;
+  --kn-tracking-snug: -0.015em;
+  --kn-tracking-normal: 0;
+}

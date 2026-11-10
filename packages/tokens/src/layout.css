@@ -1,0 +1,45 @@
+/* Kenny tokens — spacing, sizing, radii, stacking. */
+:root {
+  /* Spacing: 4px grid */
+  --kn-space-0-5: 0.125rem; /* 2 */
+  --kn-space-1: 0.25rem; /* 4 */
+  --kn-space-1-5: 0.375rem; /* 6 */
+  --kn-space-2: 0.5rem; /* 8 */
+  --kn-space-3: 0.75rem; /* 12 */
+  --kn-space-4: 1rem; /* 16 */
+  --kn-space-5: 1.25rem; /* 20 */
+  --kn-space-6: 1.5rem; /* 24 */
+  --kn-space-8: 2rem; /* 32 */
+  --kn-space-10: 2.5rem; /* 40 */
+  --kn-space-12: 3rem; /* 48 */
+  --kn-space-16: 4rem; /* 64 */
+  --kn-space-20: 5rem; /* 80 */
+
+  /* Control heights — every interactive component shares these three sizes */
+  --kn-size-sm: 1.875rem; /* 30 */
+  --kn-size-md: 2.375rem; /* 38 */
+  --kn-size-lg: 2.875rem; /* 46 */
+
+  /*
+   * Radii are concentric: a control inside a card inside a sheet keeps a constant
+   * gap between the curves (inner radius = outer radius − padding).
+   */
+  --kn-radius-xs: 0.375rem; /* 6  — checkmarks, tags */
+  --kn-radius-sm: 0.625rem; /* 10 — menu items, small fields */
+  --kn-radius-md: 0.875rem; /* 14 — fields, popovers */
+  --kn-radius-lg: 1.25rem; /* 20 — cards, panels */
+  --kn-radius-xl: 1.75rem; /* 28 — dialogs, sheets */
+  --kn-radius-2xl: 2.25rem; /* 36 — hero surfaces */
+  --kn-radius-full: 999px; /* capsules */
+
+  /* Stacking */
+  --kn-z-base: 0;
+  --kn-z-raised: 1;
+  --kn-z-sticky: 100;
+  --kn-z-overlay: 1000;
+  --kn-z-toast: 1100;
+
+  /* Focus ring */
+  --kn-focus-width: 2px;
+  --kn-focus-offset: 2px;
+}

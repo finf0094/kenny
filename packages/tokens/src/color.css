@@ -1,0 +1,110 @@
+/*
+ * Kenny tokens — colour.
+ *
+ * Two layers:
+ *  1. Palette scales (`--kn-accent-*`, `--kn-ink-*`): raw values, override these to re-brand.
+ *  2. Semantic tokens (`--kn-color-*`, `--kn-glass-*`): what components consume.
+ *
+ * Semantic tokens are written with `light-dark()`, so the active theme is decided by
+ * `color-scheme` on the nearest ancestor. Switching themes never needs a rebuild and
+ * themes can be nested (`<section data-theme="dark">`).
+ */
+:root {
+  color-scheme: light dark;
+
+  /* Palette: cobalt */
+  --kn-accent-50: #eef3ff;
+  --kn-accent-100: #dce6ff;
+  --kn-accent-200: #bacdff;
+  --kn-accent-300: #9db9ff;
+  --kn-accent-400: #6e96ff;
+  --kn-accent-500: #3d6bf5;
+  --kn-accent-600: #1f4bdb;
+  --kn-accent-700: #1a40c2;
+  --kn-accent-800: #1636a6;
+  --kn-accent-900: #0e2060;
+  --kn-accent-950: #071233;
+
+  /* Palette: ink — neutrals tinted towards cobalt, never pure grey */
+  --kn-ink-0: #ffffff;
+  --kn-ink-50: #f4f6fb;
+  --kn-ink-100: #e9edf5;
+  --kn-ink-200: #d6dce9;
+  --kn-ink-300: #b4bdd0;
+  --kn-ink-400: #8c97b0;
+  --kn-ink-500: #67728d;
+  --kn-ink-600: #4a546e;
+  --kn-ink-700: #343d55;
+  --kn-ink-800: #1b2340;
+  --kn-ink-900: #10162b;
+  --kn-ink-950: #060915;
+
+  /* Surfaces */
+  --kn-color-canvas: light-dark(#eef1f8, var(--kn-ink-950));
+  --kn-color-surface: light-dark(var(--kn-ink-0), var(--kn-ink-900));
+  --kn-color-surface-raised: light-dark(var(--kn-ink-0), #161d36);
+  --kn-color-surface-sunken: light-dark(rgb(12 19 48 / 0.055), rgb(238 242 255 / 0.07));
+
+  /* Text */
+  --kn-color-text: light-dark(#0c1330, #eef2ff);
+  --kn-color-text-muted: light-dark(var(--kn-ink-600), #a3aecb);
+  --kn-color-text-subtle: light-dark(var(--kn-ink-500), #8792b3);
+  --kn-color-text-disabled: light-dark(rgb(12 19 48 / 0.38), rgb(238 242 255 / 0.36));
+
+  /* Lines */
+  --kn-color-border: light-dark(rgb(12 19 48 / 0.1), rgb(238 242 255 / 0.1));
+  --kn-color-border-strong: light-dark(rgb(12 19 48 / 0.22), rgb(238 242 255 / 0.24));
+
+  /* Accent */
+  --kn-color-accent: light-dark(var(--kn-accent-600), var(--kn-accent-400));
+  --kn-color-accent-hover: light-dark(var(--kn-accent-700), var(--kn-accent-300));
+  --kn-color-accent-active: light-dark(var(--kn-accent-800), var(--kn-accent-200));
+  --kn-color-on-accent: light-dark(#ffffff, var(--kn-accent-950));
+  --kn-color-accent-soft: light-dark(
+    color-mix(in srgb, var(--kn-accent-600) 11%, transparent),
+    color-mix(in srgb, var(--kn-accent-400) 18%, transparent)
+  );
+  --kn-color-accent-soft-hover: light-dark(
+    color-mix(in srgb, var(--kn-accent-600) 17%, transparent),
+    color-mix(in srgb, var(--kn-accent-400) 26%, transparent)
+  );
+  --kn-color-accent-text: light-dark(var(--kn-accent-700), var(--kn-accent-300));
+
+  /* Status */
+  --kn-color-success: light-dark(#0f7a4d, #4fd69c);
+  --kn-color-success-soft: light-dark(rgb(15 122 77 / 0.12), rgb(79 214 156 / 0.16));
+  --kn-color-warning: light-dark(#8f5400, #ffc260);
+  --kn-color-warning-soft: light-dark(rgb(214 138 0 / 0.16), rgb(255 194 96 / 0.16));
+  --kn-color-danger: light-dark(#c4263a, #ff7a85);
+  --kn-color-danger-hover: light-dark(#a81f31, #ff939c);
+  --kn-color-danger-soft: light-dark(rgb(196 38 58 / 0.1), rgb(255 122 133 / 0.16));
+  --kn-color-on-danger: light-dark(#ffffff, #3a060c);
+
+  /* Interaction layers — painted on top of any surface */
+  --kn-color-hover: light-dark(rgb(12 19 48 / 0.06), rgb(238 242 255 / 0.08));
+  --kn-color-pressed: light-dark(rgb(12 19 48 / 0.1), rgb(238 242 255 / 0.14));
+  --kn-color-scrim: light-dark(rgb(8 12 28 / 0.32), rgb(0 0 0 / 0.56));
+  --kn-color-focus: light-dark(var(--kn-accent-600), var(--kn-accent-300));
+
+  /*
+   * Glass — the signature material.
+   * A translucent tint, a backdrop blur that also lifts saturation, a specular
+   * highlight on the top edge and a hairline that separates the pane from what is behind.
+   */
+  --kn-glass-bg: light-dark(rgb(255 255 255 / 0.6), rgb(27 35 64 / 0.56));
+  --kn-glass-bg-strong: light-dark(rgb(255 255 255 / 0.84), rgb(20 27 51 / 0.86));
+  --kn-glass-bg-subtle: light-dark(rgb(255 255 255 / 0.34), rgb(238 242 255 / 0.06));
+  --kn-glass-border: light-dark(rgb(255 255 255 / 0.72), rgb(255 255 255 / 0.1));
+  --kn-glass-edge: light-dark(rgb(12 19 48 / 0.08), rgb(0 0 0 / 0.5));
+  --kn-glass-specular: light-dark(rgb(255 255 255 / 0.95), rgb(255 255 255 / 0.18));
+  --kn-glass-filter: blur(22px) saturate(180%);
+  --kn-glass-filter-strong: blur(40px) saturate(190%);
+}
+
+[data-theme='light'] {
+  color-scheme: light;
+}
+
+[data-theme='dark'] {
+  color-scheme: dark;
+}

@@ -1,0 +1,42 @@
+/*
+ * Base layer: page defaults that make the tokens feel at home, plus the modal scrim.
+ * Import after the tokens: `@import '@kenny/tokens/base.css';`
+ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--kn-color-canvas);
+  color: var(--kn-color-text);
+  font-family: var(--kn-font-sans);
+  font-size: var(--kn-text-md);
+  line-height: var(--kn-leading-normal);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--kn-color-accent) 28%, transparent);
+}
+
+:focus-visible {
+  outline: var(--kn-focus-width) solid var(--kn-color-focus);
+  outline-offset: var(--kn-focus-offset);
+}
+
+/* Dimmed, slightly blurred backdrop behind modal surfaces (dialog, drawer, command palette). */
+.kn-overlay-scrim {
+  background: var(--kn-color-scrim);
+  backdrop-filter: blur(6px) saturate(140%);
+  -webkit-backdrop-filter: blur(6px) saturate(140%);
+}

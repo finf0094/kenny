@@ -1,0 +1,36 @@
+/*
+ * The wallpaper glass sits on. Crisp cobalt and amber discs (not blurry blobs):
+ * hard edges are what make the backdrop blur of a glass pane visible.
+ */
+.kn-wallpaper {
+  --_disc-a: light-dark(#2f5ff0, #2a52d6);
+  --_disc-b: light-dark(#ffb23e, #e08a1c);
+  --_disc-c: light-dark(#8fb0ff, #16328f);
+  --_ring: light-dark(rgb(31 75 219 / 0.16), rgb(157 185 255 / 0.14));
+  background-color: var(--kn-color-canvas);
+  background-image:
+    radial-gradient(circle at 82% 12%, var(--_disc-a) 0 9rem, transparent calc(9rem + 1px)),
+    radial-gradient(circle at 68% 34%, var(--_disc-b) 0 3.25rem, transparent calc(3.25rem + 1px)),
+    radial-gradient(
+      circle at 82% 12%,
+      transparent 0 13rem,
+      var(--_ring) 13rem calc(13rem + 1.5px),
+      transparent calc(13rem + 2.5px)
+    ),
+    radial-gradient(circle at 8% 88%, var(--_disc-c) 0 11rem, transparent calc(11rem + 1px)),
+    radial-gradient(120% 90% at 100% 0%, light-dark(#dfe8ff, #0b1436) 0%, transparent 60%);
+  background-repeat: no-repeat;
+}
+
+/* Compact variant for demo stages */
+.kn-wallpaper-sm {
+  --_disc-a: light-dark(#2f5ff0, #2a52d6);
+  --_disc-b: light-dark(#ffb23e, #e08a1c);
+  --_disc-c: light-dark(#a9c1ff, #16328f);
+  background-color: light-dark(#e9eef9, #080d1f);
+  background-image:
+    radial-gradient(circle at 88% -10%, var(--_disc-a) 0 6.5rem, transparent calc(6.5rem + 1px)),
+    radial-gradient(circle at 70% 68%, var(--_disc-b) 0 1.75rem, transparent calc(1.75rem + 1px)),
+    radial-gradient(circle at 4% 110%, var(--_disc-c) 0 7rem, transparent calc(7rem + 1px));
+  background-repeat: no-repeat;
+}
