@@ -27,6 +27,8 @@ body::before {
   --_ring-r: 15.5rem;
   --_spot-x: 69%;
   --_spot-y: 24rem;
+  --_spot-r: 3.5rem;
+  --_pool-r: 13rem;
 
   content: '';
   position: fixed;
@@ -41,8 +43,8 @@ body::before {
     ),
     radial-gradient(
       circle at var(--_spot-x) var(--_spot-y),
-      light-dark(#ffb23e, #e08a1c) 0 3.5rem,
-      transparent calc(3.5rem + 1px)
+      light-dark(#ffb23e, #e08a1c) 0 var(--_spot-r),
+      transparent calc(var(--_spot-r) + 1px)
     ),
     radial-gradient(
       circle at var(--_disc-x) var(--_disc-y),
@@ -50,16 +52,34 @@ body::before {
       light-dark(rgb(31 75 219 / 0.16), rgb(157 185 255 / 0.14)) var(--_ring-r) calc(var(--_ring-r) + 1.5px),
       transparent calc(var(--_ring-r) + 2.5px)
     ),
-    radial-gradient(circle at 4% 96%, light-dark(#a9c1ff, #16328f) 0 13rem, transparent calc(13rem + 1px)),
+    radial-gradient(circle at 4% 96%, light-dark(#bccfff, #16328f) 0 var(--_pool-r), transparent calc(var(--_pool-r) + 1px)),
     radial-gradient(120% 90% at 100% 0%, light-dark(#dfe8ff, #0b1436) 0%, transparent 60%);
   background-repeat: no-repeat;
 }
 
-/* The home page is composed around the full disc */
-html:has(main.home) body::before {
-  --_disc-x: 86%;
-  --_disc-y: 9rem;
-  --_spot-y: 22rem;
+/* The home page is composed around the full disc, while its hero has two columns */
+@media (min-width: 60rem) {
+  html:has(main.home) body::before {
+    --_disc-x: 86%;
+    --_disc-y: 9rem;
+    --_spot-y: 22rem;
+  }
+}
+
+/*
+ * One column: text runs edge to edge and scrolls over the whole canvas, so the shapes
+ * retreat to the corners — the disc hides behind the sticky bar, the amber spot goes away.
+ */
+@media (max-width: 56rem) {
+  body::before {
+    --_disc-x: 100%;
+    --_disc-y: 0rem;
+    --_disc-r: 7rem;
+    --_ring-r: 10rem;
+    --_spot-r: 0rem;
+    --_spot-y: -10rem;
+    --_pool-r: 8rem;
+  }
 }
 
 a {

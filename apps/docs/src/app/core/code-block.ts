@@ -53,6 +53,9 @@ import { DemoSource } from './doc-types';
       font-size: var(--kn-text-sm);
       line-height: 1.6;
       tab-size: 2;
+      /* Code reads left to right in every locale */
+      direction: ltr;
+      text-align: left;
     }
 
     .code:focus-visible {

@@ -1,5 +1,8 @@
 import { CdkDrag, CdkDragDrop, CdkDropList, CdkDropListGroup } from '@angular/cdk/drag-drop';
+import { BreakpointObserver } from '@angular/cdk/layout';
+import { NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject, signal, TemplateRef, viewChild, ViewEncapsulation } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
 import { KnAvatar } from '@kenny/ui/avatar';
 import { KnBadge } from '@kenny/ui/badge';
@@ -8,6 +11,7 @@ import { KnButton } from '@kenny/ui/button';
 import { KnCombobox } from '@kenny/ui/combobox';
 import { KnDatePicker } from '@kenny/ui/date-picker';
 import { KnDialog, KnDialogBody, KnDialogFooter, KnDialogHeader, KnDialogRef } from '@kenny/ui/dialog';
+import { KnDrawer, KnDrawerBody, KnDrawerHeader } from '@kenny/ui/drawer';
 import { KnEmptyState } from '@kenny/ui/empty-state';
 import { KnField } from '@kenny/ui/field';
 import { KnIcon } from '@kenny/ui/icon';
@@ -18,6 +22,7 @@ import { KnOption, KnSelect } from '@kenny/ui/select';
 import { KnSplitter, KnSplitterHandle, KnSplitterPanel } from '@kenny/ui/splitter';
 import { KnTextarea } from '@kenny/ui/textarea';
 import { KnToaster } from '@kenny/ui/toast';
+import { map } from 'rxjs';
 
 type ColumnId = 'todo' | 'doing' | 'review' | 'done';
 type Priority = 'low' | 'medium' | 'high';
@@ -58,6 +63,7 @@ const TASKS: Task[] = [
 
 @Component({
   imports: [
+    NgTemplateOutlet,
     RouterLink,
     CdkDropListGroup,
     CdkDropList,
@@ -91,6 +97,8 @@ const TASKS: Task[] = [
     KnDialogHeader,
     KnDialogBody,
     KnDialogFooter,
+    KnDrawerHeader,
+    KnDrawerBody,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   // The drag preview is moved to <body> by the CDK, so its styles cannot be scoped to the component.
@@ -108,116 +116,132 @@ const TASKS: Task[] = [
         <button kn-button (click)="openCreate()"><kn-icon name="plus" /> Новая задача</button>
       </header>
 
-      <kn-splitter class="kb-frame">
-        <kn-splitter-panel [min]="45">
-          <div class="kb-board" cdkDropListGroup>
-            @for (column of columns; track column.id) {
-              <section class="kb-column" [attr.aria-labelledby]="'kb-' + column.id">
-                <h2 [id]="'kb-' + column.id">
-                  {{ column.title }} <kn-badge>{{ tasksOf(column.id).length }}</kn-badge>
-                </h2>
-                <div class="kb-list" cdkDropList [cdkDropListData]="column.id" (cdkDropListDropped)="drop($event)">
-                  @for (task of tasksOf(column.id); track task.id) {
-                    <article
-                      class="kb-card"
-                      cdkDrag
-                      [cdkDragData]="task"
-                      [attr.data-selected]="task.id === selectedId() ? '' : null"
-                      [knContextMenu]="taskMenu"
-                      [knContextMenuData]="{ $implicit: task }"
-                    >
-                      <div class="kb-card-top">
-                        <button class="kb-card-open" type="button" [attr.aria-pressed]="task.id === selectedId()" (click)="selectedId.set(task.id)">
-                          {{ task.title }}
-                        </button>
-                        <button
-                          kn-icon-button
-                          size="sm"
-                          variant="ghost"
-                          tone="neutral"
-                          [attr.aria-label]="'Действия: ' + task.title"
-                          [knMenuTrigger]="taskMenu"
-                          [knMenuData]="{ $implicit: task }"
-                        >
-                          <kn-icon name="more" />
-                        </button>
-                      </div>
-                      <div class="kb-card-meta">
-                        <kn-badge [tone]="priority[task.priority].tone">{{ priority[task.priority].label }}</kn-badge>
-                        @if (task.due) {
-                          <span class="kb-due"><kn-icon name="calendar" [size]="14" /> {{ date.format(task.due) }}</span>
-                        }
-                        @if (task.assignee) {
-                          <kn-avatar class="kb-assignee" size="sm" [name]="task.assignee" />
-                        }
-                      </div>
-                    </article>
-                  } @empty {
-                    <p class="kb-empty">Перетащите задачу сюда</p>
-                  }
-                </div>
-              </section>
-            }
-          </div>
-        </kn-splitter-panel>
-
-        <kn-splitter-handle aria-label="Ширина панели задачи" />
-
-        <kn-splitter-panel [min]="22" [max]="50" [(size)]="detailsSize">
-          <aside class="kb-details" aria-label="Задача">
-            @if (selected(); as task) {
-              <div class="kb-details-head">
-                <kn-badge tone="accent">{{ columnTitle(task.column) }}</kn-badge>
-                <button kn-icon-button size="sm" variant="ghost" tone="neutral" aria-label="Закрыть задачу" (click)="selectedId.set(null)">
-                  <kn-icon name="x" />
-                </button>
-              </div>
-              <kn-field label="Название">
-                <input knInput [value]="task.title" (input)="patch(task.id, { title: $any($event.target).value })" />
-              </kn-field>
-              <kn-field label="Колонка">
-                <kn-select [value]="task.column" (valueChange)="move(task, $any($event))">
-                  @for (column of columns; track column.id) {
-                    <kn-option [value]="column.id">{{ column.title }}</kn-option>
-                  }
-                </kn-select>
-              </kn-field>
-              <kn-field label="Исполнитель">
-                <kn-combobox clearable placeholder="Не назначен" [value]="task.assignee" (valueChange)="patch(task.id, { assignee: $any($event) })">
-                  @for (person of people; track person) {
-                    <kn-option [value]="person">{{ person }}</kn-option>
-                  }
-                </kn-combobox>
-              </kn-field>
-              <kn-field label="Срок">
-                <kn-date-picker [value]="task.due" (valueChange)="patch(task.id, { due: $event })" />
-              </kn-field>
-              <kn-field label="Приоритет">
-                <kn-radio-group orientation="horizontal" [value]="task.priority" (valueChange)="patch(task.id, { priority: $any($event) })">
-                  <kn-radio value="low">Низкий</kn-radio>
-                  <kn-radio value="medium">Средний</kn-radio>
-                  <kn-radio value="high">Высокий</kn-radio>
-                </kn-radio-group>
-              </kn-field>
-              <kn-field label="Заметки">
-                <textarea knTextarea [minRows]="3" [value]="task.notes" (input)="patch(task.id, { notes: $any($event.target).value })"></textarea>
-              </kn-field>
-              <button kn-button variant="soft" tone="danger" (click)="remove(task)"><kn-icon name="trash" /> Удалить задачу</button>
-            } @else {
-              <kn-empty-state icon="columns" heading="Задача не выбрана" description="Нажмите на карточку, чтобы увидеть и изменить детали." />
-            }
-          </aside>
-        </kn-splitter-panel>
-      </kn-splitter>
+      @if (compact()) {
+        <!-- One column: the board takes the screen, the task opens in a bottom sheet -->
+        <div class="kb-frame"><ng-container [ngTemplateOutlet]="board" /></div>
+      } @else {
+        <kn-splitter class="kb-frame">
+          <kn-splitter-panel [min]="45"><ng-container [ngTemplateOutlet]="board" /></kn-splitter-panel>
+          <kn-splitter-handle aria-label="Ширина панели задачи" />
+          <kn-splitter-panel [min]="22" [max]="50" [(size)]="detailsSize">
+            <ng-container [ngTemplateOutlet]="details" />
+          </kn-splitter-panel>
+        </kn-splitter>
+      }
       <p class="kb-hint">
         Карточки перетаскиваются между колонками. С клавиатуры то же самое делает меню карточки (кнопка «⋯»
         или Shift + F10) — пункт «Переместить».
       </p>
     </main>
 
+    <ng-template #board>
+      <div class="kb-board" cdkDropListGroup>
+        @for (column of columns; track column.id) {
+          <section class="kb-column" [attr.aria-labelledby]="'kb-' + column.id">
+            <h2 [id]="'kb-' + column.id">
+              {{ column.title }} <kn-badge>{{ tasksOf(column.id).length }}</kn-badge>
+            </h2>
+            <div class="kb-list" cdkDropList [cdkDropListData]="column.id" (cdkDropListDropped)="drop($event)">
+              @for (task of tasksOf(column.id); track task.id) {
+                <article
+                  class="kb-card"
+                  cdkDrag
+                  [cdkDragData]="task"
+                  [attr.data-selected]="task.id === selectedId() ? '' : null"
+                  [knContextMenu]="taskMenu"
+                  [knContextMenuData]="{ $implicit: task }"
+                >
+                  <div class="kb-card-top">
+                    <button class="kb-card-open" type="button" [attr.aria-pressed]="task.id === selectedId()" (click)="open(task)">
+                      {{ task.title }}
+                    </button>
+                    <button
+                      kn-icon-button
+                      size="sm"
+                      variant="ghost"
+                      tone="neutral"
+                      [attr.aria-label]="'Действия: ' + task.title"
+                      [knMenuTrigger]="taskMenu"
+                      [knMenuData]="{ $implicit: task }"
+                    >
+                      <kn-icon name="more" />
+                    </button>
+                  </div>
+                  <div class="kb-card-meta">
+                    <kn-badge [tone]="priority[task.priority].tone">{{ priority[task.priority].label }}</kn-badge>
+                    @if (task.due) {
+                      <span class="kb-due"><kn-icon name="calendar" [size]="14" /> {{ date.format(task.due) }}</span>
+                    }
+                    @if (task.assignee) {
+                      <kn-avatar class="kb-assignee" size="sm" [name]="task.assignee" />
+                    }
+                  </div>
+                </article>
+              } @empty {
+                <p class="kb-empty">Перетащите задачу сюда</p>
+              }
+            </div>
+          </section>
+        }
+      </div>
+    </ng-template>
+
+    <ng-template #details>
+      <aside class="kb-details" aria-label="Задача">
+        @if (selected(); as task) {
+          <div class="kb-details-head">
+            <kn-badge tone="accent">{{ columnTitle(task.column) }}</kn-badge>
+            @if (!compact()) {
+              <button kn-icon-button size="sm" variant="ghost" tone="neutral" aria-label="Закрыть задачу" (click)="selectedId.set(null)">
+                <kn-icon name="x" />
+              </button>
+            }
+          </div>
+          <kn-field label="Название">
+            <input knInput [value]="task.title" (input)="patch(task.id, { title: $any($event.target).value })" />
+          </kn-field>
+          <kn-field label="Колонка">
+            <kn-select [value]="task.column" (valueChange)="move(task, $any($event))">
+              @for (column of columns; track column.id) {
+                <kn-option [value]="column.id">{{ column.title }}</kn-option>
+              }
+            </kn-select>
+          </kn-field>
+          <kn-field label="Исполнитель">
+            <kn-combobox clearable placeholder="Не назначен" [value]="task.assignee" (valueChange)="patch(task.id, { assignee: $any($event) })">
+              @for (person of people; track person) {
+                <kn-option [value]="person">{{ person }}</kn-option>
+              }
+            </kn-combobox>
+          </kn-field>
+          <kn-field label="Срок">
+            <kn-date-picker [value]="task.due" (valueChange)="patch(task.id, { due: $event })" />
+          </kn-field>
+          <kn-field label="Приоритет">
+            <kn-radio-group orientation="horizontal" [value]="task.priority" (valueChange)="patch(task.id, { priority: $any($event) })">
+              <kn-radio value="low">Низкий</kn-radio>
+              <kn-radio value="medium">Средний</kn-radio>
+              <kn-radio value="high">Высокий</kn-radio>
+            </kn-radio-group>
+          </kn-field>
+          <kn-field label="Заметки">
+            <textarea knTextarea [minRows]="3" [value]="task.notes" (input)="patch(task.id, { notes: $any($event.target).value })"></textarea>
+          </kn-field>
+          <button kn-button variant="soft" tone="danger" (click)="remove(task)"><kn-icon name="trash" /> Удалить задачу</button>
+        } @else {
+          <kn-empty-state icon="columns" heading="Задача не выбрана" description="Нажмите на карточку, чтобы увидеть и изменить детали." />
+        }
+      </aside>
+    </ng-template>
+
+    <ng-template #sheet>
+      <kn-drawer-header [heading]="selected()?.title ?? 'Задача'" />
+      <kn-drawer-body><ng-container [ngTemplateOutlet]="details" /></kn-drawer-body>
+    </ng-template>
+
     <ng-template #taskMenu let-task>
       <kn-menu>
-        <button kn-menu-item (triggered)="selectedId.set(task.id)"><kn-icon name="edit" [size]="16" /> Открыть</button>
+        <button kn-menu-item (triggered)="open(task)"><kn-icon name="edit" [size]="16" /> Открыть</button>
         <kn-menu-separator />
         <kn-menu-group label="Переместить">
           @for (column of columns; track column.id) {
@@ -442,6 +466,15 @@ const TASKS: Task[] = [
       box-shadow: var(--kn-shadow-glass-md);
     }
 
+    /* Inside the bottom sheet the drawer is the surface */
+    kn-drawer-body .kb-details {
+      padding: 0;
+      background: none;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      box-shadow: none;
+    }
+
     .kb-details-head {
       display: flex;
       align-items: center;
@@ -467,13 +500,37 @@ const TASKS: Task[] = [
       .kb {
         padding-inline: var(--kn-space-3);
       }
+
+      .kb-frame {
+        block-size: max(30rem, calc(100dvh - 17rem));
+      }
+
+      .kb-board {
+        grid-auto-columns: minmax(17rem, 82vw);
+        scroll-snap-type: x mandatory;
+      }
+
+      .kb-column {
+        scroll-snap-align: start;
+      }
     }
   `,
 })
 export default class KanbanExample {
   private readonly toaster = inject(KnToaster);
   private readonly dialog = inject(KnDialog);
+  private readonly drawer = inject(KnDrawer);
   private readonly createDialog = viewChild.required<TemplateRef<unknown>>('createDialog');
+  private readonly sheet = viewChild.required<TemplateRef<unknown>>('sheet');
+  private sheetRef: KnDialogRef | null = null;
+
+  /** Phones and narrow tablets: no room for two panes side by side. */
+  protected readonly compact = toSignal(
+    inject(BreakpointObserver)
+      .observe('(max-width: 56rem)')
+      .pipe(map((state) => state.matches)),
+    { initialValue: false },
+  );
 
   protected readonly columns = COLUMNS;
   protected readonly people = [...PEOPLE, 'Зоя Мельникова'];
@@ -496,6 +553,12 @@ export default class KanbanExample {
 
   protected columnTitle(id: ColumnId): string {
     return COLUMNS.find((column) => column.id === id)?.title ?? '';
+  }
+
+  protected open(task: Task): void {
+    this.selectedId.set(task.id);
+    if (!this.compact()) return;
+    this.sheetRef = this.drawer.open(this.sheet(), { side: 'bottom', size: 'min(42rem, 88dvh)' });
   }
 
   protected patch(id: number, changes: Partial<Task>): void {
@@ -524,6 +587,7 @@ export default class KanbanExample {
     const before = this.tasks();
     this.tasks.update((tasks) => tasks.filter((t) => t.id !== task.id));
     if (this.selectedId() === task.id) this.selectedId.set(null);
+    void this.sheetRef?.close();
     this.toaster.show({ title: 'Задача удалена', action: { label: 'Отменить', run: () => this.tasks.set(before) } });
   }
 

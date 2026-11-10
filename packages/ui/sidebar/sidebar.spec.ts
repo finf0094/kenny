@@ -19,6 +19,8 @@ describe('KnSidebar', () => {
       componentProperties: { collapsed: false },
     });
     expect(screen.getByRole('navigation', { name: 'Разделы' })).toBeInTheDocument();
+    // The name lives on the landmark only: a copy on the wrapper would be an unnamed-role label
+    expect(document.querySelector('kn-sidebar')).not.toHaveAttribute('aria-label');
     expect(screen.getByRole('group', { name: 'Работа' })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Входящие' })).toHaveAttribute('aria-current', 'page');
     expect(screen.getByRole('link', { name: 'Проекты' })).not.toHaveAttribute('aria-current');

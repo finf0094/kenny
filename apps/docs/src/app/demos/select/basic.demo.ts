@@ -51,7 +51,7 @@ import { KnOption, KnOptionGroup, KnSelect } from '@kenny/ui/select';
 
     .row {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(auto-fit, minmax(7.5rem, 1fr));
       align-items: center;
       gap: var(--kn-space-3);
     }

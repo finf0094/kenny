@@ -110,6 +110,32 @@ describe('KnTable', () => {
     expect(screen.getByRole('checkbox', { name: 'Выбрать все строки' })).toBeDisabled();
   });
 
+  it('keeps a visually hidden header in the accessibility tree', async () => {
+    const { container } = await render(
+      `<kn-table aria-label="Счета" [data]="data" [columns]="columns" />`,
+      {
+        imports: [KnTable],
+        componentProperties: {
+          data: [{ id: 1, name: 'Бета' }],
+          columns: [
+            { key: 'name', header: 'Клиент' },
+            { key: 'actions', header: 'Действия', headerHidden: true },
+          ],
+        },
+      },
+    );
+    const header = screen.getByRole('columnheader', { name: 'Действия' });
+    expect(within(header).getByText('Действия')).toHaveClass('sr-only');
+    await expectNoA11yViolations(container);
+  });
+
+  it('labels the inner table, not the wrapper element', async () => {
+    const { container } = await render(Host);
+    await stable();
+    expect(container.querySelector('kn-table')).not.toHaveAttribute('aria-label');
+    expect(screen.getByRole('table')).toHaveAttribute('aria-label', 'Счета');
+  });
+
   it('has no accessibility violations', async () => {
     const { container } = await render(Host);
     await expectNoA11yViolations(container);

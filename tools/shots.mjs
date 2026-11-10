@@ -1,9 +1,9 @@
 // Visual check helper: serves a built app and takes screenshots with headless Chrome.
-/* global document */
+/* global document, MutationObserver */
 //
 //   node tools/shots.mjs <distDir> <path> [<path> …] [--theme=dark] [--width=1280]
 //                        [--height=800] [--full] [--out=tools/shots] [--wait=400]
-//                        [--click=<selector>] [--press=<Key>] [--name=<file>]
+//                        [--click=<selector>] [--press=<Key>] [--name=<file>] [--dir=rtl]
 //
 // CHROME_PATH overrides the browser binary (default: /usr/bin/google-chrome).
 import { mkdir } from 'node:fs/promises';
@@ -41,6 +41,17 @@ try {
     await page.emulateMediaFeatures([
       { name: 'prefers-color-scheme', value: flags.theme === 'dark' ? 'dark' : 'light' },
     ]);
+    if (flags.dir) {
+      // Set the direction before the app boots, as a real RTL page would have it
+      await page.evaluateOnNewDocument((dir) => {
+        const observer = new MutationObserver(() => {
+          if (!document.documentElement) return;
+          document.documentElement.dir = dir;
+          observer.disconnect();
+        });
+        observer.observe(document, { childList: true });
+      }, flags.dir);
+    }
     await page.goto(`http://localhost:${port}${path}`, { waitUntil: 'networkidle0' });
     if (flags.theme) {
       await page.evaluate((t) => (document.documentElement.dataset.theme = t), flags.theme);

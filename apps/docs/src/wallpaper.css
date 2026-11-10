@@ -22,15 +22,21 @@
   background-repeat: no-repeat;
 }
 
-/* Compact variant for demo stages */
+/*
+ * Compact variant for demo stages. The shapes keep to the corners and scale with the
+ * viewport, so a control in the stage is never left sitting on saturated colour.
+ */
 .kn-wallpaper-sm {
   --_disc-a: light-dark(#2f5ff0, #2a52d6);
   --_disc-b: light-dark(#ffb23e, #e08a1c);
-  --_disc-c: light-dark(#a9c1ff, #16328f);
+  --_disc-c: light-dark(#bccfff, #16328f);
+  --_r-a: clamp(2.25rem, 9vw, 5rem);
+  --_r-b: clamp(1.25rem, 4vw, 2rem);
+  --_r-c: clamp(2.75rem, 10vw, 5.5rem);
   background-color: light-dark(#e9eef9, #080d1f);
   background-image:
-    radial-gradient(circle at 88% -10%, var(--_disc-a) 0 6.5rem, transparent calc(6.5rem + 1px)),
-    radial-gradient(circle at 70% 68%, var(--_disc-b) 0 1.75rem, transparent calc(1.75rem + 1px)),
-    radial-gradient(circle at 4% 110%, var(--_disc-c) 0 7rem, transparent calc(7rem + 1px));
+    radial-gradient(circle at 100% 0%, var(--_disc-a) 0 var(--_r-a), transparent calc(var(--_r-a) + 1px)),
+    radial-gradient(circle at 64% 100%, var(--_disc-b) 0 var(--_r-b), transparent calc(var(--_r-b) + 1px)),
+    radial-gradient(circle at 0% 100%, var(--_disc-c) 0 var(--_r-c), transparent calc(var(--_r-c) + 1px));
   background-repeat: no-repeat;
 }
