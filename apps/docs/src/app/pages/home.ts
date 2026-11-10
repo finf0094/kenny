@@ -16,7 +16,7 @@ import { KnToaster } from '@kenny/ui/toast';
 import { KnToolbar, KnToolbarSeparator } from '@kenny/ui/toolbar';
 import { KnTooltip } from '@kenny/ui/tooltip';
 import { allComponents, componentGroups } from '../core/nav';
-import { ACCENTS, ThemeService } from '../core/theme';
+import { ACCENTS, PRESETS, ThemeService } from '../core/theme';
 
 const INSTALL = 'pnpm add @kenny/ui @kenny/tokens @angular/cdk';
 
@@ -50,10 +50,11 @@ const PERIODS = [
     <main id="content" class="home">
       <section class="hero" aria-labelledby="hero-title">
         <div class="pitch">
-          <h1 id="hero-title">Стеклянные компоненты для Angular</h1>
+          <h1 id="hero-title">Компоненты для Angular в четырёх стилях</h1>
           <p class="lead">
-            {{ count }} доступных компонентов на signals. Полупрозрачные слои, пружинная анимация,
-            светлая и тёмная темы на CSS-переменных. Из зависимостей — только Angular CDK.
+            {{ count }} доступных компонентов на signals. Стекло, классика, тональный или строгий —
+            стиль меняется значениями токенов, компоненты те же. Светлая и тёмная темы, из
+            зависимостей — только Angular CDK.
           </p>
           <div class="cta">
             <a kn-button size="lg" routerLink="/docs/getting-started">Начать работу</a>
@@ -179,26 +180,40 @@ const PERIODS = [
 
       <section class="split reverse" aria-labelledby="theme-title">
         <div>
-          <h2 id="theme-title">Тема меняется без пересборки</h2>
+          <h2 id="theme-title">Стиль, тема и акцент меняются без пересборки</h2>
           <p>
-            Цвета, радиусы, тени и длительности — CSS-переменные. Атрибут
-            <code>data-theme</code> переключает тему для страницы или любого её блока, а шкала из
-            одиннадцати значений перекрашивает акцент. Выберите цвет — перекрасится весь сайт.
+            Материал поверхностей, форма кнопок, плотность, цвета и тени — CSS-переменные. Атрибут
+            <code>data-kn-preset</code> переключает стиль, <code>data-theme</code> — тему, а шкала
+            из одиннадцати значений перекрашивает акцент. Нажмите — изменится весь сайт.
           </p>
-          <a routerLink="/docs/theming">Темизация и токены</a>
+          <a routerLink="/docs/presets">Стили и свой пресет</a>
         </div>
-        <div class="tray plain" role="group" aria-label="Акцентный цвет сайта">
-          @for (accent of accents; track accent.id) {
-            <button
-              class="swatch"
-              type="button"
-              [attr.aria-pressed]="theme.accent() === accent.id"
-              [style.--_color]="accent.scale ? accent.scale[6] : '#1f4bdb'"
-              (click)="theme.accent.set(accent.id)"
-            >
-              <span class="dot" aria-hidden="true"></span>{{ accent.label }}
-            </button>
-          }
+        <div class="tray plain choices">
+          <div class="choice" role="group" aria-label="Стиль сайта">
+            @for (preset of presets; track preset.id) {
+              <button
+                class="swatch"
+                type="button"
+                [attr.aria-pressed]="theme.preset() === preset.id"
+                (click)="theme.preset.set(preset.id)"
+              >
+                {{ preset.label }}
+              </button>
+            }
+          </div>
+          <div class="choice" role="group" aria-label="Акцентный цвет сайта">
+            @for (accent of accents; track accent.id) {
+              <button
+                class="swatch"
+                type="button"
+                [attr.aria-pressed]="theme.accent() === accent.id"
+                [style.--_color]="accent.scale ? accent.scale[6] : '#1f4bdb'"
+                (click)="theme.accent.set(accent.id)"
+              >
+                <span class="dot" aria-hidden="true"></span>{{ accent.label }}
+              </button>
+            }
+          </div>
         </div>
       </section>
 
@@ -467,7 +482,7 @@ const PERIODS = [
       block-size: var(--kn-size-lg);
       padding: 0 var(--kn-space-5) 0 var(--kn-space-4);
       border: 0;
-      border-radius: var(--kn-radius-full);
+      border-radius: var(--kn-radius-control);
       background: var(--kn-color-surface-sunken);
       box-shadow: inset 0 0 0 1px var(--kn-color-border);
       color: var(--kn-color-text);
@@ -482,7 +497,20 @@ const PERIODS = [
     }
 
     .swatch[aria-pressed='true'] {
-      box-shadow: inset 0 0 0 2px var(--_color);
+      box-shadow: inset 0 0 0 2px var(--_color, var(--kn-color-accent));
+    }
+
+    .choices {
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      gap: var(--kn-space-4);
+    }
+
+    .choice {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--kn-space-2);
     }
 
     .swatch:focus-visible {
@@ -582,6 +610,7 @@ export default class HomePage {
   protected readonly count = allComponents.length;
   protected readonly groups = componentGroups;
   protected readonly accents = ACCENTS;
+  protected readonly presets = PRESETS;
 
   protected readonly focusOn = signal(true);
   protected readonly period = signal<string | undefined>('day');

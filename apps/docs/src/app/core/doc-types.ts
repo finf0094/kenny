@@ -42,6 +42,13 @@ export interface TokenDoc {
   comment: string;
 }
 
+/** One token and its value in every style preset; `null` — the preset keeps the default. */
+export interface PresetTokenRow {
+  name: string;
+  group: string;
+  values: Record<string, string | null>;
+}
+
 /* ---- Authored per component ---- */
 
 export interface DemoDoc {

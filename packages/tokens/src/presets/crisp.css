@@ -1,0 +1,86 @@
+/*
+ * Kenny style preset — Crisp.
+ *
+ * A dense, precise interface for data-heavy screens: compact controls, tight radii,
+ * white sheets with hairlines on a grey page, barely-there shadows, a smaller type size.
+ *
+ * Usage: import after the tokens and set `data-kn-preset="crisp"` on <html> or on any block.
+ */
+[data-kn-preset='crisp'] {
+  /* Surfaces: white sheets on a grey page */
+  --kn-color-canvas: light-dark(#f2f3f5, #0e0f11);
+  --kn-color-surface: light-dark(#ffffff, #18191c);
+  --kn-color-surface-raised: light-dark(#ffffff, #1f2024);
+  --kn-color-surface-sunken: light-dark(rgb(17 20 28 / 0.055), rgb(255 255 255 / 0.06));
+
+  /* Text */
+  --kn-color-text: light-dark(#15171c, #ececee);
+  --kn-color-text-muted: light-dark(#4a4e58, #a8abb3);
+  --kn-color-text-subtle: light-dark(#595d68, #8d9099);
+  --kn-color-text-disabled: light-dark(rgb(21 23 28 / 0.4), rgb(236 236 238 / 0.38));
+
+  /* Lines */
+  --kn-color-border: light-dark(rgb(17 20 28 / 0.12), rgb(255 255 255 / 0.12));
+  --kn-color-border-strong: light-dark(rgb(17 20 28 / 0.28), rgb(255 255 255 / 0.27));
+
+  /* Fields: outlined */
+  --kn-color-field: var(--kn-color-surface);
+  --kn-color-field-border: light-dark(rgb(17 20 28 / 0.22), rgb(255 255 255 / 0.2));
+  --kn-color-field-border-hover: light-dark(rgb(17 20 28 / 0.42), rgb(255 255 255 / 0.4));
+
+  /* Interaction layers */
+  --kn-color-hover: light-dark(rgb(17 20 28 / 0.055), rgb(255 255 255 / 0.07));
+  --kn-color-pressed: light-dark(rgb(17 20 28 / 0.1), rgb(255 255 255 / 0.13));
+  --kn-color-scrim: light-dark(rgb(12 14 18 / 0.5), rgb(0 0 0 / 0.66));
+
+  /* Material: opaque */
+  --kn-glass-bg: var(--kn-color-surface);
+  --kn-glass-bg-strong: var(--kn-color-surface-raised);
+  --kn-glass-bg-subtle: light-dark(#e9ebee, #131416);
+  --kn-glass-border: var(--kn-color-border);
+  --kn-glass-edge: var(--kn-color-border);
+  --kn-glass-specular: transparent;
+  --kn-glass-filter: none;
+  --kn-glass-filter-strong: none;
+  --kn-scrim-filter: none;
+
+  /* Shape: tight */
+  --kn-radius-xs: 0.125rem; /* 2 */
+  --kn-radius-sm: 0.1875rem; /* 3 */
+  --kn-radius-md: 0.25rem; /* 4 */
+  --kn-radius-lg: 0.375rem; /* 6 */
+  --kn-radius-xl: 0.5rem; /* 8 */
+  --kn-radius-2xl: 0.75rem; /* 12 */
+  --kn-radius-control: var(--kn-radius-md);
+  --kn-radius-badge: var(--kn-radius-sm);
+
+  /* Size and type: one step denser */
+  --kn-size-sm: 1.625rem; /* 26 */
+  --kn-size-md: 2rem; /* 32 */
+  --kn-size-lg: 2.5rem; /* 40 */
+  --kn-text-md: 0.875rem; /* 14 */
+  --kn-text-lg: 1rem; /* 16 */
+
+  /* Elevation: hairline plus a whisper of shadow */
+  --kn-shadow-color: light-dark(rgb(12 14 18 / 0.06), rgb(0 0 0 / 0.5));
+  --kn-shadow-color-strong: light-dark(rgb(12 14 18 / 0.12), rgb(0 0 0 / 0.64));
+  --kn-shadow-xs: 0 1px 1px var(--kn-shadow-color);
+  --kn-shadow-sm: 0 1px 2px var(--kn-shadow-color), 0 1px 3px var(--kn-shadow-color);
+  --kn-shadow-md: 0 1px 2px var(--kn-shadow-color), 0 4px 12px var(--kn-shadow-color);
+  --kn-shadow-lg: 0 2px 4px var(--kn-shadow-color), 0 10px 28px var(--kn-shadow-color-strong);
+  --kn-shadow-xl: 0 4px 8px var(--kn-shadow-color), 0 20px 48px var(--kn-shadow-color-strong);
+  --kn-shadow-highlight: 0 0 0 0 transparent;
+  --kn-glass-rim: inset 0 0 0 1px var(--kn-color-border);
+  --kn-shadow-glass-sm: var(--kn-glass-rim), var(--kn-shadow-xs);
+  --kn-shadow-glass-md: var(--kn-glass-rim), var(--kn-shadow-xs);
+  --kn-shadow-glass-lg: var(--kn-glass-rim), var(--kn-shadow-md);
+  --kn-shadow-glass-xl: var(--kn-glass-rim), var(--kn-shadow-lg);
+
+  /* Motion: quick and exact, no overshoot */
+  --kn-ease-spring: cubic-bezier(0.2, 0, 0, 1);
+  --kn-ease-spring-bouncy: cubic-bezier(0.2, 0, 0, 1);
+
+  /* Components */
+  --kn-tooltip-bg: light-dark(#15171c, #ececee);
+  --kn-tooltip-color: light-dark(#ffffff, #0e0f11);
+}

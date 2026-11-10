@@ -1,7 +1,7 @@
 {
   "name": "@kenny/tokens",
   "version": "0.1.0",
-  "description": "Дизайн-токены Kenny: цвет, типографика, отступы, тени, стекло и motion в виде CSS custom properties.",
+  "description": "Дизайн-токены Kenny: цвет, типографика, отступы, тени, материал поверхностей и motion в виде CSS custom properties, плюс пресеты стиля.",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -17,10 +17,13 @@
     "./kenny.css": "./kenny.css",
     "./tokens.css": "./tokens.css",
     "./base.css": "./base.css",
+    "./presets.css": "./presets.css",
+    "./presets/*.css": "./presets/*.css",
     "./tokens.json": "./tokens.json"
   },
   "files": [
     "*.css",
+    "presets/",
     "tokens.json",
     "README.md",
     "LICENSE"

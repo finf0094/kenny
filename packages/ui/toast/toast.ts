@@ -342,7 +342,7 @@ export class KnToaster {
 
     .action {
       padding: var(--kn-space-0-5) var(--kn-space-2);
-      border-radius: var(--kn-radius-full);
+      border-radius: var(--kn-radius-control);
       color: var(--kn-color-accent-text);
       font-size: var(--kn-text-sm);
       font-weight: var(--kn-weight-semibold);

@@ -92,7 +92,7 @@ import { KnIcon } from '@kenny/ui/icon';
       padding: var(--kn-space-1);
       padding-inline-end: var(--kn-space-2);
       border: 0;
-      border-radius: var(--kn-radius-full);
+      border-radius: var(--kn-radius-control);
       background: none;
       color: var(--kn-color-text-muted);
       font: inherit;
@@ -132,7 +132,7 @@ import { KnIcon } from '@kenny/ui/icon';
       z-index: -1;
       border-radius: 50%;
       background: var(--kn-stepper-color, var(--kn-color-accent));
-      box-shadow: inset 0 1px 0 0 rgb(255 255 255 / 0.22);
+      box-shadow: var(--kn-shadow-highlight);
       opacity: 0;
       transform: scale(0.5);
       transition:

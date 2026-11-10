@@ -101,8 +101,8 @@ import { datePattern, formatDate, parseDate, startOfDay } from './date-utils';
       block-size: var(--kn-date-picker-height, var(--_height));
       padding-inline: var(--kn-space-3) var(--kn-space-1);
       border-radius: var(--kn-date-picker-radius, var(--kn-radius-md));
-      background: var(--kn-date-picker-bg, var(--kn-color-surface-sunken));
-      box-shadow: inset 0 0 0 1px var(--kn-color-border);
+      background: var(--kn-date-picker-bg, var(--kn-color-field));
+      box-shadow: inset 0 0 0 1px var(--kn-color-field-border);
     }
 
     :host([data-size='sm']) .control {
@@ -111,7 +111,7 @@ import { datePattern, formatDate, parseDate, startOfDay } from './date-utils';
 
     @media (hover: hover) {
       .control:hover {
-        box-shadow: inset 0 0 0 1px var(--kn-color-border-strong);
+        box-shadow: inset 0 0 0 1px var(--kn-color-field-border-hover);
       }
     }
 
@@ -160,7 +160,7 @@ import { datePattern, formatDate, parseDate, startOfDay } from './date-utils';
       block-size: 1.875rem;
       padding: 0;
       border: 0;
-      border-radius: var(--kn-radius-full);
+      border-radius: var(--kn-radius-control);
       background: none;
       color: var(--kn-color-text-muted);
       cursor: pointer;

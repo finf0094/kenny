@@ -21,20 +21,38 @@
             "outputMode": "static",
             "outputPath": "dist/docs",
             "tsConfig": "apps/docs/tsconfig.app.json",
-            "assets": [{ "glob": "**/*", "input": "apps/docs/public" }],
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "apps/docs/public"
+              }
+            ],
             "styles": [
               "node_modules/@fontsource-variable/onest/wght.css",
               "node_modules/@fontsource-variable/jetbrains-mono/wght.css",
               "packages/tokens/src/index.css",
               "packages/tokens/src/base.css",
+              "apps/docs/src/generated/preset-glass.css",
+              "packages/tokens/src/presets/classic.css",
+              "packages/tokens/src/presets/tonal.css",
+              "packages/tokens/src/presets/crisp.css",
+              "apps/docs/src/app/snippets/my-preset.css",
               "apps/docs/src/styles.css"
             ]
           },
           "configurations": {
             "production": {
               "budgets": [
-                { "type": "initial", "maximumWarning": "900kB", "maximumError": "1.5MB" },
-                { "type": "anyComponentStyle", "maximumWarning": "12kB", "maximumError": "24kB" }
+                {
+                  "type": "initial",
+                  "maximumWarning": "900kB",
+                  "maximumError": "1.5MB"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "12kB",
+                  "maximumError": "24kB"
+                }
               ],
               "outputHashing": "all"
             },
@@ -49,8 +67,12 @@
         "serve": {
           "builder": "@angular/build:dev-server",
           "configurations": {
-            "production": { "buildTarget": "docs:build:production" },
-            "development": { "buildTarget": "docs:build:development" }
+            "production": {
+              "buildTarget": "docs:build:production"
+            },
+            "development": {
+              "buildTarget": "docs:build:development"
+            }
           },
           "defaultConfiguration": "development"
         }
@@ -68,16 +90,27 @@
             "browser": "apps/playground/src/main.ts",
             "outputPath": "dist/playground",
             "tsConfig": "apps/playground/tsconfig.app.json",
-            "assets": [{ "glob": "**/*", "input": "apps/playground/public" }],
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "apps/playground/public"
+              }
+            ],
             "styles": [
               "node_modules/@fontsource-variable/onest/wght.css",
               "packages/tokens/src/index.css",
               "packages/tokens/src/base.css",
+              "apps/docs/src/generated/preset-glass.css",
+              "packages/tokens/src/presets/classic.css",
+              "packages/tokens/src/presets/tonal.css",
+              "packages/tokens/src/presets/crisp.css",
               "apps/playground/src/styles.css"
             ]
           },
           "configurations": {
-            "production": { "outputHashing": "all" },
+            "production": {
+              "outputHashing": "all"
+            },
             "development": {
               "optimization": false,
               "extractLicenses": false,
@@ -88,10 +121,16 @@
         },
         "serve": {
           "builder": "@angular/build:dev-server",
-          "options": { "port": 4300 },
+          "options": {
+            "port": 4300
+          },
           "configurations": {
-            "production": { "buildTarget": "playground:build:production" },
-            "development": { "buildTarget": "playground:build:development" }
+            "production": {
+              "buildTarget": "playground:build:production"
+            },
+            "development": {
+              "buildTarget": "playground:build:development"
+            }
           },
           "defaultConfiguration": "development"
         }
@@ -106,8 +145,12 @@
         "build": {
           "builder": "@angular/build:ng-packagr",
           "configurations": {
-            "production": { "tsConfig": "packages/ui/tsconfig.lib.prod.json" },
-            "development": { "tsConfig": "packages/ui/tsconfig.lib.json" }
+            "production": {
+              "tsConfig": "packages/ui/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "packages/ui/tsconfig.lib.json"
+            }
           },
           "defaultConfiguration": "production"
         },

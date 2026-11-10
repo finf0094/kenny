@@ -34,7 +34,7 @@ import { KnSlider } from '@kenny/ui/slider';
       align-items: center;
       gap: var(--kn-space-3);
       padding: var(--kn-space-3) var(--kn-space-4);
-      border-radius: var(--kn-radius-full);
+      border-radius: var(--kn-radius-control);
       background: var(--kn-glass-bg);
       backdrop-filter: var(--kn-glass-filter);
       box-shadow: var(--kn-shadow-glass-md);

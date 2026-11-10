@@ -57,6 +57,22 @@ describe('KnPopover', () => {
   });
 });
 
+describe('KnPopover inside a scoped block', () => {
+  it('carries the theme and style preset of its trigger to the overlay', async () => {
+    await render(
+      `<section data-theme="dark" data-kn-preset="classic">
+         <button type="button" [knPopoverTrigger]="info">Сведения</button>
+         <kn-popover #info aria-label="Сведения"><p>Текст</p></kn-popover>
+       </section>`,
+      { imports: [KnPopover, KnPopoverTrigger] },
+    );
+    await userEvent.click(screen.getByRole('button', { name: 'Сведения' }));
+    const pane = (await screen.findByRole('dialog')).closest('.cdk-overlay-pane');
+    expect(pane).toHaveAttribute('data-theme', 'dark');
+    expect(pane).toHaveAttribute('data-kn-preset', 'classic');
+  });
+});
+
 describe('KnTooltip', () => {
   it('describes its host for assistive technology at all times', async () => {
     await render(

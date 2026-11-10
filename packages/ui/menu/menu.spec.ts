@@ -135,4 +135,20 @@ describe('KnMenu', () => {
     await userEvent.click(screen.getByRole('menuitem', { name: 'Удалить' }));
     expect(fixture.componentInstance.events).toEqual(['delete']);
   });
+
+  it('opens in the theme and style preset of the block that contains its trigger', async () => {
+    await render(
+      `<section data-theme="dark" data-kn-preset="crisp">
+         <button type="button" [knMenuTrigger]="menu">Вид</button>
+       </section>
+       <ng-template #menu>
+         <kn-menu><button kn-menu-item>Плотный</button></kn-menu>
+       </ng-template>`,
+      { imports: [KnMenu, KnMenuItem, KnMenuTrigger] },
+    );
+    await userEvent.click(screen.getByRole('button', { name: 'Вид' }));
+    const menu = await screen.findByRole('menu');
+    expect(menu).toHaveAttribute('data-theme', 'dark');
+    expect(menu).toHaveAttribute('data-kn-preset', 'crisp');
+  });
 });

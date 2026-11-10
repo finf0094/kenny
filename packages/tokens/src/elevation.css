@@ -9,6 +9,9 @@
   --kn-shadow-lg: 0 4px 10px var(--kn-shadow-color), 0 22px 56px var(--kn-shadow-color-strong);
   --kn-shadow-xl: 0 8px 18px var(--kn-shadow-color), 0 36px 96px var(--kn-shadow-color-strong);
 
+  /* Light catching the top edge of a filled control: solid buttons, checked boxes, current page */
+  --kn-shadow-highlight: inset 0 1px 0 0 rgb(255 255 255 / 0.22);
+
   /* Glass rim: specular top edge + outer hairline. Combine with an elevation shadow. */
   --kn-glass-rim:
     inset 0 1px 0 0 var(--kn-glass-specular), inset 0 0 0 1px var(--kn-glass-border),

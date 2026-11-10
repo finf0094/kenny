@@ -63,7 +63,7 @@ export type KnButtonTone = 'accent' | 'neutral' | 'danger';
       block-size: var(--kn-button-height, var(--_height));
       padding: 0 var(--kn-button-padding, var(--_pad));
       border: 0;
-      border-radius: var(--kn-button-radius, var(--kn-radius-full));
+      border-radius: var(--kn-button-radius, var(--kn-radius-control));
       background: var(--kn-button-bg, var(--_bg));
       color: var(--kn-button-color, var(--_fg));
       font: inherit;
@@ -132,9 +132,7 @@ export type KnButtonTone = 'accent' | 'neutral' | 'danger';
     :host([data-variant='solid']) {
       --_bg: var(--_tone);
       --_fg: var(--_on-tone);
-      box-shadow:
-        inset 0 1px 0 0 rgb(255 255 255 / 0.22),
-        var(--kn-shadow-xs);
+      box-shadow: var(--kn-shadow-highlight), var(--kn-shadow-xs);
     }
 
     :host([data-variant='soft']) {

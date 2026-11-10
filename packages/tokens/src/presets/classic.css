@@ -1,0 +1,80 @@
+/*
+ * Kenny style preset — Classic.
+ *
+ * Opaque white sheets separated by hairline borders, rectangular controls with a small
+ * radius, outlined fields, shadows only under things that float. The familiar look of
+ * the classic web frameworks.
+ *
+ * Usage: import after the tokens and set `data-kn-preset="classic"` on <html> or on any block.
+ */
+[data-kn-preset='classic'] {
+  /* Surfaces */
+  --kn-color-canvas: light-dark(#ffffff, #14171d);
+  --kn-color-surface: light-dark(#ffffff, #1b1f27);
+  --kn-color-surface-raised: light-dark(#ffffff, #222732);
+  --kn-color-surface-sunken: light-dark(rgb(22 28 45 / 0.055), rgb(255 255 255 / 0.065));
+
+  /* Text: neutral ink instead of cobalt-tinted */
+  --kn-color-text: light-dark(#1c2028, #eef0f4);
+  --kn-color-text-muted: light-dark(#4d5464, #aab0bd);
+  --kn-color-text-subtle: light-dark(#5d6474, #8e95a4);
+  --kn-color-text-disabled: light-dark(rgb(28 32 40 / 0.4), rgb(238 240 244 / 0.38));
+
+  /* Lines carry the structure here, so they are stronger than in the glass style */
+  --kn-color-border: light-dark(rgb(22 28 45 / 0.14), rgb(255 255 255 / 0.13));
+  --kn-color-border-strong: light-dark(rgb(22 28 45 / 0.3), rgb(255 255 255 / 0.28));
+
+  /* Fields: a white well with a visible outline */
+  --kn-color-field: var(--kn-color-surface);
+  --kn-color-field-border: light-dark(rgb(22 28 45 / 0.26), rgb(255 255 255 / 0.24));
+  --kn-color-field-border-hover: light-dark(rgb(22 28 45 / 0.46), rgb(255 255 255 / 0.44));
+
+  /* Interaction layers */
+  --kn-color-hover: light-dark(rgb(22 28 45 / 0.06), rgb(255 255 255 / 0.08));
+  --kn-color-pressed: light-dark(rgb(22 28 45 / 0.11), rgb(255 255 255 / 0.14));
+  --kn-color-scrim: light-dark(rgb(15 18 25 / 0.5), rgb(0 0 0 / 0.64));
+
+  /* Material: an opaque sheet, nothing shows through */
+  --kn-glass-bg: var(--kn-color-surface);
+  --kn-glass-bg-strong: var(--kn-color-surface-raised);
+  --kn-glass-bg-subtle: light-dark(#f5f6f8, #181b22);
+  --kn-glass-border: var(--kn-color-border);
+  --kn-glass-edge: var(--kn-color-border);
+  --kn-glass-specular: transparent;
+  --kn-glass-filter: none;
+  --kn-glass-filter-strong: none;
+  --kn-scrim-filter: none;
+
+  /* Shape: small radii, rectangular controls */
+  --kn-radius-xs: 0.1875rem; /* 3 */
+  --kn-radius-sm: 0.25rem; /* 4 */
+  --kn-radius-md: 0.375rem; /* 6 */
+  --kn-radius-lg: 0.5rem; /* 8 */
+  --kn-radius-xl: 0.75rem; /* 12 */
+  --kn-radius-2xl: 1rem; /* 16 */
+  --kn-radius-control: var(--kn-radius-md);
+  --kn-radius-badge: var(--kn-radius-sm);
+
+  /* Elevation: a border for what lies on the page, a shadow only for what floats above it */
+  --kn-shadow-color: light-dark(rgb(15 18 25 / 0.08), rgb(0 0 0 / 0.5));
+  --kn-shadow-color-strong: light-dark(rgb(15 18 25 / 0.14), rgb(0 0 0 / 0.64));
+  --kn-shadow-xs: 0 1px 2px var(--kn-shadow-color);
+  --kn-shadow-sm: 0 1px 2px var(--kn-shadow-color), 0 2px 6px var(--kn-shadow-color);
+  --kn-shadow-md: 0 2px 4px var(--kn-shadow-color), 0 8px 20px var(--kn-shadow-color);
+  --kn-shadow-lg: 0 4px 8px var(--kn-shadow-color), 0 16px 40px var(--kn-shadow-color-strong);
+  --kn-shadow-xl: 0 8px 16px var(--kn-shadow-color), 0 28px 72px var(--kn-shadow-color-strong);
+  --kn-shadow-highlight: 0 0 0 0 transparent;
+  --kn-glass-rim: inset 0 0 0 1px var(--kn-color-border);
+  --kn-shadow-glass-sm: var(--kn-glass-rim);
+  --kn-shadow-glass-md: var(--kn-glass-rim);
+  --kn-shadow-glass-lg: var(--kn-glass-rim), var(--kn-shadow-md);
+  --kn-shadow-glass-xl: var(--kn-glass-rim), var(--kn-shadow-lg);
+
+  /* Motion: no overshoot — flat surfaces do not bounce */
+  --kn-ease-spring: cubic-bezier(0.2, 0, 0, 1);
+  --kn-ease-spring-bouncy: cubic-bezier(0.2, 0, 0, 1);
+
+  /* Components */
+  --kn-tooltip-bg: light-dark(#1c2028, #eef0f4);
+  --kn-tooltip-color: light-dark(#ffffff, #14171d);
+}

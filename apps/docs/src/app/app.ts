@@ -14,9 +14,10 @@ import { KnButton } from '@kenny/ui/button';
 import { KnCommandPalette } from '@kenny/ui/command-palette';
 import { KnDrawer, KnDrawerBody, KnDrawerHeader } from '@kenny/ui/drawer';
 import { KnIcon } from '@kenny/ui/icon';
+import { KnMenu, KnMenuGroup, KnMenuItemRadio, KnMenuTrigger } from '@kenny/ui/menu';
 import { KnTooltip } from '@kenny/ui/tooltip';
 import { allComponents, examples, guides } from './core/nav';
-import { ThemeService } from './core/theme';
+import { PRESETS, ThemeService } from './core/theme';
 import { DocsNav } from './shell/docs-nav';
 
 const THEME_LABEL = { system: 'как в системе', light: 'светлая', dark: 'тёмная' };
@@ -34,6 +35,10 @@ const THEME_ICON = { system: 'monitor', light: 'sun', dark: 'moon' };
     KnDrawerHeader,
     KnDrawerBody,
     DocsNav,
+    KnMenu,
+    KnMenuGroup,
+    KnMenuItemRadio,
+    KnMenuTrigger,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
@@ -66,6 +71,17 @@ const THEME_ICON = { system: 'monitor', light: 'sun', dark: 'moon' };
         <kbd>{{ hotkey() }}</kbd>
       </button>
       <button
+        class="style"
+        kn-button
+        variant="ghost"
+        tone="neutral"
+        [attr.aria-label]="'Стиль: ' + presetLabel() + '. Сменить'"
+        [knMenuTrigger]="styles"
+      >
+        <kn-icon name="grid" />
+        <span class="style-text">{{ presetLabel() }}</span>
+      </button>
+      <button
         kn-icon-button
         variant="ghost"
         tone="neutral"
@@ -84,6 +100,25 @@ const THEME_ICON = { system: 'monitor', light: 'sun', dark: 'moon' };
       <span>Kenny 0.1.0 — MIT</span>
       <span>Собрано из собственных компонентов на Angular 22</span>
     </footer>
+
+    <ng-template #styles>
+      <kn-menu>
+        <kn-menu-group label="Стиль компонентов">
+          @for (preset of presets; track preset.id) {
+            <button
+              kn-menu-item-radio
+              [checked]="theme.preset() === preset.id"
+              (triggered)="theme.preset.set(preset.id)"
+            >
+              <span class="style-option">
+                {{ preset.label }}
+                <small>{{ preset.summary }}</small>
+              </span>
+            </button>
+          }
+        </kn-menu-group>
+      </kn-menu>
+    </ng-template>
 
     <ng-template #nav let-ref>
       <kn-drawer-header heading="Навигация" />
@@ -104,7 +139,7 @@ const THEME_ICON = { system: 'monitor', light: 'sun', dark: 'moon' };
       inset-inline-start: var(--kn-space-2);
       z-index: calc(var(--kn-z-sticky) + 1);
       padding: var(--kn-space-2) var(--kn-space-4);
-      border-radius: var(--kn-radius-full);
+      border-radius: var(--kn-radius-control);
       background: var(--kn-color-accent);
       color: var(--kn-color-on-accent);
       text-decoration: none;
@@ -128,7 +163,8 @@ const THEME_ICON = { system: 'monitor', light: 'sun', dark: 'moon' };
       inline-size: calc(100% - var(--kn-space-6) * 2);
       box-sizing: border-box;
       padding: var(--kn-space-1-5) var(--kn-space-2) var(--kn-space-1-5) var(--kn-space-4);
-      border-radius: var(--kn-radius-full);
+      /* Concentric with the controls inside: their radius plus the bar's padding */
+      border-radius: calc(var(--kn-radius-control) + var(--kn-space-1-5));
       background: var(--kn-glass-bg);
       backdrop-filter: var(--kn-glass-filter);
       -webkit-backdrop-filter: var(--kn-glass-filter);
@@ -173,7 +209,7 @@ const THEME_ICON = { system: 'monitor', light: 'sun', dark: 'moon' };
 
     .links a {
       padding: var(--kn-space-1-5) var(--kn-space-3);
-      border-radius: var(--kn-radius-full);
+      border-radius: var(--kn-radius-control);
       color: var(--kn-color-text-muted);
       font-weight: var(--kn-weight-medium);
       text-decoration: none;
@@ -199,7 +235,7 @@ const THEME_ICON = { system: 'monitor', light: 'sun', dark: 'moon' };
       block-size: var(--kn-size-md);
       padding: 0 var(--kn-space-2) 0 var(--kn-space-3);
       border: 0;
-      border-radius: var(--kn-radius-full);
+      border-radius: var(--kn-radius-control);
       background: var(--kn-color-surface-sunken);
       box-shadow: inset 0 0 0 1px var(--kn-color-border);
       color: var(--kn-color-text-muted);
@@ -221,7 +257,23 @@ const THEME_ICON = { system: 'monitor', light: 'sun', dark: 'moon' };
     .search:focus-visible {
       outline: var(--kn-focus-width) solid var(--kn-color-focus);
       outline-offset: var(--kn-focus-offset);
-      border-radius: var(--kn-radius-full);
+      border-radius: var(--kn-radius-control);
+    }
+
+    .style {
+      --kn-button-padding: var(--kn-space-3);
+    }
+
+    .style-option {
+      display: grid;
+      gap: 1px;
+      padding-block: var(--kn-space-0-5);
+      text-align: start;
+    }
+
+    .style-option small {
+      font-size: var(--kn-text-xs);
+      color: var(--kn-color-text-muted);
     }
 
     .menu {
@@ -254,8 +306,14 @@ const THEME_ICON = { system: 'monitor', light: 'sun', dark: 'moon' };
 
       .links,
       .search-text,
-      .search kbd {
+      .search kbd,
+      .style-text {
         display: none;
+      }
+
+      .style {
+        --kn-button-padding: 0;
+        inline-size: var(--kn-size-md);
       }
 
       .search {
@@ -276,6 +334,10 @@ export class App {
 
   protected readonly themeLabel = computed(() => THEME_LABEL[this.theme.mode()]);
   protected readonly themeIcon = computed(() => THEME_ICON[this.theme.mode()]);
+  protected readonly presets = PRESETS;
+  protected readonly presetLabel = computed(
+    () => PRESETS.find((preset) => preset.id === this.theme.preset())?.label ?? '',
+  );
   protected readonly hotkey = signal('Ctrl K');
 
   constructor() {
@@ -305,6 +367,14 @@ export class App {
         label: e.title,
         icon: e.icon,
         run: go(e.path),
+      })),
+      ...PRESETS.map((preset) => ({
+        id: `preset.${preset.id}`,
+        group: 'Стиль',
+        label: `Стиль «${preset.label}»`,
+        icon: 'grid',
+        keywords: [preset.id, 'preset', 'style', 'стиль'],
+        run: () => this.theme.preset.set(preset.id),
       })),
       {
         id: 'theme.light',

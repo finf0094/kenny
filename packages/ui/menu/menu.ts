@@ -18,13 +18,18 @@ import {
 } from '@angular/cdk/menu';
 import { KnIcon } from '@kenny/ui/icon';
 
-/** Remembers the theme of the element that opened a menu, so the overlay can match it. */
+/**
+ * Remembers the theme and the style preset of the element that opened a menu,
+ * so the overlay can match them.
+ */
 @Injectable({ providedIn: 'root' })
 class KnMenuThemeScope {
   theme: string | null = null;
+  preset: string | null = null;
 
   capture(element: Element): void {
     this.theme = element.closest('[data-theme]')?.getAttribute('data-theme') ?? null;
+    this.preset = element.closest('[data-kn-preset]')?.getAttribute('data-kn-preset') ?? null;
   }
 }
 
@@ -38,7 +43,7 @@ class KnMenuThemeScope {
   changeDetection: ChangeDetectionStrategy.OnPush,
   hostDirectives: [CdkMenu],
   template: `<ng-content />`,
-  host: { '[attr.data-theme]': 'theme' },
+  host: { '[attr.data-theme]': 'theme', '[attr.data-kn-preset]': 'preset' },
   styles: `
     :host {
       display: flex;
@@ -62,7 +67,9 @@ class KnMenuThemeScope {
   `,
 })
 export class KnMenu {
-  protected readonly theme = inject(KnMenuThemeScope).theme;
+  private readonly scope = inject(KnMenuThemeScope);
+  protected readonly theme = this.scope.theme;
+  protected readonly preset = this.scope.preset;
 }
 
 const itemStyles = `

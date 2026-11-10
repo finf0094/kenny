@@ -119,6 +119,47 @@ try {
   );
 
   await scenario(
+    'Style preset: chosen in the command palette, applied to <html>, survives a reload',
+    '/',
+    async (page) => {
+      await page.keyboard.down('Control');
+      await page.keyboard.press('KeyK');
+      await page.keyboard.up('Control');
+      await pause(200);
+      await page.keyboard.type('строгий');
+      await pause(150);
+      await press(page, 'Enter');
+      await pause(200);
+      const preset = () => page.evaluate(() => document.documentElement.dataset.knPreset ?? null);
+      expect((await preset()) === 'crisp', `data-kn-preset is ${await preset()}`);
+      await page.reload({ waitUntil: 'networkidle0' });
+      expect((await preset()) === 'crisp', 'the style was not restored after a reload');
+    },
+  );
+
+  await scenario(
+    'Style preset: the menu in the top bar switches it with arrows and Enter',
+    '/docs/presets',
+    async (page) => {
+      await focusIn(page, 'header button.style');
+      await press(page, 'Enter');
+      await pause(200);
+      const first = await active(page);
+      expect(
+        first.insideMenu && first.role === 'menuitemradio',
+        `menu item not focused (${first.role})`,
+      );
+      await press(page, 'ArrowDown');
+      await press(page, 'ArrowDown');
+      await press(page, 'Enter');
+      await pause(200);
+      const preset = await page.evaluate(() => document.documentElement.dataset.knPreset ?? null);
+      expect(preset === 'tonal', `data-kn-preset is ${preset}`);
+      expect(!(await page.$('[role="menu"]')), 'menu stayed open');
+    },
+  );
+
+  await scenario(
     'Escape closes the command palette and restores focus',
     '/docs/theming',
     async (page) => {

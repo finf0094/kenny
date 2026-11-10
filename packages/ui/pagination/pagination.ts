@@ -122,7 +122,7 @@ export function paginationRange(
       position: relative;
       padding: 0 var(--kn-space-2);
       border: 0;
-      border-radius: var(--kn-radius-full);
+      border-radius: var(--kn-radius-control);
       background: none;
       color: var(--kn-color-text);
       font: inherit;
@@ -159,7 +159,7 @@ export function paginationRange(
 
     .page[aria-current='page']::before {
       background: var(--kn-pagination-color, var(--kn-color-accent));
-      box-shadow: inset 0 1px 0 0 rgb(255 255 255 / 0.22);
+      box-shadow: var(--kn-shadow-highlight);
       opacity: 1;
       animation: kn-pop-in var(--kn-duration-normal) var(--kn-ease-spring);
     }

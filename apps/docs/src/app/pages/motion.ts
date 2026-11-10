@@ -242,7 +242,7 @@ const DURATIONS = [
       --_ball: 1.5rem;
       container-type: inline-size;
       block-size: var(--_ball);
-      border-radius: var(--kn-radius-full);
+      border-radius: var(--kn-radius-control);
       background: var(--kn-color-border);
     }
 

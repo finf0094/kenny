@@ -35,7 +35,7 @@ const FOCUSABLE =
       box-sizing: border-box;
       max-inline-size: 100%;
       padding: var(--kn-toolbar-padding, var(--kn-space-1));
-      border-radius: var(--kn-toolbar-radius, var(--kn-radius-full));
+      border-radius: var(--kn-toolbar-radius, var(--kn-radius-control));
     }
 
     :host([aria-orientation='vertical']) {

@@ -3,6 +3,7 @@
 //   base.css    — optional page defaults and CDK overlay plumbing
 //   kenny.css   — both, in one file
 //   tokens.json — machine-readable list (name, value, group, comment) used by the docs
+//   presets/*.css, presets.css — style presets, one per file and all together
 import { mkdir, readFile, writeFile, copyFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -12,9 +13,10 @@ const src = join(here, 'src');
 const out = join(here, '../../dist/tokens');
 const groups = ['color', 'typography', 'layout', 'elevation', 'motion'];
 
-/** Extracts `--kn-*` declarations from the first `:root { … }` block of a file. */
-export function parseTokens(css, group) {
-  const start = css.indexOf(':root');
+/** Extracts `--kn-*` declarations from the first block that follows `selector` in a file. */
+export function parseTokens(css, group, selector = ':root') {
+  const start = css.indexOf(selector);
+  if (start < 0) throw new Error(`"${selector}" not found in the ${group} styles`);
   const open = css.indexOf('{', start);
   let depth = 1;
   let i = open + 1;
@@ -44,6 +46,62 @@ export async function readAllTokens() {
   return all;
 }
 
+/** Style presets, in the order the documentation lists them. */
+export const presetNames = ['classic', 'tonal', 'crisp'];
+
+/** Component-level variables a preset may set although they are not global tokens. */
+const componentVariables = new Set(['--kn-tabs-thumb', '--kn-tooltip-bg', '--kn-tooltip-color']);
+
+/**
+ * Reads every preset: its description (the leading comment) and the tokens it overrides.
+ * Fails on a name that is not a token — a typo in a preset would otherwise do nothing, silently.
+ */
+export async function readPresets() {
+  const known = new Set((await readAllTokens()).map((token) => token.name));
+  const presets = [];
+  for (const name of presetNames) {
+    const css = await readFile(join(src, 'presets', `${name}.css`), 'utf8');
+    const tokens = parseTokens(css, name, `[data-kn-preset='${name}']`);
+    const unknown = tokens
+      .map((token) => token.name)
+      .filter((token) => !known.has(token) && !componentVariables.has(token));
+    if (unknown.length) {
+      throw new Error(`Preset "${name}" sets unknown tokens: ${unknown.join(', ')}`);
+    }
+    presets.push({ name, css, tokens });
+  }
+  return presets;
+}
+
+/**
+ * The default style as a preset: restores every token that some preset overrides, so that
+ * `data-kn-preset="glass"` works on a block nested inside another preset.
+ */
+export async function glassPresetCss() {
+  const base = new Map((await readAllTokens()).map((token) => [token.name, token.value]));
+  const overridden = new Set(
+    (await readPresets()).flatMap((preset) => preset.tokens.map((token) => token.name)),
+  );
+  // Source order of the base tokens first, component variables last
+  const names = [
+    ...[...base.keys()].filter((name) => overridden.has(name)),
+    ...[...overridden].filter((name) => !base.has(name)),
+  ];
+  const lines = names.map((name) => `  ${name}: ${base.get(name) ?? 'initial'};`);
+  return [
+    '/*',
+    ' * Kenny style preset — Glass (the default).',
+    ' *',
+    ' * Generated from the base tokens. Needed only to return to the default style inside a',
+    ' * block that sits within another preset; on <html> the attribute changes nothing.',
+    ' */',
+    "[data-kn-preset='glass'] {",
+    ...lines,
+    '}',
+    '',
+  ].join('\n');
+}
+
 async function main() {
   await mkdir(out, { recursive: true });
   const parts = await Promise.all(groups.map((g) => readFile(join(src, `${g}.css`), 'utf8')));
@@ -53,6 +111,17 @@ async function main() {
   await writeFile(join(out, 'base.css'), baseCss);
   await writeFile(join(out, 'kenny.css'), `${tokensCss}\n${baseCss}`);
   await writeFile(join(out, 'tokens.json'), JSON.stringify(await readAllTokens(), null, 2));
+  const presets = await readPresets();
+  await mkdir(join(out, 'presets'), { recursive: true });
+  const glass = await glassPresetCss();
+  await writeFile(join(out, 'presets', 'glass.css'), glass);
+  for (const preset of presets) {
+    await writeFile(join(out, 'presets', `${preset.name}.css`), preset.css);
+  }
+  await writeFile(
+    join(out, 'presets.css'),
+    [glass, ...presets.map((preset) => preset.css)].join('\n'),
+  );
   const pkg = JSON.parse(await readFile(join(here, 'package.json'), 'utf8'));
   await writeFile(join(out, 'package.json'), JSON.stringify(pkg, null, 2));
   await copyFile(join(here, 'README.md'), join(out, 'README.md'));

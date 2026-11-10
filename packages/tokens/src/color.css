@@ -1,6 +1,10 @@
 /*
  * Kenny tokens — colour.
  *
+ * The `--kn-glass-*` group describes the surface material. In the default style it is
+ * translucent glass; a style preset (see `presets/`) may turn it into an opaque sheet —
+ * components keep reading the same names.
+ *
  * Two layers:
  *  1. Palette scales (`--kn-accent-*`, `--kn-ink-*`): raw values, override these to re-brand.
  *  2. Semantic tokens (`--kn-color-*`, `--kn-glass-*`): what components consume.
@@ -55,6 +59,11 @@
   --kn-color-border: light-dark(rgb(12 19 48 / 0.1), rgb(238 242 255 / 0.1));
   --kn-color-border-strong: light-dark(rgb(12 19 48 / 0.22), rgb(238 242 255 / 0.24));
 
+  /* Fields: the well of an input, select or date picker, and the box of an unchecked checkbox */
+  --kn-color-field: var(--kn-color-surface-sunken);
+  --kn-color-field-border: var(--kn-color-border);
+  --kn-color-field-border-hover: var(--kn-color-border-strong);
+
   /* Accent */
   --kn-color-accent: light-dark(var(--kn-accent-600), var(--kn-accent-400));
   --kn-color-accent-hover: light-dark(var(--kn-accent-700), var(--kn-accent-300));
@@ -99,6 +108,8 @@
   --kn-glass-specular: light-dark(rgb(255 255 255 / 0.95), rgb(255 255 255 / 0.18));
   --kn-glass-filter: blur(22px) saturate(180%);
   --kn-glass-filter-strong: blur(40px) saturate(190%);
+  /* What the scrim does to the page behind a modal surface */
+  --kn-scrim-filter: blur(6px) saturate(140%);
 }
 
 [data-theme='light'] {

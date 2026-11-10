@@ -77,7 +77,7 @@ import { KnFormControl, KnSize } from '@kenny/ui/core';
       block-size: var(--_box);
       margin-block-start: calc((1lh - var(--_box)) / 2);
       border-radius: var(--kn-checkbox-radius, var(--kn-radius-xs));
-      background: var(--kn-color-surface-sunken);
+      background: var(--kn-color-field);
       box-shadow: inset 0 0 0 1.5px var(--kn-color-border-strong);
       transition: transform var(--kn-duration-normal) var(--kn-ease-spring);
     }
@@ -89,7 +89,7 @@ import { KnFormControl, KnSize } from '@kenny/ui/core';
       inset: 0;
       border-radius: inherit;
       background: var(--kn-checkbox-color, var(--kn-color-accent));
-      box-shadow: inset 0 1px 0 0 rgb(255 255 255 / 0.22);
+      box-shadow: var(--kn-shadow-highlight);
       opacity: 0;
       transform: scale(0.5);
       transition:

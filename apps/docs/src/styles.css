@@ -38,27 +38,26 @@ body::before {
   background-image:
     radial-gradient(
       circle at var(--_disc-x) var(--_disc-y),
-      light-dark(#2f5ff0, #2a52d6) 0 var(--_disc-r),
+      var(--docs-disc-a) 0 var(--_disc-r),
       transparent calc(var(--_disc-r) + 1px)
     ),
     radial-gradient(
       circle at var(--_spot-x) var(--_spot-y),
-      light-dark(#ffb23e, #e08a1c) 0 var(--_spot-r),
+      var(--docs-disc-b) 0 var(--_spot-r),
       transparent calc(var(--_spot-r) + 1px)
     ),
     radial-gradient(
       circle at var(--_disc-x) var(--_disc-y),
       transparent 0 var(--_ring-r),
-      light-dark(rgb(31 75 219 / 0.16), rgb(157 185 255 / 0.14)) var(--_ring-r)
-        calc(var(--_ring-r) + 1.5px),
+      var(--docs-ring) var(--_ring-r) calc(var(--_ring-r) + 1.5px),
       transparent calc(var(--_ring-r) + 2.5px)
     ),
     radial-gradient(
       circle at 4% 96%,
-      light-dark(#bccfff, #16328f) 0 var(--_pool-r),
+      var(--docs-disc-c) 0 var(--_pool-r),
       transparent calc(var(--_pool-r) + 1px)
     ),
-    radial-gradient(120% 90% at 100% 0%, light-dark(#dfe8ff, #0b1436) 0%, transparent 60%);
+    radial-gradient(120% 90% at 100% 0%, var(--docs-glow) 0%, transparent 60%);
   background-repeat: no-repeat;
 }
 
@@ -102,9 +101,9 @@ code {
   --code-foreground: light-dark(#0c1330, #e6ebfb);
   --code-background: transparent;
   --code-token-constant: light-dark(#1a40c2, #9db9ff);
-  --code-token-string: light-dark(#0f7a4d, #7fe0b3);
-  --code-token-string-expression: light-dark(#0f7a4d, #7fe0b3);
-  --code-token-comment: light-dark(#586380, #93a0c0);
+  --code-token-string: light-dark(#0a6640, #7fe0b3);
+  --code-token-string-expression: light-dark(#0a6640, #7fe0b3);
+  --code-token-comment: light-dark(#4d5670, #a6b1cc);
   --code-token-keyword: light-dark(#a3268f, #f29be4);
   --code-token-parameter: light-dark(#8f5400, #ffc260);
   --code-token-function: light-dark(#1f4bdb, #86a8ff);

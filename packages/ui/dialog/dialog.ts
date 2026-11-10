@@ -331,7 +331,7 @@ export class KnDialog {
       margin: calc(var(--kn-space-1) * -1) calc(var(--kn-space-2) * -1) 0 0;
       padding: 0;
       border: 0;
-      border-radius: var(--kn-radius-full);
+      border-radius: var(--kn-radius-control);
       background: var(--kn-color-surface-sunken);
       color: var(--kn-color-text-muted);
       cursor: pointer;

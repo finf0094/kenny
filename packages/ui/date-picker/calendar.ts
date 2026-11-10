@@ -119,7 +119,7 @@ interface Cell {
       block-size: 2rem;
       padding: 0;
       border: 0;
-      border-radius: var(--kn-radius-full);
+      border-radius: var(--kn-radius-control);
       background: none;
       color: var(--kn-color-accent-text);
       cursor: pointer;

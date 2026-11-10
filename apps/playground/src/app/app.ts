@@ -4,7 +4,7 @@ import { demos } from '../generated/demos';
 
 /**
  * Песочница: каждый демо-файл документации в изоляции, рядом в светлой и тёмной теме.
- * Адрес: `/?demo=button/variants&theme=split|light|dark&dir=rtl`.
+ * Адрес: `/?demo=button/variants&theme=split|light|dark&dir=rtl&preset=classic|tonal|crisp`.
  */
 @Component({
   selector: 'pg-root',
@@ -40,6 +40,13 @@ import { demos } from '../generated/demos';
             {{ mode }}
           </button>
         }
+        <span class="divider" aria-hidden="true"></span>
+        @for (name of presets; track name) {
+          <button type="button" [class.active]="preset() === name" (click)="preset.set(name)">
+            {{ name }}
+          </button>
+        }
+        <span class="divider" aria-hidden="true"></span>
         <button
           type="button"
           [class.active]="dir() === 'rtl'"
@@ -118,10 +125,16 @@ import { demos } from '../generated/demos';
       flex: 1;
     }
 
+    .divider {
+      inline-size: 1px;
+      block-size: 1.25rem;
+      background: var(--kn-color-border-strong);
+    }
+
     header button {
       padding: var(--kn-space-1) var(--kn-space-3);
       border: 1px solid var(--kn-color-border-strong);
-      border-radius: var(--kn-radius-full);
+      border-radius: var(--kn-radius-control);
       background: transparent;
       color: inherit;
       font: inherit;
@@ -150,6 +163,7 @@ import { demos } from '../generated/demos';
 })
 export class App {
   protected readonly modes = ['split', 'light', 'dark'] as const;
+  protected readonly presets = ['glass', 'classic', 'tonal', 'crisp'] as const;
   private readonly params = new URLSearchParams(location.search);
 
   protected readonly filter = signal('');
@@ -158,6 +172,9 @@ export class App {
     (this.params.get('theme') as 'split' | 'light' | 'dark' | null) ?? 'split',
   );
   protected readonly dir = signal<'ltr' | 'rtl'>(this.params.get('dir') === 'rtl' ? 'rtl' : 'ltr');
+  protected readonly preset = signal<(typeof this.presets)[number]>(
+    this.presets.find((name) => name === this.params.get('preset')) ?? 'glass',
+  );
   protected readonly component = signal<Type<unknown> | null>(null);
 
   protected readonly themes = computed(() =>
@@ -176,6 +193,12 @@ export class App {
   });
 
   constructor() {
+    // On <html>, so that dialogs and toasts rendered in <body> get the style too
+    effect(() => {
+      const preset = this.preset();
+      if (preset === 'glass') document.documentElement.removeAttribute('data-kn-preset');
+      else document.documentElement.setAttribute('data-kn-preset', preset);
+    });
     effect(() => {
       const id = this.current();
       this.component.set(null);

@@ -1,9 +1,11 @@
 // Accessibility and runtime audit of the built documentation site.
-/* global document, window, getComputedStyle */
+/* global document, window, getComputedStyle, localStorage */
 //
 //   node tools/audit.mjs [distDir] [--only=/components/button,/docs/tokens] [--theme=light|dark]
+//                        [--preset=glass,classic,tonal,crisp] [--concurrency=4]
 //
-// Opens every prerendered route in headless Chrome, in both themes, and fails on:
+// Opens every prerendered route in headless Chrome, in every style preset and both themes,
+// and fails on:
 //   - any axe-core violation of WCAG 2.1 A/AA (colour contrast included: this is a real browser);
 //   - any console error or uncaught exception;
 //   - horizontal overflow of the page at a phone-sized viewport.
@@ -33,12 +35,18 @@ const axeSource = await readFile(
   'utf8',
 );
 
+const presets =
+  typeof flags.preset === 'string'
+    ? flags.preset.split(',')
+    : ['glass', 'classic', 'tonal', 'crisp'];
+const concurrency = Number(flags.concurrency ?? 4);
+
 const server = await serve(join(distDir, 'browser'));
 const browser = await puppeteer.launch({ executablePath: chromePath, args: chromeArgs });
 const problems = [];
 let checked = 0;
 
-async function open(route, theme, width, height) {
+async function open(route, theme, preset, width, height) {
   const page = await browser.newPage();
   await page.setViewport({ width, height });
   await page.emulateMediaFeatures([
@@ -46,6 +54,14 @@ async function open(route, theme, width, height) {
     // Entrance animations would be caught mid-flight and reported as low contrast
     { name: 'prefers-reduced-motion', value: 'reduce' },
   ]);
+  // The site restores the style preset from storage before first paint
+  await page.evaluateOnNewDocument((name) => {
+    try {
+      localStorage.setItem('kn-preset', name);
+    } catch {
+      /* storage is unavailable on about:blank */
+    }
+  }, preset);
   const errors = [];
   page.on('console', (message) => message.type() === 'error' && errors.push(message.text()));
   page.on('pageerror', (error) => errors.push(error.message));
@@ -53,34 +69,39 @@ async function open(route, theme, width, height) {
   return { page, errors };
 }
 
-try {
-  for (const route of routes) {
-    for (const theme of themes) {
-      const { page, errors } = await open(route, theme, 1280, 900);
-      await page.evaluate(axeSource);
-      const result = await page.evaluate(() =>
-        window.axe.run(document, {
-          runOnly: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'best-practice'],
-        }),
-      );
-      for (const violation of result.violations) {
-        const nodes = violation.nodes
-          .slice(0, 4)
-          .map(
-            (node) =>
-              `      ${node.target.join(' ')}\n        ${node.failureSummary?.split('\n').slice(1, 2).join(' ').trim()}`,
-          );
-        problems.push(
-          `${route} [${theme}] ${violation.id} (${violation.impact}), ${violation.nodes.length} node(s)\n${nodes.join('\n')}`,
+async function auditRender(route, theme, preset) {
+  const where = `${route} [${preset}, ${theme}]`;
+  const { page, errors } = await open(route, theme, preset, 1280, 900);
+  try {
+    await page.evaluate(axeSource);
+    const result = await page.evaluate(() =>
+      window.axe.run(document, {
+        runOnly: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'best-practice'],
+      }),
+    );
+    for (const violation of result.violations) {
+      const nodes = violation.nodes
+        .slice(0, 4)
+        .map(
+          (node) =>
+            `      ${node.target.join(' ')}\n        ${node.failureSummary?.split('\n').slice(1, 2).join(' ').trim()}`,
         );
-      }
-      for (const error of new Set(errors)) problems.push(`${route} [${theme}] console: ${error}`);
-      await page.close();
-      checked++;
+      problems.push(
+        `${where} ${violation.id} (${violation.impact}), ${violation.nodes.length} node(s)\n${nodes.join('\n')}`,
+      );
     }
+    for (const error of new Set(errors)) problems.push(`${where} console: ${error}`);
+    checked++;
+  } finally {
+    await page.close();
+  }
+}
 
-    // Narrow viewport: the page itself must not scroll sideways
-    const { page, errors } = await open(route, 'light', 375, 800);
+/** Narrow viewport: the page itself must not scroll sideways. */
+async function auditOverflow(route, preset) {
+  const where = `${route} [${preset}, 375px]`;
+  const { page, errors } = await open(route, 'light', preset, 375, 800);
+  try {
     const overflow = await page.evaluate(() => {
       const width = window.innerWidth;
       const amount = document.documentElement.scrollWidth - width;
@@ -110,18 +131,39 @@ try {
     });
     if (overflow) {
       problems.push(
-        `${route} [375px] page overflows horizontally by ${overflow.amount}px\n      ${overflow.culprits.join('\n      ')}`,
+        `${where} page overflows horizontally by ${overflow.amount}px\n      ${overflow.culprits.join('\n      ')}`,
       );
     }
-    for (const error of new Set(errors)) problems.push(`${route} [375px] console: ${error}`);
+    for (const error of new Set(errors)) problems.push(`${where} console: ${error}`);
+  } finally {
     await page.close();
   }
+}
+
+// Every route in every style and theme, plus the phone width per style
+const jobs = [];
+for (const preset of presets) {
+  for (const route of routes) {
+    for (const theme of themes) jobs.push(() => auditRender(route, theme, preset));
+    jobs.push(() => auditOverflow(route, preset));
+  }
+}
+
+try {
+  let next = 0;
+  await Promise.all(
+    Array.from({ length: concurrency }, async () => {
+      while (next < jobs.length) await jobs[next++]();
+    }),
+  );
 } finally {
   await browser.close();
   server.close();
 }
 
-console.log(`audited ${routes.length} routes, ${checked} theme renders`);
+console.log(
+  `audited ${routes.length} routes × ${presets.length} styles × ${themes.length} themes: ${checked} renders`,
+);
 if (problems.length) {
   console.error(`\n${problems.length} problem(s):\n\n${problems.join('\n\n')}`);
   process.exit(1);

@@ -1,25 +1,30 @@
 /*
- * The wallpaper glass sits on. Crisp cobalt and amber discs (not blurry blobs):
- * hard edges are what make the backdrop blur of a glass pane visible.
+ * The wallpaper glass sits on: crisp cobalt and amber discs, not blurry blobs — hard edges
+ * are what make the backdrop blur of a glass pane visible.
+ *
+ * The loud shapes belong to the glass style: they are what the blur
+ * has to work on. Opaque presets get a plain page, so the shapes turn transparent there.
+ * Declared per preset scope, so a glass block nested in another preset gets them back.
  */
-.kn-wallpaper {
-  --_disc-a: light-dark(#2f5ff0, #2a52d6);
-  --_disc-b: light-dark(#ffb23e, #e08a1c);
-  --_disc-c: light-dark(#8fb0ff, #16328f);
-  --_ring: light-dark(rgb(31 75 219 / 0.16), rgb(157 185 255 / 0.14));
-  background-color: var(--kn-color-canvas);
-  background-image:
-    radial-gradient(circle at 82% 12%, var(--_disc-a) 0 9rem, transparent calc(9rem + 1px)),
-    radial-gradient(circle at 68% 34%, var(--_disc-b) 0 3.25rem, transparent calc(3.25rem + 1px)),
-    radial-gradient(
-      circle at 82% 12%,
-      transparent 0 13rem,
-      var(--_ring) 13rem calc(13rem + 1.5px),
-      transparent calc(13rem + 2.5px)
-    ),
-    radial-gradient(circle at 8% 88%, var(--_disc-c) 0 11rem, transparent calc(11rem + 1px)),
-    radial-gradient(120% 90% at 100% 0%, light-dark(#dfe8ff, #0b1436) 0%, transparent 60%);
-  background-repeat: no-repeat;
+:root,
+[data-kn-preset='glass'] {
+  --docs-disc-a: light-dark(#2f5ff0, #2a52d6);
+  --docs-disc-b: light-dark(#ffb23e, #e08a1c);
+  --docs-disc-c: light-dark(#bccfff, #16328f);
+  --docs-ring: light-dark(rgb(31 75 219 / 0.16), rgb(157 185 255 / 0.14));
+  --docs-glow: light-dark(#dfe8ff, #0b1436);
+  --docs-stage: light-dark(#e9eef9, #080d1f);
+}
+
+[data-kn-preset='classic'],
+[data-kn-preset='tonal'],
+[data-kn-preset='crisp'] {
+  --docs-disc-a: transparent;
+  --docs-disc-b: transparent;
+  --docs-disc-c: transparent;
+  --docs-ring: transparent;
+  --docs-glow: transparent;
+  --docs-stage: var(--kn-color-canvas);
 }
 
 /*
@@ -27,27 +32,24 @@
  * viewport, so a control in the stage is never left sitting on saturated colour.
  */
 .kn-wallpaper-sm {
-  --_disc-a: light-dark(#2f5ff0, #2a52d6);
-  --_disc-b: light-dark(#ffb23e, #e08a1c);
-  --_disc-c: light-dark(#bccfff, #16328f);
   --_r-a: clamp(2.25rem, 9vw, 5rem);
   --_r-b: clamp(1.25rem, 4vw, 2rem);
   --_r-c: clamp(2.75rem, 10vw, 5.5rem);
-  background-color: light-dark(#e9eef9, #080d1f);
+  background-color: var(--docs-stage);
   background-image:
     radial-gradient(
       circle at 100% 0%,
-      var(--_disc-a) 0 var(--_r-a),
+      var(--docs-disc-a) 0 var(--_r-a),
       transparent calc(var(--_r-a) + 1px)
     ),
     radial-gradient(
       circle at 64% 100%,
-      var(--_disc-b) 0 var(--_r-b),
+      var(--docs-disc-b) 0 var(--_r-b),
       transparent calc(var(--_r-b) + 1px)
     ),
     radial-gradient(
       circle at 0% 100%,
-      var(--_disc-c) 0 var(--_r-c),
+      var(--docs-disc-c) 0 var(--_r-c),
       transparent calc(var(--_r-c) + 1px)
     );
   background-repeat: no-repeat;

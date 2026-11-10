@@ -30,8 +30,8 @@ const fieldStyles = `
     padding: 0 var(--kn-input-padding, var(--kn-space-3));
     border: 0;
     border-radius: var(--kn-input-radius, var(--_radius));
-    background: var(--kn-input-bg, var(--kn-color-surface-sunken));
-    box-shadow: inset 0 0 0 1px var(--kn-input-border, var(--kn-color-border));
+    background: var(--kn-input-bg, var(--kn-color-field));
+    box-shadow: inset 0 0 0 1px var(--kn-input-border, var(--kn-color-field-border));
     color: var(--kn-color-text);
     font: inherit;
     font-size: var(--kn-text-md);
@@ -46,7 +46,7 @@ const fieldStyles = `
 
   @media (hover: hover) {
     .kn-input:where(:hover:not(:disabled)) {
-      box-shadow: inset 0 0 0 1px var(--kn-color-border-strong);
+      box-shadow: inset 0 0 0 1px var(--kn-color-field-border-hover);
     }
   }
 
@@ -210,14 +210,14 @@ export class KnTextarea {
       block-size: var(--kn-input-height, var(--_height));
       padding: 0 var(--kn-input-padding, var(--kn-space-3));
       border-radius: var(--kn-input-radius, var(--kn-radius-md));
-      background: var(--kn-input-bg, var(--kn-color-surface-sunken));
-      box-shadow: inset 0 0 0 1px var(--kn-input-border, var(--kn-color-border));
+      background: var(--kn-input-bg, var(--kn-color-field));
+      box-shadow: inset 0 0 0 1px var(--kn-input-border, var(--kn-color-field-border));
       color: var(--kn-color-text-muted);
     }
 
     @media (hover: hover) {
       :host(:hover) {
-        box-shadow: inset 0 0 0 1px var(--kn-color-border-strong);
+        box-shadow: inset 0 0 0 1px var(--kn-color-field-border-hover);
       }
     }
 

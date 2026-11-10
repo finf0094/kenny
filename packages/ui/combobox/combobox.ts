@@ -126,8 +126,8 @@ import { KN_OPTION_PARENT, KnOption, KnOptionParent } from '@kenny/ui/option';
       block-size: var(--kn-combobox-height, var(--_height));
       padding-inline: var(--kn-space-3) var(--kn-space-1);
       border-radius: var(--kn-combobox-radius, var(--kn-radius-md));
-      background: var(--kn-combobox-bg, var(--kn-color-surface-sunken));
-      box-shadow: inset 0 0 0 1px var(--kn-color-border);
+      background: var(--kn-combobox-bg, var(--kn-color-field));
+      box-shadow: inset 0 0 0 1px var(--kn-color-field-border);
     }
 
     :host([data-size='sm']) .control {
@@ -136,7 +136,7 @@ import { KN_OPTION_PARENT, KnOption, KnOptionParent } from '@kenny/ui/option';
 
     @media (hover: hover) {
       .control:hover {
-        box-shadow: inset 0 0 0 1px var(--kn-color-border-strong);
+        box-shadow: inset 0 0 0 1px var(--kn-color-field-border-hover);
       }
     }
 
@@ -184,7 +184,7 @@ import { KN_OPTION_PARENT, KnOption, KnOptionParent } from '@kenny/ui/option';
       block-size: 1.75rem;
       padding: 0;
       border: 0;
-      border-radius: var(--kn-radius-full);
+      border-radius: var(--kn-radius-control);
       background: none;
       color: var(--kn-color-text-subtle);
       cursor: pointer;

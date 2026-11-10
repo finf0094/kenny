@@ -3,6 +3,7 @@
 //   packages/ui/<entry>/*.ts            → API tables (inputs, models, outputs, methods, CSS variables)
 //   apps/docs/src/app/demos/<entry>/*   → demo source code, highlighted at build time
 //   packages/tokens/src/*.css           → token reference
+//   packages/tokens/src/presets/*.css   → what each style preset changes
 //   all demos                           → registry for the playground app
 //
 // Output: apps/docs/src/generated/*.ts and apps/playground/src/generated/demos.ts
@@ -12,7 +13,7 @@ import { join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import ts from 'typescript';
 import { createCssVariablesTheme, createHighlighter } from 'shiki';
-import { readAllTokens } from '../packages/tokens/build.mjs';
+import { glassPresetCss, readAllTokens, readPresets } from '../packages/tokens/build.mjs';
 
 const root = fileURLToPath(new URL('..', import.meta.url));
 const uiRoot = join(root, 'packages/ui');
@@ -360,6 +361,32 @@ async function main() {
   await writeFile(
     join(outDocs, 'tokens.ts'),
     `${banner}import type { TokenDoc } from '../app/core/doc-types';\n\nexport const tokens: TokenDoc[] = ${JSON.stringify(tokens, null, 2)};\n`,
+  );
+
+  // Style presets: the generated "glass" reset and a table of what each preset changes
+  const presets = await readPresets();
+  await writeFile(join(outDocs, 'preset-glass.css'), await glassPresetCss());
+  const base = new Map(tokens.map((token) => [token.name, token]));
+  const changed = [...new Set(presets.flatMap((preset) => preset.tokens.map((t) => t.name)))];
+  const presetRows = [
+    ...tokens.map((token) => token.name).filter((name) => changed.includes(name)),
+    ...changed.filter((name) => !base.has(name)),
+  ].map((name) => ({
+    name,
+    group: base.get(name)?.group ?? 'component',
+    values: {
+      glass: base.get(name)?.value ?? null,
+      ...Object.fromEntries(
+        presets.map((preset) => [
+          preset.name,
+          preset.tokens.find((token) => token.name === name)?.value ?? null,
+        ]),
+      ),
+    },
+  }));
+  await writeFile(
+    join(outDocs, 'presets.ts'),
+    `${banner}import type { PresetTokenRow } from '../app/core/doc-types';\n\nexport const presetRows: PresetTokenRow[] = ${JSON.stringify(presetRows, null, 2)};\n`,
   );
 
   await writeFile(

@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { KnButton } from '@kenny/ui/button';
 import { KnCard } from '@kenny/ui/card';
 import { KnSwitch } from '@kenny/ui/switch';
@@ -7,7 +8,7 @@ import { DocsCode } from '../core/code-block';
 import { ACCENTS, ThemeMode, ThemeService } from '../core/theme';
 
 @Component({
-  imports: [DocsCode, KnRadioGroup, KnRadio, KnButton, KnCard, KnSwitch],
+  imports: [RouterLink, DocsCode, KnRadioGroup, KnRadio, KnButton, KnCard, KnSwitch],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <article class="prose">
@@ -15,6 +16,11 @@ import { ACCENTS, ThemeMode, ThemeService } from '../core/theme';
       <p class="lead">
         Тема — это значения CSS-переменных. Чтобы сменить её, не нужны ни пересборка, ни сервис:
         достаточно атрибута на элементе.
+      </p>
+      <p>
+        На этой странице — светлая и тёмная темы, акцентный цвет и переменные отдельных компонентов.
+        Материал поверхностей, форма кнопок и плотность меняются целиком — пресетом: см.
+        <a routerLink="/docs/presets">Стили</a>.
       </p>
 
       <h2 id="themes">Светлая и тёмная</h2>
@@ -102,6 +108,10 @@ import { ACCENTS, ThemeMode, ThemeService } from '../core/theme';
       </p>
       <docs-code snippet="glass-recipe.css" label="Рецепт стекла" />
       <p>
+        Это стиль по умолчанию. В других стилях те же токены описывают непрозрачный лист или
+        тонированный контейнер — рецепт остаётся рабочим, меняется результат.
+      </p>
+      <p>
         Стеклу нужен фон с деталями: на ровной заливке размытие не видно. Для длинного текста берите
         <code>--kn-glass-bg-strong</code> — он почти непрозрачен и держит контраст на любом фоне.
       </p>
@@ -131,7 +141,7 @@ import { ACCENTS, ThemeMode, ThemeService } from '../core/theme';
       block-size: var(--kn-size-md);
       padding: 0 var(--kn-space-4) 0 var(--kn-space-3);
       border: 0;
-      border-radius: var(--kn-radius-full);
+      border-radius: var(--kn-radius-control);
       background: var(--kn-color-surface-sunken);
       box-shadow: inset 0 0 0 1px var(--kn-color-border);
       color: var(--kn-color-text);

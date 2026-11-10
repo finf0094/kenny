@@ -1,9 +1,10 @@
 // Visual check helper: serves a built app and takes screenshots with headless Chrome.
-/* global document, MutationObserver */
+/* global document, localStorage, MutationObserver */
 //
 //   node tools/shots.mjs <distDir> <path> [<path> …] [--theme=dark] [--width=1280]
 //                        [--height=800] [--full] [--out=tools/shots] [--wait=400]
 //                        [--click=<selector>] [--press=<Key>] [--name=<file>] [--dir=rtl]
+//                        [--preset=classic|tonal|crisp]
 //
 // CHROME_PATH overrides the browser binary (default: /usr/bin/google-chrome).
 import { mkdir } from 'node:fs/promises';
@@ -52,6 +53,22 @@ try {
         observer.observe(document, { childList: true });
       }, flags.dir);
     }
+    if (flags.preset) {
+      // The docs read the style preset from storage; other apps just get the attribute
+      await page.evaluateOnNewDocument((preset) => {
+        try {
+          localStorage.setItem('kn-preset', preset);
+        } catch {
+          /* storage is unavailable on about:blank */
+        }
+        const observer = new MutationObserver(() => {
+          if (!document.documentElement) return;
+          document.documentElement.dataset.knPreset = preset;
+          observer.disconnect();
+        });
+        observer.observe(document, { childList: true });
+      }, flags.preset);
+    }
     await page.goto(`http://localhost:${port}${path}`, { waitUntil: 'networkidle0' });
     if (flags.theme) {
       await page.evaluate((t) => (document.documentElement.dataset.theme = t), flags.theme);
@@ -79,6 +96,7 @@ try {
     const name =
       flags.name ??
       (path.replace(/[^\w]+/g, '_').replace(/^_|_$/g, '') || 'home') +
+        (flags.preset ? `.${flags.preset}` : '') +
         (flags.theme ? `.${flags.theme}` : '');
     await page.screenshot({ path: join(out, `${name}.png`), fullPage: Boolean(flags.full) });
     console.log('shot', join(out, `${name}.png`));

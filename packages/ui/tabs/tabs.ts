@@ -146,7 +146,7 @@ export type KnTabsVariant = 'segmented' | 'underline';
     .tab:focus-visible {
       outline: var(--kn-focus-width) solid var(--kn-color-focus);
       outline-offset: -3px;
-      border-radius: var(--kn-radius-full);
+      border-radius: var(--kn-radius-control);
     }
 
     .indicator {
@@ -162,20 +162,20 @@ export type KnTabsVariant = 'segmented' | 'underline';
     /* Segmented: a glass pill sliding inside a sunken track */
     :host([data-variant='segmented']) .list {
       padding: 3px;
-      border-radius: var(--kn-radius-full);
+      border-radius: var(--kn-radius-control);
       background: var(--kn-tabs-track, var(--kn-color-surface-sunken));
       box-shadow: inset 0 0 0 1px var(--kn-color-border);
     }
 
     :host([data-variant='segmented']) .tab {
       block-size: calc(var(--_height) - 6px);
-      border-radius: var(--kn-radius-full);
+      border-radius: max(0px, calc(var(--kn-radius-control) - 3px));
     }
 
     :host([data-variant='segmented']) .indicator {
       inset-block: 3px;
-      border-radius: var(--kn-radius-full);
-      background: var(--kn-tabs-indicator, var(--kn-glass-bg-strong));
+      border-radius: max(0px, calc(var(--kn-radius-control) - 3px));
+      background: var(--kn-tabs-thumb, var(--kn-tabs-indicator, var(--kn-glass-bg-strong)));
       box-shadow:
         inset 0 1px 0 0 var(--kn-glass-specular),
         0 0 0 0.5px var(--kn-glass-edge),

@@ -94,8 +94,8 @@ import { KN_OPTION_PARENT, KnOption, KnOptionParent } from '@kenny/ui/option';
       padding: 0 var(--kn-space-2) 0 var(--kn-space-3);
       border: 0;
       border-radius: var(--kn-select-radius, var(--kn-radius-md));
-      background: var(--kn-select-bg, var(--kn-color-surface-sunken));
-      box-shadow: inset 0 0 0 1px var(--kn-color-border);
+      background: var(--kn-select-bg, var(--kn-color-field));
+      box-shadow: inset 0 0 0 1px var(--kn-color-field-border);
       color: var(--kn-color-text);
       font: inherit;
       font-size: var(--kn-text-md);
@@ -115,7 +115,7 @@ import { KN_OPTION_PARENT, KnOption, KnOptionParent } from '@kenny/ui/option';
 
     @media (hover: hover) {
       .trigger:hover:not(:disabled) {
-        box-shadow: inset 0 0 0 1px var(--kn-color-border-strong);
+        box-shadow: inset 0 0 0 1px var(--kn-color-field-border-hover);
       }
     }
 

@@ -2,20 +2,23 @@
 <html lang="ru">
   <head>
     <meta charset="utf-8" />
-    <title>Kenny — стеклянные компоненты для Angular</title>
+    <title>Kenny — компоненты для Angular</title>
     <base href="/" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
-      content="Kenny — UI-библиотека для Angular: доступные компоненты на signals, стеклянный материал, пружинная анимация, светлая и тёмная темы."
+      content="Kenny — UI-библиотека для Angular: доступные компоненты на signals, четыре стиля на выбор, светлая и тёмная темы, продуманная анимация."
     />
     <meta name="color-scheme" content="light dark" />
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <script>
-      // Apply the saved theme before first paint to avoid a flash.
+      // Apply the saved theme and style preset before first paint to avoid a flash.
       try {
         var t = localStorage.getItem('kn-theme');
         if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
+        var p = localStorage.getItem('kn-preset');
+        if (p === 'classic' || p === 'tonal' || p === 'crisp')
+          document.documentElement.dataset.knPreset = p;
       } catch (e) {}
     </script>
   </head>

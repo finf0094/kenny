@@ -30,7 +30,7 @@ import { KnTone } from '@kenny/ui/core';
       min-inline-size: 1.375rem;
       block-size: 1.375rem;
       padding: 0 var(--kn-space-2);
-      border-radius: var(--kn-badge-radius, var(--kn-radius-full));
+      border-radius: var(--kn-badge-radius, var(--kn-radius-badge));
       background: var(--_soft);
       color: var(--_fg);
       font-size: var(--kn-text-xs);

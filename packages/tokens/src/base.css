@@ -34,9 +34,21 @@ body {
   outline-offset: var(--kn-focus-offset);
 }
 
-/* Dimmed, slightly blurred backdrop behind modal surfaces (dialog, drawer, command palette). */
+/*
+ * A block with its own theme or style preset re-reads the text colour and the body size,
+ * so plain text inside it matches the components around it. Zero specificity: any rule wins.
+ */
+:where([data-theme], [data-kn-preset]):not(:root) {
+  color: var(--kn-color-text);
+}
+
+:where([data-kn-preset]):not(:root) {
+  font-size: var(--kn-text-md);
+}
+
+/* Dimmed backdrop behind modal surfaces (dialog, drawer, command palette); blurred in the glass style. */
 .kn-overlay-scrim {
   background: var(--kn-color-scrim);
-  backdrop-filter: blur(6px) saturate(140%);
-  -webkit-backdrop-filter: blur(6px) saturate(140%);
+  backdrop-filter: var(--kn-scrim-filter);
+  -webkit-backdrop-filter: var(--kn-scrim-filter);
 }

@@ -134,7 +134,7 @@ export class KnRadioGroup<T = unknown> extends KnFormControl<T | null> {
       block-size: var(--_box);
       margin-block-start: calc((1lh - var(--_box)) / 2);
       border-radius: 50%;
-      background: var(--kn-color-surface-sunken);
+      background: var(--kn-color-field);
       box-shadow: inset 0 0 0 1.5px var(--kn-color-border-strong);
       transition: transform var(--kn-duration-normal) var(--kn-ease-spring);
     }
@@ -153,7 +153,7 @@ export class KnRadioGroup<T = unknown> extends KnFormControl<T | null> {
 
     .circle::before {
       background: var(--kn-radio-color, var(--kn-color-accent));
-      box-shadow: inset 0 1px 0 0 rgb(255 255 255 / 0.22);
+      box-shadow: var(--kn-shadow-highlight);
       transform: scale(0.5);
     }
 

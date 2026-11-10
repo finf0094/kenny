@@ -32,6 +32,10 @@
   --kn-radius-2xl: 2.25rem; /* 36 — hero surfaces */
   --kn-radius-full: 999px; /* capsules */
 
+  /* Shape of interactive controls and of badges — a style decision, separate from the scale */
+  --kn-radius-control: var(--kn-radius-full); /* buttons, segmented tabs, page numbers, toolbars */
+  --kn-radius-badge: var(--kn-radius-full); /* badges and counters */
+
   /* Stacking */
   --kn-z-base: 0;
   --kn-z-raised: 1;

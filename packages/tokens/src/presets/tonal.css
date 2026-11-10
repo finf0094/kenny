@@ -1,0 +1,122 @@
+/*
+ * Kenny style preset — Tonal.
+ *
+ * Surfaces are tinted with the accent instead of being outlined: the page, the cards and
+ * the fields are steps of one tone. Capsule buttons, generous radii, soft elevation shadows,
+ * no borders. Follows the accent scale, so re-colouring `--kn-accent-*` re-tints everything.
+ *
+ * Usage: import after the tokens and set `data-kn-preset="tonal"` on <html> or on any block.
+ */
+[data-kn-preset='tonal'] {
+  /* Surfaces: one hue, four steps */
+  --kn-color-canvas: light-dark(
+    color-mix(in srgb, var(--kn-accent-500) 4%, #fefefe),
+    color-mix(in srgb, var(--kn-accent-400) 5%, #101114)
+  );
+  --kn-color-surface: light-dark(
+    color-mix(in srgb, var(--kn-accent-500) 9%, #ffffff),
+    color-mix(in srgb, var(--kn-accent-400) 10%, #17181c)
+  );
+  --kn-color-surface-raised: light-dark(
+    color-mix(in srgb, var(--kn-accent-500) 11%, #ffffff),
+    color-mix(in srgb, var(--kn-accent-400) 13%, #1c1d22)
+  );
+  --kn-color-surface-sunken: light-dark(
+    color-mix(in srgb, var(--kn-accent-800) 7%, transparent),
+    color-mix(in srgb, var(--kn-accent-200) 8%, transparent)
+  );
+
+  /* Text */
+  --kn-color-text: light-dark(#1a1b20, #e5e4ea);
+  --kn-color-text-muted: light-dark(#44474f, #c3c5cf);
+  --kn-color-text-subtle: light-dark(#565962, #9fa1ab);
+  --kn-color-text-disabled: light-dark(rgb(26 27 32 / 0.38), rgb(229 228 234 / 0.38));
+
+  /* Accent and danger text sit on tinted fills here, so the dark theme takes a lighter step */
+  --kn-color-accent-text: light-dark(var(--kn-accent-700), var(--kn-accent-200));
+  --kn-color-danger: light-dark(#b32035, #ff949d);
+  --kn-color-danger-hover: light-dark(#9a1b2d, #ffaab1);
+
+  /* Lines: rare, and tinted like everything else */
+  --kn-color-border: light-dark(
+    color-mix(in srgb, var(--kn-accent-900) 12%, transparent),
+    color-mix(in srgb, var(--kn-accent-100) 12%, transparent)
+  );
+  --kn-color-border-strong: light-dark(
+    color-mix(in srgb, var(--kn-accent-950) 34%, transparent),
+    color-mix(in srgb, var(--kn-accent-50) 34%, transparent)
+  );
+
+  /* Fields: a filled well one step darker than the surface it sits on */
+  --kn-color-field: light-dark(
+    color-mix(in srgb, var(--kn-accent-800) 9%, transparent),
+    color-mix(in srgb, var(--kn-accent-100) 10%, transparent)
+  );
+  --kn-color-field-border: transparent;
+  --kn-color-field-border-hover: var(--kn-color-border-strong);
+
+  /* Interaction layers */
+  --kn-color-hover: light-dark(
+    color-mix(in srgb, var(--kn-accent-800) 8%, transparent),
+    color-mix(in srgb, var(--kn-accent-100) 9%, transparent)
+  );
+  --kn-color-pressed: light-dark(
+    color-mix(in srgb, var(--kn-accent-800) 13%, transparent),
+    color-mix(in srgb, var(--kn-accent-100) 15%, transparent)
+  );
+  --kn-color-scrim: light-dark(rgb(20 22 30 / 0.4), rgb(0 0 0 / 0.6));
+
+  /* Material: opaque tinted containers */
+  --kn-glass-bg: var(--kn-color-surface);
+  --kn-glass-bg-strong: var(--kn-color-surface-raised);
+  --kn-glass-bg-subtle: light-dark(
+    color-mix(in srgb, var(--kn-accent-500) 6%, #ffffff),
+    color-mix(in srgb, var(--kn-accent-400) 7%, #141518)
+  );
+  --kn-glass-border: transparent;
+  --kn-glass-edge: transparent;
+  --kn-glass-specular: transparent;
+  --kn-glass-filter: none;
+  --kn-glass-filter-strong: none;
+  --kn-scrim-filter: none;
+
+  /* Shape: large radii, capsule controls */
+  --kn-radius-xs: 0.25rem; /* 4 */
+  --kn-radius-sm: 0.5rem; /* 8 */
+  --kn-radius-md: 0.75rem; /* 12 */
+  --kn-radius-lg: 1rem; /* 16 */
+  --kn-radius-xl: 1.75rem; /* 28 */
+  --kn-radius-2xl: 2rem; /* 32 */
+  --kn-radius-control: var(--kn-radius-full);
+  --kn-radius-badge: var(--kn-radius-sm);
+
+  /* Size: slightly taller controls */
+  --kn-size-sm: 2rem; /* 32 */
+  --kn-size-md: 2.5rem; /* 40 */
+  --kn-size-lg: 3rem; /* 48 */
+
+  /* Elevation: tone separates surfaces; shadows appear only on things that float */
+  --kn-shadow-color: light-dark(rgb(20 22 30 / 0.1), rgb(0 0 0 / 0.46));
+  --kn-shadow-color-strong: light-dark(rgb(20 22 30 / 0.15), rgb(0 0 0 / 0.6));
+  --kn-shadow-xs: 0 1px 2px var(--kn-shadow-color);
+  --kn-shadow-sm: 0 1px 2px var(--kn-shadow-color), 0 1px 3px 1px var(--kn-shadow-color);
+  --kn-shadow-md: 0 1px 3px var(--kn-shadow-color), 0 4px 8px 3px var(--kn-shadow-color);
+  --kn-shadow-lg: 0 2px 3px var(--kn-shadow-color), 0 6px 10px 4px var(--kn-shadow-color-strong);
+  --kn-shadow-xl: 0 4px 4px var(--kn-shadow-color), 0 8px 12px 6px var(--kn-shadow-color-strong);
+  --kn-shadow-highlight: 0 0 0 0 transparent;
+  --kn-glass-rim: 0 0 0 0 transparent;
+  /* Small surfaces (outlined buttons, chips) sit on a container of the same tone: outline them */
+  --kn-shadow-glass-sm: inset 0 0 0 1px
+    light-dark(
+      color-mix(in srgb, var(--kn-accent-900) 22%, transparent),
+      color-mix(in srgb, var(--kn-accent-100) 24%, transparent)
+    );
+  --kn-shadow-glass-md: var(--kn-glass-rim);
+  --kn-shadow-glass-lg: var(--kn-shadow-md);
+  --kn-shadow-glass-xl: var(--kn-shadow-lg);
+
+  /* Components */
+  --kn-tabs-thumb: light-dark(#ffffff, color-mix(in srgb, var(--kn-accent-300) 26%, #1c1d22));
+  --kn-tooltip-bg: light-dark(#2f3036, #e5e4ea);
+  --kn-tooltip-color: light-dark(#f2f0f7, #1a1b20);
+}

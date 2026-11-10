@@ -1,8 +1,9 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { DocsCode } from '../core/code-block';
 
 @Component({
-  imports: [DocsCode],
+  imports: [RouterLink, DocsCode],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <article class="prose">
@@ -45,6 +46,11 @@ import { DocsCode } from '../core/code-block';
         <code>base.css</code> (фон и шрифт страницы, кольцо фокуса, подложка модальных окон). Если
         базовые стили у вас свои, возьмите только <code>tokens.css</code> и перенесите из
         <code>base.css</code> класс <code>.kn-overlay-scrim</code>.
+      </p>
+      <p>
+        По умолчанию компоненты выглядят стеклянными. Другой характер — непрозрачные листы с
+        рамками, тональные поверхности или плотный интерфейс — включается пресетом из того же
+        пакета: см. <a routerLink="/docs/presets">Стили</a>.
       </p>
 
       <h2 id="font">Шрифт</h2>

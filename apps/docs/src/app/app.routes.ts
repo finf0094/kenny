@@ -11,7 +11,7 @@ export const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    title: 'Kenny — стеклянные компоненты для Angular',
+    title: 'Kenny — компоненты для Angular',
     loadComponent: () => import('./pages/home'),
   },
   {
@@ -21,6 +21,7 @@ export const routes: Routes = [
       { path: '', pathMatch: 'full', redirectTo: 'getting-started' },
       guide('getting-started', 'Начало работы', () => import('./pages/getting-started')),
       guide('installation', 'Установка', () => import('./pages/installation')),
+      guide('presets', 'Стили', () => import('./pages/presets')),
       guide('theming', 'Темизация', () => import('./pages/theming')),
       guide('tokens', 'Токены', () => import('./pages/tokens')),
       guide('motion', 'Motion', () => import('./pages/motion')),

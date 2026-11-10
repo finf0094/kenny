@@ -83,13 +83,16 @@ export function knPositions(placement: KnPlacement, offset = 8): ConnectedPositi
 }
 
 /**
- * Overlays render at the end of `<body>`, outside of any nested `data-theme` scope.
- * Copies the theme of the element that opened the overlay onto the overlay itself.
+ * Overlays render at the end of `<body>`, outside of any nested `data-theme` or
+ * `data-kn-preset` scope. Copies the theme and the style preset of the element that
+ * opened the overlay onto the overlay itself.
  */
 export function inheritTheme(source: Element, target: Element): void {
-  const theme = source.closest('[data-theme]')?.getAttribute('data-theme');
-  if (theme) {
-    target.setAttribute('data-theme', theme);
+  for (const attribute of ['data-theme', 'data-kn-preset']) {
+    const value = source.closest(`[${attribute}]`)?.getAttribute(attribute);
+    if (value) {
+      target.setAttribute(attribute, value);
+    }
   }
 }
 

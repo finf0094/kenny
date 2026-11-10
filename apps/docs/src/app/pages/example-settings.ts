@@ -367,7 +367,7 @@ const ZONES = [
       block-size: var(--kn-size-md);
       padding: 0 var(--kn-space-4) 0 var(--kn-space-3);
       border: 0;
-      border-radius: var(--kn-radius-full);
+      border-radius: var(--kn-radius-control);
       background: var(--kn-color-surface-sunken);
       box-shadow: inset 0 0 0 1px var(--kn-color-border);
       color: var(--kn-color-text);

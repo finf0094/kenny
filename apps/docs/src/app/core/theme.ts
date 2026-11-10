@@ -3,6 +3,47 @@ import { effect, inject, Injectable, signal } from '@angular/core';
 
 export type ThemeMode = 'system' | 'light' | 'dark';
 
+export interface StylePreset {
+  /** Value of `data-kn-preset`. */
+  id: string;
+  label: string;
+  /** One line: what makes this style different. */
+  summary: string;
+  /** Longer description for the presets page. */
+  description: string;
+}
+
+export const PRESETS: StylePreset[] = [
+  {
+    id: 'glass',
+    label: 'Стекло',
+    summary: 'Полупрозрачные слои, размытие, пружины',
+    description:
+      'Стиль по умолчанию. Поверхности полупрозрачны и размывают то, что под ними; у закрашенных элементов блик по верхней кромке; кнопки-капсулы и крупные радиусы.',
+  },
+  {
+    id: 'classic',
+    label: 'Классика',
+    summary: 'Непрозрачные листы, рамки, прямоугольные кнопки',
+    description:
+      'Привычный вид классических веб-фреймворков: непрозрачные поверхности, разделённые тонкими рамками, поля с обводкой, радиус 6 пикселей, тени только у всплывающих элементов.',
+  },
+  {
+    id: 'tonal',
+    label: 'Тональный',
+    summary: 'Оттенки акцента вместо рамок',
+    description:
+      'Страница, карточки и поля — ступени одного тона, подмешанного из акцентного цвета. Рамок почти нет, кнопки-капсулы, большие радиусы, мягкие тени у всплывающих слоёв.',
+  },
+  {
+    id: 'crisp',
+    label: 'Строгий',
+    summary: 'Плотный, с малыми радиусами — для данных',
+    description:
+      'Плотный интерфейс для экранов с данными: контролы ниже, шрифт 14 пикселей, радиус 4 пикселя, плоские листы с волосяными линиями и едва заметной тенью.',
+  },
+];
+
 export interface AccentPreset {
   id: string;
   label: string;
@@ -67,7 +108,7 @@ export const ACCENTS: AccentPreset[] = [
   },
 ];
 
-/** Theme and accent for the docs. Both are plain DOM writes: tokens react without a rebuild. */
+/** Theme, style preset and accent for the docs. All are plain DOM writes: tokens react without a rebuild. */
 @Injectable({ providedIn: 'root' })
 export class ThemeService {
   private readonly document = inject(DOCUMENT);
@@ -77,6 +118,7 @@ export class ThemeService {
     (this.storage?.getItem('kn-theme') as ThemeMode | null) ?? 'system',
   );
   readonly accent = signal(this.storage?.getItem('kn-accent') ?? 'cobalt');
+  readonly preset = signal(this.storedPreset());
 
   constructor() {
     effect(() => {
@@ -85,6 +127,14 @@ export class ThemeService {
       if (mode === 'system') root.removeAttribute('data-theme');
       else root.setAttribute('data-theme', mode);
       this.storage?.setItem('kn-theme', mode);
+    });
+    effect(() => {
+      const id = this.preset();
+      const root = this.document.documentElement;
+      // The default style needs no attribute: the base tokens already describe it
+      if (id === 'glass') root.removeAttribute('data-kn-preset');
+      else root.setAttribute('data-kn-preset', id);
+      this.storage?.setItem('kn-preset', id);
     });
     effect(() => {
       const id = this.accent();
@@ -96,6 +146,11 @@ export class ThemeService {
       });
       this.storage?.setItem('kn-accent', id);
     });
+  }
+
+  private storedPreset(): string {
+    const stored = this.storage?.getItem('kn-preset');
+    return PRESETS.some((preset) => preset.id === stored) ? (stored as string) : 'glass';
   }
 
   /** Cycles system → light → dark. */
