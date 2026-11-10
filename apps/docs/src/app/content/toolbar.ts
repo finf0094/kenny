@@ -33,13 +33,13 @@ import Basic from '../demos/toolbar/basic.demo';
 })
 class Playground {
   protected readonly orientation = choice('orientation', ['horizontal', 'vertical']);
-  protected readonly variant = choice('variant', ['glass', 'plain']);
+  protected readonly variant = choice('variant', ['surface', 'plain']);
   protected readonly controls = [this.orientation, this.variant];
   protected readonly code = computed(
     () =>
       `<kn-toolbar aria-label="Действия с письмом"${attrs({
         orientation: [this.orientation.value(), 'horizontal'],
-        variant: [this.variant.value(), 'glass'],
+        variant: [this.variant.value(), 'surface'],
       })}>\n  <button kn-icon-button aria-label="В архив">…</button>\n  <kn-toolbar-separator />\n  <button kn-icon-button aria-label="Удалить">…</button>\n</kn-toolbar>`,
   );
 }

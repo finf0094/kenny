@@ -27,7 +27,7 @@ import Variants from '../demos/button/variants.demo';
 })
 class Playground {
   protected readonly label = text('Текст', 'Сохранить');
-  protected readonly variant = choice('variant', ['solid', 'soft', 'glass', 'ghost']);
+  protected readonly variant = choice('variant', ['solid', 'soft', 'outline', 'ghost']);
   protected readonly tone = choice('tone', ['accent', 'neutral', 'danger']);
   protected readonly size = choice('size', ['sm', 'md', 'lg'], 'md');
   protected readonly loading = toggle('loading');

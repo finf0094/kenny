@@ -27,7 +27,7 @@ import IconButtonDemo from '../demos/button/icon-button.demo';
 class Playground {
   protected readonly icon = choice('Иконка', ['star', 'edit', 'trash', 'search', 'bell', 'heart']);
   protected readonly label = text('aria-label', 'В избранное');
-  protected readonly variant = choice('variant', ['solid', 'soft', 'glass', 'ghost'], 'glass');
+  protected readonly variant = choice('variant', ['solid', 'soft', 'outline', 'ghost'], 'outline');
   protected readonly tone = choice('tone', ['accent', 'neutral', 'danger'], 'neutral');
   protected readonly size = choice('size', ['sm', 'md', 'lg'], 'md');
   protected readonly disabled = toggle('disabled');

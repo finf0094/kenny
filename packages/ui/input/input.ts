@@ -10,31 +10,18 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
-import { KN_FIELD, KnSize, KnStyleLoader } from '@kenny/ui/core';
+import { KN_FIELD, knDefaultSize, KnSize, KnStyleLoader, useControlStyles } from '@kenny/ui/core';
 
 /**
- * The shared "field" look: a sunken, softly outlined well.
  * KnInput and KnTextarea are directives (so `#ref` on the element stays the native
  * element), and directives cannot carry styles — these are loaded once, globally.
+ * The well itself (fill, outline, focus, sizes) is the shared `kn-control` class.
  */
 const fieldStyles = `
   .kn-input {
-    --_height: var(--kn-size-md);
-    --_radius: var(--kn-radius-md);
-
     display: block;
-    box-sizing: border-box;
     inline-size: 100%;
-    min-inline-size: 0;
-    block-size: var(--kn-input-height, var(--_height));
-    padding: 0 var(--kn-input-padding, var(--kn-space-3));
-    border: 0;
-    border-radius: var(--kn-input-radius, var(--_radius));
-    background: var(--kn-input-bg, var(--kn-color-field));
-    box-shadow: inset 0 0 0 1px var(--kn-input-border, var(--kn-color-field-border));
-    color: var(--kn-color-text);
-    font: inherit;
-    font-size: var(--kn-text-md);
+    padding: 0 var(--kn-field-padding, var(--kn-space-3));
     line-height: var(--kn-leading-snug);
     appearance: none;
   }
@@ -44,54 +31,8 @@ const fieldStyles = `
     opacity: 1;
   }
 
-  @media (hover: hover) {
-    .kn-input:where(:hover:not(:disabled)) {
-      box-shadow: inset 0 0 0 1px var(--kn-color-field-border-hover);
-    }
-  }
-
-  .kn-input:where(:focus-visible) {
-    outline: var(--kn-focus-width) solid var(--kn-color-focus);
-    outline-offset: -1px;
-  }
-
-  .kn-input:where([aria-invalid='true']),
-  .kn-input:where(.ng-invalid.ng-touched) {
-    box-shadow: inset 0 0 0 1px var(--kn-color-danger);
-    background: var(--kn-color-danger-soft);
-  }
-
-  .kn-input:where([aria-invalid='true']:focus-visible),
-  .kn-input:where(.ng-invalid.ng-touched:focus-visible) {
-    outline-color: var(--kn-color-danger);
-  }
-
-  .kn-input:where(:disabled) {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-
-  .kn-input:where([data-size='sm']) {
-    --_height: var(--kn-size-sm);
-    --_radius: var(--kn-radius-sm);
-    font-size: var(--kn-text-sm);
-  }
-
   .kn-input:where([data-size='lg']) {
-    --_height: var(--kn-size-lg);
-    font-size: var(--kn-text-lg);
-    padding-inline: var(--kn-input-padding, var(--kn-space-4));
-  }
-
-  /* Inside <kn-input-group> the group draws the well. */
-  kn-input-group .kn-input {
-    flex: 1;
-    block-size: 100%;
-    padding: 0;
-    background: none;
-    box-shadow: none;
-    outline: none;
-    border-radius: 0;
+    padding-inline: var(--kn-field-padding, var(--kn-space-4));
   }
 `;
 
@@ -104,15 +45,15 @@ const fieldStyles = `
   styles: [
     fieldStyles,
     `
-      .kn-textarea {
+      .kn-control.kn-textarea {
         block-size: auto;
-        min-block-size: var(--_height);
+        min-block-size: var(--_h);
         padding-block: var(--kn-space-2);
         resize: none;
         line-height: var(--kn-leading-normal);
       }
 
-      .kn-textarea[data-size='lg'] {
+      .kn-control.kn-textarea[data-size='lg'] {
         padding-block: var(--kn-space-3);
       }
     `,
@@ -133,11 +74,11 @@ const host = {
  */
 @Directive({
   selector: 'input[knInput]',
-  host: { class: 'kn-input', ...host },
+  host: { class: 'kn-control kn-input', ...host },
 })
 export class KnInput {
   /** Размер поля. Называется `knSize`, потому что `size` — нативный атрибут `<input>`. */
-  readonly knSize = input<KnSize>('md');
+  readonly knSize = input<KnSize>(knDefaultSize());
   /** Помечает поле невалидным (`aria-invalid`). Внутри `<kn-field>` с ошибкой выставляется само. */
   readonly invalid = input(false, { transform: booleanAttribute });
 
@@ -147,6 +88,7 @@ export class KnInput {
   protected readonly isInvalid = computed(() => this.invalid() || (this.field?.invalid() ?? false));
 
   constructor() {
+    useControlStyles();
     inject(KnStyleLoader).load(KnInputStyles);
   }
 }
@@ -167,11 +109,11 @@ export class KnInput {
       ],
     },
   ],
-  host: { class: 'kn-input kn-textarea', ...host },
+  host: { class: 'kn-control kn-input kn-textarea', ...host },
 })
 export class KnTextarea {
   /** Размер поля. */
-  readonly knSize = input<KnSize>('md');
+  readonly knSize = input<KnSize>(knDefaultSize());
   /** Помечает поле невалидным (`aria-invalid`). */
   readonly invalid = input(false, { transform: booleanAttribute });
 
@@ -181,6 +123,7 @@ export class KnTextarea {
   protected readonly isInvalid = computed(() => this.invalid() || (this.field?.invalid() ?? false));
 
   constructor() {
+    useControlStyles();
     inject(KnStyleLoader).load(KnInputStyles);
     inject(CdkTextareaAutosize).minRows = 3;
   }
@@ -198,55 +141,27 @@ export class KnTextarea {
     <ng-content />
     <ng-content select="[knSuffix]" />
   `,
-  host: { '[attr.data-size]': 'size()' },
+  host: { class: 'kn-control', '[attr.data-size]': 'size()' },
   styles: `
-    :host {
-      --_height: var(--kn-size-md);
-
+    /* The well comes from the shared kn-control class; the group only lays its content out */
+    :host(.kn-control) {
       display: flex;
       align-items: center;
       gap: var(--kn-space-2);
-      box-sizing: border-box;
-      block-size: var(--kn-input-height, var(--_height));
-      padding: 0 var(--kn-input-padding, var(--kn-space-3));
-      border-radius: var(--kn-input-radius, var(--kn-radius-md));
-      background: var(--kn-input-bg, var(--kn-color-field));
-      box-shadow: inset 0 0 0 1px var(--kn-input-border, var(--kn-color-field-border));
+      padding: 0 var(--kn-field-padding, var(--kn-space-3));
       color: var(--kn-color-text-muted);
     }
 
-    @media (hover: hover) {
-      :host(:hover) {
-        box-shadow: inset 0 0 0 1px var(--kn-color-field-border-hover);
-      }
-    }
-
-    :host(:has(:is(input, textarea):focus-visible)) {
-      outline: var(--kn-focus-width) solid var(--kn-color-focus);
-      outline-offset: -1px;
-    }
-
-    :host(:has([aria-invalid='true'], .ng-invalid.ng-touched)) {
-      box-shadow: inset 0 0 0 1px var(--kn-color-danger);
-      background: var(--kn-color-danger-soft);
-    }
-
-    :host(:has(input:disabled)) {
-      opacity: 0.5;
-    }
-
-    :host([data-size='sm']) {
-      --_height: var(--kn-size-sm);
-      border-radius: var(--kn-input-radius, var(--kn-radius-sm));
-    }
-
-    :host([data-size='lg']) {
-      --_height: var(--kn-size-lg);
-      padding-inline: var(--kn-input-padding, var(--kn-space-4));
+    :host(.kn-control[data-size='lg']) {
+      padding-inline: var(--kn-field-padding, var(--kn-space-4));
     }
   `,
 })
 export class KnInputGroup {
   /** Размер группы; вложенному полю задайте тот же `knSize`. */
-  readonly size = input<KnSize>('md');
+  readonly size = input<KnSize>(knDefaultSize());
+
+  constructor() {
+    useControlStyles();
+  }
 }

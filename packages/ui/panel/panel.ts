@@ -61,10 +61,10 @@ import { KnIcon } from '@kenny/ui/icon';
     :host {
       display: block;
       border-radius: var(--kn-panel-radius, var(--kn-radius-lg));
-      background: var(--kn-panel-bg, var(--kn-glass-bg));
-      backdrop-filter: var(--kn-glass-filter);
-      -webkit-backdrop-filter: var(--kn-glass-filter);
-      box-shadow: var(--kn-shadow-glass-md);
+      background: var(--kn-panel-bg, var(--kn-color-surface));
+      backdrop-filter: var(--kn-surface-filter);
+      -webkit-backdrop-filter: var(--kn-surface-filter);
+      box-shadow: var(--kn-panel-shadow, var(--kn-elevation-card));
       overflow: hidden;
     }
 

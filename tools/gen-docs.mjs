@@ -13,7 +13,7 @@ import { join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import ts from 'typescript';
 import { createCssVariablesTheme, createHighlighter } from 'shiki';
-import { glassPresetCss, readAllTokens, readPresets } from '../packages/tokens/build.mjs';
+import { allPresetsCss, readAllTokens, readPresets } from '../packages/tokens/build.mjs';
 
 const root = fileURLToPath(new URL('..', import.meta.url));
 const uiRoot = join(root, 'packages/ui');
@@ -363,9 +363,9 @@ async function main() {
     `${banner}import type { TokenDoc } from '../app/core/doc-types';\n\nexport const tokens: TokenDoc[] = ${JSON.stringify(tokens, null, 2)};\n`,
   );
 
-  // Style presets: the generated "glass" reset and a table of what each preset changes
+  // Style presets: the final stylesheet (with the "default" reset) and a table of what each changes
   const presets = await readPresets();
-  await writeFile(join(outDocs, 'preset-glass.css'), await glassPresetCss());
+  await writeFile(join(outDocs, 'presets.css'), await allPresetsCss());
   const base = new Map(tokens.map((token) => [token.name, token]));
   const changed = [...new Set(presets.flatMap((preset) => preset.tokens.map((t) => t.name)))];
   const presetRows = [
@@ -375,7 +375,7 @@ async function main() {
     name,
     group: base.get(name)?.group ?? 'component',
     values: {
-      glass: base.get(name)?.value ?? null,
+      default: base.get(name)?.value ?? null,
       ...Object.fromEntries(
         presets.map((preset) => [
           preset.name,

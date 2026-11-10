@@ -16,7 +16,13 @@ import {
   viewChild,
 } from '@angular/core';
 import { CdkTrapFocus } from '@angular/cdk/a11y';
-import { KnAnchoredOverlay, KnFormControl, KnSize } from '@kenny/ui/core';
+import {
+  KnAnchoredOverlay,
+  knDefaultSize,
+  KnFormControl,
+  KnSize,
+  useControlStyles,
+} from '@kenny/ui/core';
 import { KnIcon } from '@kenny/ui/icon';
 import { KnCalendar } from './calendar';
 import { datePattern, formatDate, parseDate, startOfDay } from './date-utils';
@@ -30,7 +36,12 @@ import { datePattern, formatDate, parseDate, startOfDay } from './date-utils';
   imports: [KnIcon, KnCalendar, CdkTrapFocus],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div #control class="control" [attr.data-invalid]="isInvalid() ? '' : null">
+    <div
+      #control
+      class="control kn-control"
+      [attr.data-size]="size()"
+      [attr.data-invalid]="isInvalid() ? '' : null"
+    >
       <input
         class="input"
         type="text"
@@ -81,52 +92,15 @@ import { datePattern, formatDate, parseDate, startOfDay } from './date-utils';
   host: { '[attr.aria-label]': 'null', '[attr.data-size]': 'size()' },
   styles: `
     :host {
-      --_height: var(--kn-size-md);
       display: block;
       min-inline-size: 0;
     }
 
-    :host([data-size='sm']) {
-      --_height: var(--kn-size-sm);
-    }
-
-    :host([data-size='lg']) {
-      --_height: var(--kn-size-lg);
-    }
-
+    /* The well comes from the shared kn-control class */
     .control {
       display: flex;
       align-items: center;
-      box-sizing: border-box;
-      block-size: var(--kn-date-picker-height, var(--_height));
-      padding-inline: var(--kn-space-3) var(--kn-space-1);
-      border-radius: var(--kn-date-picker-radius, var(--kn-radius-md));
-      background: var(--kn-date-picker-bg, var(--kn-color-field));
-      box-shadow: inset 0 0 0 1px var(--kn-color-field-border);
-    }
-
-    :host([data-size='sm']) .control {
-      border-radius: var(--kn-date-picker-radius, var(--kn-radius-sm));
-    }
-
-    @media (hover: hover) {
-      .control:hover {
-        box-shadow: inset 0 0 0 1px var(--kn-color-field-border-hover);
-      }
-    }
-
-    .control:has(.input:focus-visible) {
-      outline: var(--kn-focus-width) solid var(--kn-color-focus);
-      outline-offset: -1px;
-    }
-
-    .control[data-invalid] {
-      box-shadow: inset 0 0 0 1px var(--kn-color-danger);
-      background: var(--kn-color-danger-soft);
-    }
-
-    .control:has(.input:disabled) {
-      opacity: 0.5;
+      padding-inline: var(--kn-field-padding, var(--kn-space-3)) var(--kn-space-1);
     }
 
     .input {
@@ -138,13 +112,8 @@ import { datePattern, formatDate, parseDate, startOfDay } from './date-utils';
       background: none;
       color: var(--kn-color-text);
       font: inherit;
-      font-size: var(--kn-text-md);
       font-variant-numeric: tabular-nums;
       outline: none;
-    }
-
-    :host([data-size='sm']) .input {
-      font-size: var(--kn-text-sm);
     }
 
     .input::placeholder {
@@ -184,10 +153,10 @@ import { datePattern, formatDate, parseDate, startOfDay } from './date-utils';
     .panel {
       padding: var(--kn-space-3);
       border-radius: var(--kn-radius-lg);
-      background: var(--kn-glass-bg-strong);
-      backdrop-filter: var(--kn-glass-filter-strong);
-      -webkit-backdrop-filter: var(--kn-glass-filter-strong);
-      box-shadow: var(--kn-shadow-glass-lg);
+      background: var(--kn-date-picker-panel-bg, var(--kn-color-surface-raised));
+      backdrop-filter: var(--kn-surface-filter-raised);
+      -webkit-backdrop-filter: var(--kn-surface-filter-raised);
+      box-shadow: var(--kn-date-picker-panel-shadow, var(--kn-elevation-popup));
       animation: kn-pop-in var(--kn-duration-normal) var(--kn-ease-spring);
     }
 
@@ -211,7 +180,7 @@ export class KnDatePicker extends KnFormControl<Date | null> {
   /** Локаль формата и календаря. По умолчанию `LOCALE_ID`. */
   readonly locale = input<string>(inject(LOCALE_ID));
   /** Размер. */
-  readonly size = input<KnSize>('md');
+  readonly size = input<KnSize>(knDefaultSize());
 
   protected readonly model = this.value;
   protected readonly overlay = new KnAnchoredOverlay();
@@ -233,6 +202,7 @@ export class KnDatePicker extends KnFormControl<Date | null> {
 
   constructor() {
     super();
+    useControlStyles();
     effect(() => {
       const value = this.value();
       const locale = this.locale();

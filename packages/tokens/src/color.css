@@ -1,22 +1,21 @@
 /*
  * Kenny tokens — colour.
  *
- * The `--kn-glass-*` group describes the surface material. In the default style it is
- * translucent glass; a style preset (see `presets/`) may turn it into an opaque sheet —
- * components keep reading the same names.
- *
  * Two layers:
  *  1. Palette scales (`--kn-accent-*`, `--kn-ink-*`): raw values, override these to re-brand.
- *  2. Semantic tokens (`--kn-color-*`, `--kn-glass-*`): what components consume.
+ *  2. Semantic tokens (`--kn-color-*`): what components consume.
  *
  * Semantic tokens are written with `light-dark()`, so the active theme is decided by
  * `color-scheme` on the nearest ancestor. Switching themes never needs a rebuild and
  * themes can be nested (`<section data-theme="dark">`).
+ *
+ * The values here are the neutral default style. A style preset (see `presets/`) gives
+ * the same names other values: translucent glass, tinted containers, a dense grid.
  */
 :root {
   color-scheme: light dark;
 
-  /* Palette: cobalt */
+  /* Palette: accent — cobalt by default */
   --kn-accent-50: #eef3ff;
   --kn-accent-100: #dce6ff;
   --kn-accent-200: #bacdff;
@@ -29,40 +28,61 @@
   --kn-accent-900: #0e2060;
   --kn-accent-950: #071233;
 
-  /* Palette: ink — neutrals tinted towards cobalt, never pure grey */
+  /* Palette: ink — neutral greys with a faint cool cast */
   --kn-ink-0: #ffffff;
-  --kn-ink-50: #f4f6fb;
-  --kn-ink-100: #e9edf5;
-  --kn-ink-200: #d6dce9;
-  --kn-ink-300: #b4bdd0;
-  --kn-ink-400: #8c97b0;
-  --kn-ink-500: #67728d;
-  --kn-ink-600: #4a546e;
-  --kn-ink-700: #343d55;
-  --kn-ink-800: #1b2340;
-  --kn-ink-900: #10162b;
-  --kn-ink-950: #060915;
+  --kn-ink-50: #f6f7f9;
+  --kn-ink-100: #eceef2;
+  --kn-ink-200: #dcdfe6;
+  --kn-ink-300: #bcc1cc;
+  --kn-ink-400: #9197a5;
+  --kn-ink-500: #6b7180;
+  --kn-ink-600: #4c5260;
+  --kn-ink-700: #363b47;
+  --kn-ink-800: #22262f;
+  --kn-ink-900: #171a21;
+  --kn-ink-950: #0e1014;
 
-  /* Surfaces */
-  --kn-color-canvas: light-dark(#eef1f8, var(--kn-ink-950));
-  --kn-color-surface: light-dark(var(--kn-ink-0), var(--kn-ink-900));
-  --kn-color-surface-raised: light-dark(var(--kn-ink-0), #161d36);
-  --kn-color-surface-sunken: light-dark(rgb(12 19 48 / 0.055), rgb(238 242 255 / 0.07));
+  /* Page and surfaces. A surface colour may be translucent: see `--kn-surface-filter`. */
+  --kn-color-canvas: light-dark(var(--kn-ink-0), var(--kn-ink-950));
+  --kn-color-surface: light-dark(
+    var(--kn-ink-0),
+    var(--kn-ink-900)
+  ); /* cards, panels, sidebars, tables */
+  --kn-color-surface-raised: light-dark(
+    var(--kn-ink-0),
+    #1e222b
+  ); /* menus, popovers, dialogs, toasts */
+  --kn-color-surface-subtle: light-dark(
+    var(--kn-ink-50),
+    #13161b
+  ); /* quiet containers: columns, wells */
+  --kn-color-surface-sunken: light-dark(
+    rgb(23 26 33 / 0.055),
+    rgb(255 255 255 / 0.065)
+  ); /* tracks, code */
+
+  /* What a surface does to the content behind it. `none` — an opaque sheet; a blur — glass. */
+  --kn-surface-filter: none;
+  --kn-surface-filter-raised: none;
+  --kn-scrim-filter: none; /* the page behind a modal surface */
 
   /* Text */
-  --kn-color-text: light-dark(#0c1330, #eef2ff);
-  --kn-color-text-muted: light-dark(var(--kn-ink-600), #a3aecb);
-  --kn-color-text-subtle: light-dark(#55607b, #8792b3);
-  --kn-color-text-disabled: light-dark(rgb(12 19 48 / 0.38), rgb(238 242 255 / 0.36));
+  --kn-color-text: light-dark(var(--kn-ink-900), #eef0f4);
+  --kn-color-text-muted: light-dark(var(--kn-ink-600), #a9aebb);
+  --kn-color-text-subtle: light-dark(#5c6272, #8d93a2);
+  --kn-color-text-disabled: light-dark(rgb(23 26 33 / 0.4), rgb(238 240 244 / 0.38));
 
   /* Lines */
-  --kn-color-border: light-dark(rgb(12 19 48 / 0.1), rgb(238 242 255 / 0.1));
-  --kn-color-border-strong: light-dark(rgb(12 19 48 / 0.22), rgb(238 242 255 / 0.24));
+  --kn-color-border: light-dark(rgb(23 26 33 / 0.13), rgb(255 255 255 / 0.13));
+  --kn-color-border-strong: light-dark(rgb(23 26 33 / 0.28), rgb(255 255 255 / 0.28));
 
   /* Fields: the well of an input, select or date picker, and the box of an unchecked checkbox */
-  --kn-color-field: var(--kn-color-surface-sunken);
-  --kn-color-field-border: var(--kn-color-border);
-  --kn-color-field-border-hover: var(--kn-color-border-strong);
+  --kn-color-field: var(--kn-color-surface);
+  --kn-color-field-border: light-dark(rgb(23 26 33 / 0.24), rgb(255 255 255 / 0.24));
+  --kn-color-field-border-hover: light-dark(rgb(23 26 33 / 0.44), rgb(255 255 255 / 0.44));
+  --kn-color-field-underline: var(
+    --kn-color-field-border-hover
+  ); /* shown when the underline has a width */
 
   /* Accent */
   --kn-color-accent: light-dark(var(--kn-accent-600), var(--kn-accent-400));
@@ -89,27 +109,15 @@
   --kn-color-danger-soft: light-dark(rgb(179 32 53 / 0.1), rgb(255 122 133 / 0.16));
   --kn-color-on-danger: light-dark(#ffffff, #3a060c);
 
-  /* Interaction layers — painted on top of any surface */
-  --kn-color-hover: light-dark(rgb(12 19 48 / 0.06), rgb(238 242 255 / 0.08));
-  --kn-color-pressed: light-dark(rgb(12 19 48 / 0.1), rgb(238 242 255 / 0.14));
-  --kn-color-scrim: light-dark(rgb(8 12 28 / 0.32), rgb(0 0 0 / 0.56));
-  --kn-color-focus: light-dark(var(--kn-accent-600), var(--kn-accent-300));
+  /* The active row of a list: options of a select, menu items, commands */
+  --kn-color-selection: var(--kn-color-accent);
+  --kn-color-on-selection: var(--kn-color-on-accent);
 
-  /*
-   * Glass — the signature material.
-   * A translucent tint, a backdrop blur that also lifts saturation, a specular
-   * highlight on the top edge and a hairline that separates the pane from what is behind.
-   */
-  --kn-glass-bg: light-dark(rgb(255 255 255 / 0.6), rgb(27 35 64 / 0.56));
-  --kn-glass-bg-strong: light-dark(rgb(255 255 255 / 0.84), rgb(20 27 51 / 0.86));
-  --kn-glass-bg-subtle: light-dark(rgb(255 255 255 / 0.34), rgb(238 242 255 / 0.06));
-  --kn-glass-border: light-dark(rgb(255 255 255 / 0.72), rgb(255 255 255 / 0.1));
-  --kn-glass-edge: light-dark(rgb(12 19 48 / 0.08), rgb(0 0 0 / 0.5));
-  --kn-glass-specular: light-dark(rgb(255 255 255 / 0.95), rgb(255 255 255 / 0.18));
-  --kn-glass-filter: blur(22px) saturate(180%);
-  --kn-glass-filter-strong: blur(40px) saturate(190%);
-  /* What the scrim does to the page behind a modal surface */
-  --kn-scrim-filter: blur(6px) saturate(140%);
+  /* Interaction layers — painted on top of any surface */
+  --kn-color-hover: light-dark(rgb(23 26 33 / 0.06), rgb(255 255 255 / 0.08));
+  --kn-color-pressed: light-dark(rgb(23 26 33 / 0.11), rgb(255 255 255 / 0.14));
+  --kn-color-scrim: light-dark(rgb(15 18 25 / 0.5), rgb(0 0 0 / 0.64));
+  --kn-color-focus: light-dark(var(--kn-accent-600), var(--kn-accent-300));
 }
 
 [data-theme='light'] {

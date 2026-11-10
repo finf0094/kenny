@@ -259,7 +259,7 @@ export default class TokensPage {
       return 'color';
     if (/^--kn-(space|size)-/.test(name)) return 'space';
     if (name.startsWith('--kn-radius-')) return 'radius';
-    if (name.startsWith('--kn-shadow-') || name === '--kn-glass-rim') return 'shadow';
+    if (name.startsWith('--kn-shadow-') || name === '--kn-surface-rim') return 'shadow';
     if (name.startsWith('--kn-text-')) return 'text';
     return 'none';
   }

@@ -4,8 +4,15 @@
   --kn-button-height: 1.75rem;
 }
 
-/* Или точечно. */
-kn-card.plain {
-  --kn-card-bg: var(--kn-color-surface);
+/* Или точечно — на одном элементе. */
+kn-card.note {
+  --kn-card-bg: var(--kn-color-accent-soft);
+  --kn-card-shadow: none;
   --kn-card-radius: var(--kn-radius-md);
+}
+
+/* У полей своих переменных нет: задайте на поле сам токен. */
+kn-select.wide {
+  --kn-size-md: 3rem;
+  --kn-radius-field: var(--kn-radius-full);
 }

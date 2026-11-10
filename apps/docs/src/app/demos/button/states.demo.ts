@@ -13,7 +13,7 @@ import { KnIcon } from '@kenny/ui/icon';
     </div>
     <div class="row">
       <button kn-button variant="soft"><kn-icon name="download" /> Скачать отчёт</button>
-      <a kn-button variant="glass" href="https://angular.dev" target="_blank" rel="noopener">
+      <a kn-button variant="outline" href="https://angular.dev" target="_blank" rel="noopener">
         Открыть angular.dev <kn-icon name="external" />
       </a>
     </div>
@@ -22,7 +22,7 @@ import { KnIcon } from '@kenny/ui/icon';
       <button kn-button disabled>Недоступно</button>
       <button kn-button variant="soft" disabled>Недоступно</button>
     </div>
-    <button kn-button block variant="glass" tone="neutral">На всю ширину</button>
+    <button kn-button block variant="outline" tone="neutral">На всю ширину</button>
   `,
   styles: `
     :host {

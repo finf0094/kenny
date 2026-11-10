@@ -32,10 +32,10 @@ import { _IdGenerator } from '@angular/cdk/a11y';
       min-block-size: 0;
       padding: var(--kn-space-3);
       border-radius: var(--kn-sidebar-radius, var(--kn-radius-lg));
-      background: var(--kn-sidebar-bg, var(--kn-glass-bg));
-      backdrop-filter: var(--kn-glass-filter);
-      -webkit-backdrop-filter: var(--kn-glass-filter);
-      box-shadow: var(--kn-shadow-glass-md);
+      background: var(--kn-sidebar-bg, var(--kn-color-surface));
+      backdrop-filter: var(--kn-surface-filter);
+      -webkit-backdrop-filter: var(--kn-surface-filter);
+      box-shadow: var(--kn-sidebar-shadow, var(--kn-elevation-card));
     }
 
     :host([data-collapsed]) {

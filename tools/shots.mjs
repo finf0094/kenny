@@ -4,7 +4,7 @@
 //   node tools/shots.mjs <distDir> <path> [<path> …] [--theme=dark] [--width=1280]
 //                        [--height=800] [--full] [--out=tools/shots] [--wait=400]
 //                        [--click=<selector>] [--press=<Key>] [--name=<file>] [--dir=rtl]
-//                        [--preset=classic|tonal|crisp]
+//                        [--preset=glass|tonal|crisp|soft]
 //
 // CHROME_PATH overrides the browser binary (default: /usr/bin/google-chrome).
 import { mkdir } from 'node:fs/promises';

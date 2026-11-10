@@ -16,10 +16,10 @@ import {
 } from '@angular/core';
 import { _IdGenerator } from '@angular/cdk/a11y';
 import { Directionality } from '@angular/cdk/bidi';
-import { KnSize } from '@kenny/ui/core';
+import { knDefaults, knDefaultSize, KnSize, KnTabsVariant } from '@kenny/ui/core';
 import { KnIcon } from '@kenny/ui/icon';
 
-export type KnTabsVariant = 'segmented' | 'underline';
+export type { KnTabsVariant } from '@kenny/ui/core';
 
 /**
  * Вкладки по паттерну APG Tabs с автоматической активацией. Индикатор активной
@@ -159,12 +159,12 @@ export type KnTabsVariant = 'segmented' | 'underline';
       transform-origin: left center;
     }
 
-    /* Segmented: a glass pill sliding inside a sunken track */
+    /* Segmented: a raised thumb sliding inside a sunken track */
     :host([data-variant='segmented']) .list {
       padding: 3px;
       border-radius: var(--kn-radius-control);
       background: var(--kn-tabs-track, var(--kn-color-surface-sunken));
-      box-shadow: inset 0 0 0 1px var(--kn-color-border);
+      box-shadow: var(--kn-tabs-track-shadow, inset 0 0 0 1px var(--kn-color-border));
     }
 
     :host([data-variant='segmented']) .tab {
@@ -175,11 +175,8 @@ export type KnTabsVariant = 'segmented' | 'underline';
     :host([data-variant='segmented']) .indicator {
       inset-block: 3px;
       border-radius: max(0px, calc(var(--kn-radius-control) - 3px));
-      background: var(--kn-tabs-thumb, var(--kn-tabs-indicator, var(--kn-glass-bg-strong)));
-      box-shadow:
-        inset 0 1px 0 0 var(--kn-glass-specular),
-        0 0 0 0.5px var(--kn-glass-edge),
-        var(--kn-shadow-sm);
+      background: var(--kn-tabs-thumb, var(--kn-tabs-indicator, var(--kn-color-surface-raised)));
+      box-shadow: var(--kn-tabs-thumb-shadow, var(--kn-elevation-raised), var(--kn-shadow-xs));
     }
 
     /* Underline: a line travelling along the bottom edge */
@@ -198,7 +195,7 @@ export type KnTabsVariant = 'segmented' | 'underline';
 
     :host([data-variant='underline']) .indicator {
       inset-block: auto 0;
-      block-size: 2px;
+      block-size: var(--kn-tabs-indicator-size, 2px);
       border-radius: 2px 2px 0 0;
       background: var(--kn-tabs-indicator, var(--kn-color-accent));
     }
@@ -208,9 +205,9 @@ export class KnTabs<T = unknown> {
   /** Значение активной вкладки. Двусторонняя привязка: `[(value)]`. По умолчанию — первая. */
   readonly value = model<T | undefined>(undefined);
   /** Внешний вид. */
-  readonly variant = input<KnTabsVariant>('segmented');
+  readonly variant = input<KnTabsVariant>(knDefaults('tabs').variant ?? 'segmented');
   /** Размер. */
-  readonly size = input<KnSize>('md');
+  readonly size = input<KnSize>(knDefaultSize('tabs'));
   /** Растягивает вкладки на всю ширину. */
   readonly stretch = input(false, { transform: booleanAttribute });
   /** Доступное имя списка вкладок. */

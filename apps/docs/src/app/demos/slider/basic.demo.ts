@@ -35,9 +35,9 @@ import { KnSlider } from '@kenny/ui/slider';
       gap: var(--kn-space-3);
       padding: var(--kn-space-3) var(--kn-space-4);
       border-radius: var(--kn-radius-control);
-      background: var(--kn-glass-bg);
-      backdrop-filter: var(--kn-glass-filter);
-      box-shadow: var(--kn-shadow-glass-md);
+      background: var(--kn-color-surface);
+      backdrop-filter: var(--kn-surface-filter);
+      box-shadow: var(--kn-elevation-card);
     }
 
     output {

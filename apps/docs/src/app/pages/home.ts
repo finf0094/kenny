@@ -58,7 +58,7 @@ const PERIODS = [
           </p>
           <div class="cta">
             <a kn-button size="lg" routerLink="/docs/getting-started">Начать работу</a>
-            <a kn-button size="lg" variant="glass" tone="neutral" routerLink="/components/button"
+            <a kn-button size="lg" variant="outline" tone="neutral" routerLink="/components/button"
               >Смотреть компоненты</a
             >
           </div>
@@ -174,7 +174,7 @@ const PERIODS = [
         <div class="tray kn-wallpaper-sm">
           <kn-switch [checked]="true">Переключатель</kn-switch>
           <kn-checkbox [checked]="true">Флажок</kn-checkbox>
-          <button kn-button variant="glass" tone="neutral">Нажмите и держите</button>
+          <button kn-button variant="outline" tone="neutral">Нажмите и держите</button>
         </div>
       </section>
 
@@ -347,7 +347,7 @@ const PERIODS = [
 
     .focus-card {
       --kn-card-radius: var(--kn-radius-2xl);
-      box-shadow: var(--kn-shadow-glass-xl);
+      box-shadow: var(--kn-elevation-modal);
     }
 
     .focus-card ::ng-deep .body {
@@ -453,10 +453,10 @@ const PERIODS = [
     }
 
     .tray.plain {
-      background: var(--kn-glass-bg);
-      backdrop-filter: var(--kn-glass-filter);
-      -webkit-backdrop-filter: var(--kn-glass-filter);
-      box-shadow: var(--kn-shadow-glass-md);
+      background: var(--kn-color-surface);
+      backdrop-filter: var(--kn-surface-filter);
+      -webkit-backdrop-filter: var(--kn-surface-filter);
+      box-shadow: var(--kn-elevation-card);
       gap: var(--kn-space-2);
     }
 
@@ -529,10 +529,10 @@ const PERIODS = [
       margin-block: var(--kn-space-12) var(--kn-space-8);
       padding: clamp(var(--kn-space-6), 4vw, var(--kn-space-12));
       border-radius: var(--kn-radius-2xl);
-      background: var(--kn-glass-bg-strong);
-      backdrop-filter: var(--kn-glass-filter-strong);
-      -webkit-backdrop-filter: var(--kn-glass-filter-strong);
-      box-shadow: var(--kn-shadow-glass-md);
+      background: var(--kn-color-surface-raised);
+      backdrop-filter: var(--kn-surface-filter-raised);
+      -webkit-backdrop-filter: var(--kn-surface-filter-raised);
+      box-shadow: var(--kn-elevation-card);
     }
 
     .columns {

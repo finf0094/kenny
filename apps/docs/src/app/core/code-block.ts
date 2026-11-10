@@ -36,7 +36,7 @@ import { DemoSource } from './doc-types';
       class="copy"
       kn-icon-button
       size="sm"
-      variant="glass"
+      variant="outline"
       tone="neutral"
       [attr.aria-label]="copied() ? 'Скопировано' : 'Скопировать код'"
       [knTooltip]="copied() ? 'Скопировано' : 'Скопировать'"

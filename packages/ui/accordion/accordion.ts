@@ -27,10 +27,10 @@ import { KnIcon } from '@kenny/ui/icon';
     :host {
       display: block;
       border-radius: var(--kn-accordion-radius, var(--kn-radius-lg));
-      background: var(--kn-accordion-bg, var(--kn-glass-bg));
-      backdrop-filter: var(--kn-glass-filter);
-      -webkit-backdrop-filter: var(--kn-glass-filter);
-      box-shadow: var(--kn-shadow-glass-md);
+      background: var(--kn-accordion-bg, var(--kn-color-surface));
+      backdrop-filter: var(--kn-surface-filter);
+      -webkit-backdrop-filter: var(--kn-surface-filter);
+      box-shadow: var(--kn-accordion-shadow, var(--kn-elevation-card));
       overflow: hidden;
     }
   `,

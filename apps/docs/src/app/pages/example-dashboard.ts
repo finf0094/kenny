@@ -157,7 +157,7 @@ const PAGE_SIZE = 6;
               <kn-option value="quarter">Квартал</kn-option>
               <kn-option value="year">Год</kn-option>
             </kn-select>
-            <button kn-button size="sm" variant="glass" tone="neutral" (click)="exportReport()">
+            <button kn-button size="sm" variant="outline" tone="neutral" (click)="exportReport()">
               <kn-icon name="download" /> Экспорт
             </button>
           </div>

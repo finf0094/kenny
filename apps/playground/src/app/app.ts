@@ -4,7 +4,7 @@ import { demos } from '../generated/demos';
 
 /**
  * Песочница: каждый демо-файл документации в изоляции, рядом в светлой и тёмной теме.
- * Адрес: `/?demo=button/variants&theme=split|light|dark&dir=rtl&preset=classic|tonal|crisp`.
+ * Адрес: `/?demo=button/variants&theme=split|light|dark&dir=rtl&preset=glass|tonal|crisp|soft`.
  */
 @Component({
   selector: 'pg-root',
@@ -163,7 +163,7 @@ import { demos } from '../generated/demos';
 })
 export class App {
   protected readonly modes = ['split', 'light', 'dark'] as const;
-  protected readonly presets = ['glass', 'classic', 'tonal', 'crisp'] as const;
+  protected readonly presets = ['default', 'glass', 'tonal', 'crisp', 'soft'] as const;
   private readonly params = new URLSearchParams(location.search);
 
   protected readonly filter = signal('');
@@ -173,7 +173,7 @@ export class App {
   );
   protected readonly dir = signal<'ltr' | 'rtl'>(this.params.get('dir') === 'rtl' ? 'rtl' : 'ltr');
   protected readonly preset = signal<(typeof this.presets)[number]>(
-    this.presets.find((name) => name === this.params.get('preset')) ?? 'glass',
+    this.presets.find((name) => name === this.params.get('preset')) ?? 'default',
   );
   protected readonly component = signal<Type<unknown> | null>(null);
 
@@ -196,7 +196,7 @@ export class App {
     // On <html>, so that dialogs and toasts rendered in <body> get the style too
     effect(() => {
       const preset = this.preset();
-      if (preset === 'glass') document.documentElement.removeAttribute('data-kn-preset');
+      if (preset === 'default') document.documentElement.removeAttribute('data-kn-preset');
       else document.documentElement.setAttribute('data-kn-preset', preset);
     });
     effect(() => {

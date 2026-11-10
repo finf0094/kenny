@@ -6,7 +6,7 @@ import {
   model,
   numberAttribute,
 } from '@angular/core';
-import { KnSize } from '@kenny/ui/core';
+import { knDefaultSize, KnSize } from '@kenny/ui/core';
 import { KnIcon } from '@kenny/ui/icon';
 
 /** Builds `[1, '…', 4, 5, 6, '…', 20]` for the given position. */
@@ -193,7 +193,7 @@ export class KnPagination {
   /** Сколько соседних страниц показывать по бокам от текущей. */
   readonly siblings = input(1, { transform: numberAttribute });
   /** Размер кнопок. */
-  readonly size = input<KnSize>('md');
+  readonly size = input<KnSize>(knDefaultSize());
   /** Доступное имя навигации. */
   readonly ariaLabel = input<string>('Страницы', { alias: 'aria-label' });
 

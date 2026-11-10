@@ -273,10 +273,10 @@ export class KnToaster {
       box-sizing: border-box;
       padding: var(--kn-space-3) var(--kn-space-3) var(--kn-space-3) var(--kn-space-4);
       border-radius: var(--kn-toast-radius, var(--kn-radius-lg));
-      background: var(--kn-toast-bg, var(--kn-glass-bg-strong));
-      backdrop-filter: var(--kn-glass-filter-strong);
-      -webkit-backdrop-filter: var(--kn-glass-filter-strong);
-      box-shadow: var(--kn-shadow-glass-lg);
+      background: var(--kn-toast-bg, var(--kn-color-surface-raised));
+      backdrop-filter: var(--kn-surface-filter-raised);
+      -webkit-backdrop-filter: var(--kn-surface-filter-raised);
+      box-shadow: var(--kn-toast-shadow, var(--kn-elevation-popup));
       color: var(--kn-color-text);
       overflow: hidden;
       pointer-events: auto;

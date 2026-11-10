@@ -35,10 +35,10 @@ import { KnIcon } from '@kenny/ui/icon';
       block-size: 3.5rem;
       margin-block-end: var(--kn-space-2);
       border-radius: var(--kn-radius-lg);
-      background: var(--kn-glass-bg);
-      backdrop-filter: var(--kn-glass-filter);
-      -webkit-backdrop-filter: var(--kn-glass-filter);
-      box-shadow: var(--kn-shadow-glass-sm);
+      background: var(--kn-color-surface);
+      backdrop-filter: var(--kn-surface-filter);
+      -webkit-backdrop-filter: var(--kn-surface-filter);
+      box-shadow: var(--kn-elevation-raised);
       color: var(--kn-color-accent-text);
     }
 

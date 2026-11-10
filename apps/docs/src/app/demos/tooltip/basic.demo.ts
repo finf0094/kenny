@@ -9,7 +9,7 @@ import { KnTooltip } from '@kenny/ui/tooltip';
   template: `
     <button
       kn-icon-button
-      variant="glass"
+      variant="outline"
       tone="neutral"
       aria-label="Архивировать"
       knTooltip="В архив (E)"
@@ -18,7 +18,7 @@ import { KnTooltip } from '@kenny/ui/tooltip';
     </button>
     <button
       kn-icon-button
-      variant="glass"
+      variant="outline"
       tone="neutral"
       aria-label="Отложить"
       knTooltip="Напомнить позже"
@@ -28,7 +28,7 @@ import { KnTooltip } from '@kenny/ui/tooltip';
     </button>
     <button
       kn-icon-button
-      variant="glass"
+      variant="outline"
       tone="neutral"
       aria-label="Удалить"
       knTooltip="Удалить навсегда"

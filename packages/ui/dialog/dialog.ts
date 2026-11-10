@@ -88,10 +88,10 @@ export class KnDialogRef<R = unknown> {
       flex-direction: column;
       box-sizing: border-box;
       color: var(--kn-color-text);
-      background: var(--kn-dialog-bg, var(--kn-glass-bg-strong));
-      backdrop-filter: var(--kn-glass-filter-strong);
-      -webkit-backdrop-filter: var(--kn-glass-filter-strong);
-      box-shadow: var(--kn-shadow-glass-xl);
+      background: var(--kn-dialog-bg, var(--kn-color-surface-raised));
+      backdrop-filter: var(--kn-surface-filter-raised);
+      -webkit-backdrop-filter: var(--kn-surface-filter-raised);
+      box-shadow: var(--kn-dialog-shadow, var(--kn-elevation-modal));
       outline: none;
       overflow: hidden;
     }

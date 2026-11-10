@@ -12,7 +12,7 @@ import { PRESETS, ThemeService } from '../core/theme';
 const LEVERS: { title: string; tokens: string; text: string }[] = [
   {
     title: 'Материал',
-    tokens: '--kn-glass-bg, --kn-glass-bg-strong, --kn-glass-filter, --kn-glass-rim',
+    tokens: '--kn-color-surface, --kn-color-surface-raised, --kn-surface-filter, --kn-surface-rim',
     text: 'Чем залиты карточки, панели и всплывающие слои и что у них по краю. Полупрозрачный тон с размытием даёт стекло, непрозрачный цвет с рамкой — лист, тон без рамки — тональную поверхность.',
   },
   {
@@ -27,7 +27,7 @@ const LEVERS: { title: string; tokens: string; text: string }[] = [
   },
   {
     title: 'Высота',
-    tokens: '--kn-shadow-xs … xl, --kn-shadow-glass-sm … xl, --kn-shadow-highlight',
+    tokens: '--kn-shadow-xs … xl, --kn-elevation-raised … xl, --kn-shadow-highlight',
     text: 'Чем поверхность отделяется от страницы: тенью, рамкой или и тем и другим. Блик на закрашенных элементах — тоже токен, и плоские стили его выключают.',
   },
   {
@@ -230,9 +230,9 @@ const GROUP_TITLES: Record<string, string> = {
           тему.
         </li>
         <li>
-          Составные токены (<code>--kn-shadow-glass-*</code>, <code>--kn-glass-rim</code>) задавайте
-          заново, если поменяли то, из чего они собраны: значение переменной вычисляется там, где
-          она объявлена.
+          Составные токены (<code>--kn-shadow-glass-*</code>, <code>--kn-surface-rim</code>)
+          задавайте заново, если поменяли то, из чего они собраны: значение переменной вычисляется
+          там, где она объявлена.
         </li>
         <li>
           Длительности не трогайте без нужды: их обнуляет

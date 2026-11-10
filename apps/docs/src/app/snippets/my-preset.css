@@ -1,33 +1,19 @@
-/* Свой стиль «Бумага»: тёплые непрозрачные листы, тонкие рамки, почти прямые углы. */
+/* Свой стиль «Бумага»: тёплые листы, заметные рамки, почти прямые углы. */
 [data-kn-preset='paper'] {
   /* Цвета страницы, поверхностей, текста и линий — пары «светлая / тёмная» */
   --kn-color-canvas: light-dark(#f6f1e7, #1b1814);
   --kn-color-surface: light-dark(#fffdf8, #25211b);
   --kn-color-surface-raised: light-dark(#fffdf8, #2d2821);
+  --kn-color-surface-subtle: light-dark(#efe8da, #211d18);
   --kn-color-text: light-dark(#2a251d, #f1ebe0);
   --kn-color-text-muted: light-dark(#5c5346, #b9b0a1);
   --kn-color-text-subtle: light-dark(#6b6254, #9c9384);
   --kn-color-border: light-dark(rgb(60 45 20 / 0.16), rgb(255 240 215 / 0.14));
   --kn-color-border-strong: light-dark(rgb(60 45 20 / 0.36), rgb(255 240 215 / 0.32));
 
-  /* Поля: белый колодец с заметной рамкой */
+  /* Поля: лист с заметной рамкой */
   --kn-color-field: var(--kn-color-surface);
   --kn-color-field-border: var(--kn-color-border-strong);
-
-  /* Материал: непрозрачный лист с рамкой вместо стекла */
-  --kn-glass-bg: var(--kn-color-surface);
-  --kn-glass-bg-strong: var(--kn-color-surface-raised);
-  --kn-glass-bg-subtle: light-dark(#efe8da, #211d18);
-  --kn-glass-filter: none;
-  --kn-glass-filter-strong: none;
-  --kn-glass-specular: transparent;
-  --kn-glass-edge: var(--kn-color-border);
-  --kn-glass-rim: inset 0 0 0 1px var(--kn-color-border);
-  --kn-shadow-glass-sm: var(--kn-glass-rim);
-  --kn-shadow-glass-md: var(--kn-glass-rim);
-  --kn-shadow-glass-lg: var(--kn-glass-rim), var(--kn-shadow-md);
-  --kn-shadow-glass-xl: var(--kn-glass-rim), var(--kn-shadow-lg);
-  --kn-shadow-highlight: 0 0 0 0 transparent;
 
   /* Форма */
   --kn-radius-xs: 1px;
@@ -37,4 +23,13 @@
   --kn-radius-xl: 6px;
   --kn-radius-control: 3px;
   --kn-radius-badge: 2px;
+  --kn-radius-field: 3px;
+  --kn-radius-field-sm: 2px;
+
+  /* Край поверхностей собран из рамки: объявляем заново, чтобы он взял новый цвет */
+  --kn-surface-rim: inset 0 0 0 1px var(--kn-color-border);
+  --kn-elevation-raised: var(--kn-surface-rim);
+  --kn-elevation-card: var(--kn-surface-rim);
+  --kn-elevation-popup: var(--kn-surface-rim), var(--kn-shadow-md);
+  --kn-elevation-modal: var(--kn-surface-rim), var(--kn-shadow-lg);
 }

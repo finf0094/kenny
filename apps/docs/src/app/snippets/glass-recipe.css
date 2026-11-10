@@ -1,7 +1,0 @@
-/* Собственная стеклянная поверхность из тех же токенов. */
-.my-pane {
-  background: var(--kn-glass-bg); /* полупрозрачный тон */
-  backdrop-filter: var(--kn-glass-filter); /* размытие + насыщенность */
-  box-shadow: var(--kn-shadow-glass-md); /* блик, контур и тень */
-  border-radius: var(--kn-radius-lg);
-}

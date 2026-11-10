@@ -25,7 +25,7 @@ import Form from '../demos/dialog/form.demo';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <docs-playground [controls]="controls" [code]="code()">
-      <button kn-button variant="glass" tone="neutral" (click)="open()">Открыть окно</button>
+      <button kn-button variant="outline" tone="neutral" (click)="open()">Открыть окно</button>
     </docs-playground>
     <ng-template #content>
       <kn-dialog-header heading="Окно из playground" [closable]="closable.value()" />

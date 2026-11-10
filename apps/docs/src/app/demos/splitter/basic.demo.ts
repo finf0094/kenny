@@ -33,8 +33,8 @@ import { KnSplitter, KnSplitterHandle, KnSplitterPanel } from '@kenny/ui/splitte
       block-size: 20rem;
       padding: var(--kn-space-2);
       border-radius: var(--kn-radius-lg);
-      background: var(--kn-glass-bg-subtle);
-      box-shadow: var(--kn-shadow-glass-sm);
+      background: var(--kn-color-surface-subtle);
+      box-shadow: var(--kn-elevation-raised);
     }
 
     .inner {
@@ -46,9 +46,9 @@ import { KnSplitter, KnSplitterHandle, KnSplitterPanel } from '@kenny/ui/splitte
       place-content: center;
       block-size: 100%;
       border-radius: var(--kn-radius-md);
-      background: var(--kn-glass-bg);
-      backdrop-filter: var(--kn-glass-filter);
-      box-shadow: var(--kn-glass-rim);
+      background: var(--kn-color-surface);
+      backdrop-filter: var(--kn-surface-filter);
+      box-shadow: var(--kn-surface-rim);
       text-align: center;
       font-weight: var(--kn-weight-medium);
     }

@@ -291,8 +291,8 @@ interface Group {
     }
 
     .option[aria-selected='true'] {
-      background: var(--kn-color-accent);
-      color: var(--kn-color-on-accent);
+      background: var(--kn-color-selection);
+      color: var(--kn-color-on-selection);
     }
 
     .option-icon {
@@ -314,7 +314,7 @@ interface Group {
     }
 
     .option[aria-selected='true'] kbd {
-      background: rgb(255 255 255 / 0.18);
+      background: color-mix(in srgb, currentColor 16%, transparent);
       box-shadow: none;
       color: inherit;
     }

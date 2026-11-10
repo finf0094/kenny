@@ -1,0 +1,98 @@
+/*
+ * Kenny style preset — Soft.
+ *
+ * The feel of a phone's system interface: white grouped cards on a grey page with no
+ * borders at all, filled fields, large touch-sized controls, big friendly switches,
+ * translucent blurred sheets for everything that floats, and the system typeface.
+ *
+ * Usage: import after the tokens and set `data-kn-preset="soft"` on <html> or on any block.
+ */
+[data-kn-preset='soft'] {
+  /* Surfaces: white groups on a grey page; floating layers are translucent material */
+  --kn-color-canvas: light-dark(#f2f2f7, #000000);
+  --kn-color-surface: light-dark(#ffffff, #1c1c1e);
+  --kn-color-surface-raised: light-dark(rgb(250 250 252 / 0.86), rgb(44 44 46 / 0.84));
+  --kn-color-surface-subtle: light-dark(#e9e9ee, #111113);
+  --kn-color-surface-sunken: light-dark(rgb(118 118 128 / 0.12), rgb(118 118 128 / 0.24));
+  --kn-surface-filter: none;
+  --kn-surface-filter-raised: blur(30px) saturate(180%);
+  --kn-scrim-filter: none;
+
+  /* Text */
+  --kn-color-text: light-dark(#111114, #f5f5f7);
+  --kn-color-text-muted: light-dark(#4d4d56, #b0b0b8);
+  --kn-color-text-subtle: light-dark(#60606a, #93939b);
+  --kn-color-text-disabled: light-dark(rgb(60 60 67 / 0.38), rgb(235 235 245 / 0.34));
+
+  /* Lines: hairline separators only */
+  --kn-color-border: light-dark(rgb(60 60 67 / 0.14), rgb(120 120 128 / 0.34));
+  --kn-color-border-strong: light-dark(rgb(60 60 67 / 0.32), rgb(140 140 148 / 0.56));
+
+  /* Fields: a grey fill, no outline */
+  --kn-color-field: light-dark(rgb(118 118 128 / 0.12), rgb(118 118 128 / 0.24));
+  --kn-color-field-border: transparent;
+  --kn-color-field-border-hover: var(--kn-color-border-strong);
+
+  /* The active row of a list is a grey highlight, not an accent fill */
+  --kn-color-selection: var(--kn-color-pressed);
+  --kn-color-on-selection: var(--kn-color-text);
+
+  /* Interaction layers */
+  --kn-color-hover: light-dark(rgb(60 60 67 / 0.07), rgb(235 235 245 / 0.09));
+  --kn-color-pressed: light-dark(rgb(60 60 67 / 0.13), rgb(235 235 245 / 0.16));
+  --kn-color-scrim: light-dark(rgb(0 0 0 / 0.28), rgb(0 0 0 / 0.56));
+
+  /* Shape: soft rounded rectangles */
+  --kn-radius-xs: 0.375rem; /* 6 */
+  --kn-radius-sm: 0.5rem; /* 8 */
+  --kn-radius-md: 0.625rem; /* 10 */
+  --kn-radius-lg: 0.875rem; /* 14 */
+  --kn-radius-xl: 1.25rem; /* 20 */
+  --kn-radius-2xl: 1.75rem; /* 28 */
+  --kn-radius-control: 0.75rem; /* 12 */
+  --kn-radius-badge: var(--kn-radius-full);
+
+  /* Size and type: touch targets and a larger body size */
+  --kn-size-sm: 2.125rem; /* 34 */
+  --kn-size-md: 2.75rem; /* 44 */
+  --kn-size-lg: 3.125rem; /* 50 */
+  --kn-text-sm: 0.875rem; /* 14 */
+  --kn-text-md: 1rem; /* 16 */
+  --kn-text-lg: 1.125rem; /* 18 */
+  --kn-font-sans:
+    -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', system-ui, 'Segoe UI',
+    Roboto, sans-serif;
+
+  /* Elevation: nothing around a group; a wide soft shadow under what floats */
+  --kn-shadow-color: light-dark(rgb(0 0 0 / 0.06), rgb(0 0 0 / 0.5));
+  --kn-shadow-color-strong: light-dark(rgb(0 0 0 / 0.14), rgb(0 0 0 / 0.66));
+  --kn-shadow-xs: 0 1px 2px var(--kn-shadow-color);
+  --kn-shadow-sm: 0 1px 3px var(--kn-shadow-color), 0 3px 8px var(--kn-shadow-color);
+  --kn-shadow-md: 0 2px 6px var(--kn-shadow-color), 0 10px 30px var(--kn-shadow-color-strong);
+  --kn-shadow-lg: 0 4px 12px var(--kn-shadow-color), 0 20px 60px var(--kn-shadow-color-strong);
+  --kn-shadow-xl: 0 8px 20px var(--kn-shadow-color), 0 32px 90px var(--kn-shadow-color-strong);
+  --kn-surface-rim: 0 0 0 0 transparent;
+  --kn-elevation-raised: var(--kn-shadow-xs);
+  --kn-elevation-card: var(--kn-surface-rim);
+  --kn-elevation-popup: 0 0 0 0.5px var(--kn-color-border), var(--kn-shadow-md);
+  --kn-elevation-modal: 0 0 0 0.5px var(--kn-color-border), var(--kn-shadow-lg);
+
+  /* Components */
+  --kn-button-weight: var(--kn-weight-semibold);
+  --kn-checkbox-radius: 50%;
+  /* Switch: wide, with a thumb that fills the track; green when on */
+  --kn-switch-width: 3.1875rem;
+  --kn-switch-height: 1.9375rem;
+  --kn-switch-color: light-dark(#248a3d, #30d158);
+  --kn-switch-track: light-dark(rgb(120 120 128 / 0.2), rgb(120 120 128 / 0.36));
+  --kn-switch-track-shadow: none;
+  --kn-switch-thumb-shadow: 0 3px 8px rgb(0 0 0 / 0.15), 0 1px 1px rgb(0 0 0 / 0.16);
+  /* Segmented tabs: a white thumb with a soft shadow on a grey track */
+  --kn-tabs-track: light-dark(rgb(118 118 128 / 0.12), rgb(118 118 128 / 0.24));
+  --kn-tabs-track-shadow: none;
+  --kn-tabs-thumb: light-dark(#ffffff, #636366);
+  --kn-tabs-thumb-shadow: 0 3px 8px rgb(0 0 0 / 0.12), 0 1px 1px rgb(0 0 0 / 0.08);
+  /* Slider: a thin track and a large thumb */
+  --kn-slider-track-size: 0.25rem;
+  --kn-slider-thumb-size: 1.75rem;
+}

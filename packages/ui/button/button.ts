@@ -8,10 +8,10 @@ import {
   input,
   Renderer2,
 } from '@angular/core';
-import { KnSize } from '@kenny/ui/core';
+import { KnButtonVariant, knDefaults, knDefaultSize, KnSize } from '@kenny/ui/core';
 import { KnSpinner } from '@kenny/ui/spinner';
 
-export type KnButtonVariant = 'solid' | 'soft' | 'glass' | 'ghost';
+export type { KnButtonVariant } from '@kenny/ui/core';
 export type KnButtonTone = 'accent' | 'neutral' | 'danger';
 
 /**
@@ -68,8 +68,9 @@ export type KnButtonTone = 'accent' | 'neutral' | 'danger';
       color: var(--kn-button-color, var(--_fg));
       font: inherit;
       font-size: var(--kn-text-md);
-      font-weight: var(--kn-weight-medium);
-      letter-spacing: var(--kn-tracking-snug);
+      font-weight: var(--kn-button-weight, var(--kn-weight-medium));
+      letter-spacing: var(--kn-button-tracking, var(--kn-tracking-snug));
+      text-transform: var(--kn-button-transform, none);
       line-height: 1;
       white-space: nowrap;
       text-decoration: none;
@@ -100,7 +101,7 @@ export type KnButtonTone = 'accent' | 'neutral' | 'danger';
     }
 
     :host(:active) {
-      transform: scale(0.96);
+      transform: scale(var(--kn-press-scale));
       transition-duration: var(--kn-duration-instant);
     }
 
@@ -132,7 +133,7 @@ export type KnButtonTone = 'accent' | 'neutral' | 'danger';
     :host([data-variant='solid']) {
       --_bg: var(--_tone);
       --_fg: var(--_on-tone);
-      box-shadow: var(--kn-shadow-highlight), var(--kn-shadow-xs);
+      box-shadow: var(--kn-button-shadow, var(--kn-shadow-highlight), var(--kn-shadow-xs));
     }
 
     :host([data-variant='soft']) {
@@ -141,13 +142,14 @@ export type KnButtonTone = 'accent' | 'neutral' | 'danger';
       --_layer: var(--kn-color-hover);
     }
 
-    :host([data-variant='glass']) {
-      --_bg: var(--kn-glass-bg);
+    /* Outline: painted like a small surface, with whatever edge the style gives surfaces */
+    :host([data-variant='outline']) {
+      --_bg: var(--kn-color-surface);
       --_fg: var(--_tone-text);
       --_layer: var(--kn-color-hover);
-      backdrop-filter: var(--kn-glass-filter);
-      -webkit-backdrop-filter: var(--kn-glass-filter);
-      box-shadow: var(--kn-shadow-glass-sm);
+      backdrop-filter: var(--kn-surface-filter);
+      -webkit-backdrop-filter: var(--kn-surface-filter);
+      box-shadow: var(--kn-elevation-raised);
     }
 
     :host([data-variant='ghost']) {
@@ -219,11 +221,11 @@ export type KnButtonTone = 'accent' | 'neutral' | 'danger';
 })
 export class KnButton {
   /** Визуальный вариант. */
-  readonly variant = input<KnButtonVariant>('solid');
+  readonly variant = input<KnButtonVariant>(knDefaults('button').variant ?? 'solid');
   /** Смысловая окраска. */
   readonly tone = input<KnButtonTone>('accent');
   /** Размер. */
-  readonly size = input<KnSize>('md');
+  readonly size = input<KnSize>(knDefaultSize('button'));
   /** Растягивает кнопку на всю ширину контейнера. */
   readonly block = input(false, { transform: booleanAttribute });
   /** Показывает индикатор и блокирует нажатия, сохраняя фокус и ширину кнопки. */

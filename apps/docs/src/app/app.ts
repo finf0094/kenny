@@ -165,10 +165,10 @@ const THEME_ICON = { system: 'monitor', light: 'sun', dark: 'moon' };
       padding: var(--kn-space-1-5) var(--kn-space-2) var(--kn-space-1-5) var(--kn-space-4);
       /* Concentric with the controls inside: their radius plus the bar's padding */
       border-radius: calc(var(--kn-radius-control) + var(--kn-space-1-5));
-      background: var(--kn-glass-bg);
-      backdrop-filter: var(--kn-glass-filter);
-      -webkit-backdrop-filter: var(--kn-glass-filter);
-      box-shadow: var(--kn-shadow-glass-md);
+      background: var(--kn-color-surface);
+      backdrop-filter: var(--kn-surface-filter);
+      -webkit-backdrop-filter: var(--kn-surface-filter);
+      box-shadow: var(--kn-elevation-card);
     }
 
     .logo {

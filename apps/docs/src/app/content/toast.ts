@@ -11,7 +11,7 @@ import Basic from '../demos/toast/basic.demo';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <docs-playground [controls]="controls" [code]="code()">
-      <button kn-button variant="glass" tone="neutral" (click)="show()">
+      <button kn-button variant="outline" tone="neutral" (click)="show()">
         Показать уведомление
       </button>
     </docs-playground>

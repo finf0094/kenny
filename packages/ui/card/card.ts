@@ -1,6 +1,7 @@
 import { booleanAttribute, ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { KnCardVariant, knDefaults } from '@kenny/ui/core';
 
-export type KnCardVariant = 'glass' | 'solid' | 'outline';
+export type { KnCardVariant } from '@kenny/ui/core';
 
 /**
  * Поверхность для группы связанного содержимого. Слоты размечаются атрибутами:
@@ -40,23 +41,28 @@ export type KnCardVariant = 'glass' | 'solid' | 'outline';
       overflow: hidden;
     }
 
-    :host([data-variant='glass']) {
-      background: var(--kn-card-bg, var(--kn-glass-bg));
-      backdrop-filter: var(--kn-glass-filter);
-      -webkit-backdrop-filter: var(--kn-glass-filter);
-      box-shadow: var(--kn-shadow-glass-md);
+    :host([data-variant='surface']) {
+      background: var(--kn-card-bg, var(--kn-color-surface));
+      backdrop-filter: var(--kn-surface-filter);
+      -webkit-backdrop-filter: var(--kn-surface-filter);
+      box-shadow: var(--kn-card-shadow, var(--kn-elevation-card));
     }
 
-    :host([data-variant='solid']) {
-      background: var(--kn-card-bg, var(--kn-color-surface));
-      box-shadow:
-        0 0 0 1px var(--kn-color-border),
-        var(--kn-shadow-sm);
+    /* Raised: lifted off the page like a popup */
+    :host([data-variant='raised']) {
+      background: var(--kn-card-bg, var(--kn-color-surface-raised));
+      backdrop-filter: var(--kn-surface-filter-raised);
+      -webkit-backdrop-filter: var(--kn-surface-filter-raised);
+      box-shadow: var(--kn-card-shadow, var(--kn-elevation-popup));
     }
 
     :host([data-variant='outline']) {
       background: var(--kn-card-bg, transparent);
-      box-shadow: inset 0 0 0 1px var(--kn-color-border-strong);
+      box-shadow: var(--kn-card-shadow, inset 0 0 0 1px var(--kn-color-border-strong));
+    }
+
+    :host([data-variant='plain']) {
+      background: var(--kn-card-bg, transparent);
     }
 
     :host([data-padding='none']) {
@@ -119,7 +125,7 @@ export type KnCardVariant = 'glass' | 'solid' | 'outline';
 })
 export class KnCard {
   /** Материал поверхности. */
-  readonly variant = input<KnCardVariant>('glass');
+  readonly variant = input<KnCardVariant>(knDefaults('card').variant ?? 'surface');
   /** Внутренние отступы. */
   readonly padding = input<'none' | 'sm' | 'md' | 'lg'>('md');
   /** Реакция на наведение и нажатие — для карточек-ссылок и карточек-кнопок. */

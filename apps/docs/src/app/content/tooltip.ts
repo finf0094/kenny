@@ -25,7 +25,7 @@ const PLACEMENTS = [
     <docs-playground [controls]="controls" [code]="code()">
       <button
         kn-icon-button
-        variant="glass"
+        variant="outline"
         tone="neutral"
         aria-label="Напомнить"
         [knTooltip]="label.value()"

@@ -24,17 +24,28 @@
    * Radii are concentric: a control inside a card inside a sheet keeps a constant
    * gap between the curves (inner radius = outer radius − padding).
    */
-  --kn-radius-xs: 0.375rem; /* 6  — checkmarks, tags */
-  --kn-radius-sm: 0.625rem; /* 10 — menu items, small fields */
-  --kn-radius-md: 0.875rem; /* 14 — fields, popovers */
-  --kn-radius-lg: 1.25rem; /* 20 — cards, panels */
-  --kn-radius-xl: 1.75rem; /* 28 — dialogs, sheets */
-  --kn-radius-2xl: 2.25rem; /* 36 — hero surfaces */
+  --kn-radius-xs: 0.25rem; /* 4  — checkmarks, tags */
+  --kn-radius-sm: 0.375rem; /* 6  — menu items, small fields */
+  --kn-radius-md: 0.5rem; /* 8  — fields, popovers */
+  --kn-radius-lg: 0.75rem; /* 12 — cards, panels */
+  --kn-radius-xl: 1rem; /* 16 — dialogs, sheets */
+  --kn-radius-2xl: 1.5rem; /* 24 — hero surfaces */
   --kn-radius-full: 999px; /* capsules */
 
   /* Shape of interactive controls and of badges — a style decision, separate from the scale */
-  --kn-radius-control: var(--kn-radius-full); /* buttons, segmented tabs, page numbers, toolbars */
-  --kn-radius-badge: var(--kn-radius-full); /* badges and counters */
+  --kn-radius-control: var(--kn-radius-md); /* buttons, segmented tabs, page numbers, toolbars */
+  --kn-radius-badge: var(--kn-radius-sm); /* badges and counters */
+
+  /*
+   * Fields. The outline is a border on all sides, a line under the field, or both:
+   * a width of zero switches one of them off.
+   */
+  --kn-radius-field: var(--kn-radius-md);
+  --kn-radius-field-sm: var(--kn-radius-sm);
+  --kn-field-border-width: 1px;
+  --kn-field-underline-width: 0px;
+  --kn-field-underline-focus-width: 0px;
+  --kn-field-focus-width: 2px; /* focus ring of a field; zero when the underline shows focus */
 
   /* Stacking */
   --kn-z-base: 0;

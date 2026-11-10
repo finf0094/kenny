@@ -1,0 +1,7 @@
+/* Собственная поверхность из тех же токенов: в любом стиле она выглядит как карточка. */
+.my-pane {
+  background: var(--kn-color-surface); /* цвет поверхности: сплошной или полупрозрачный */
+  backdrop-filter: var(--kn-surface-filter); /* размытие фона, если стиль его задаёт */
+  box-shadow: var(--kn-elevation-card); /* край: рамка, тень или блик */
+  border-radius: var(--kn-radius-lg);
+}

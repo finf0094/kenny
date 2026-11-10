@@ -13,7 +13,13 @@ import {
   viewChild,
 } from '@angular/core';
 import { _IdGenerator, ActiveDescendantKeyManager } from '@angular/cdk/a11y';
-import { KnAnchoredOverlay, KnFormControl, KnSize } from '@kenny/ui/core';
+import {
+  KnAnchoredOverlay,
+  knDefaultSize,
+  KnFormControl,
+  KnSize,
+  useControlStyles,
+} from '@kenny/ui/core';
 import { KnIcon } from '@kenny/ui/icon';
 import { KN_OPTION_PARENT, KnOption, KnOptionParent } from '@kenny/ui/option';
 
@@ -30,9 +36,10 @@ import { KN_OPTION_PARENT, KnOption, KnOptionParent } from '@kenny/ui/option';
   template: `
     <button
       #trigger
-      class="trigger"
+      class="trigger kn-control"
       type="button"
       role="combobox"
+      [attr.data-size]="size()"
       aria-haspopup="listbox"
       [id]="controlId"
       [disabled]="isDisabled()"
@@ -71,68 +78,23 @@ import { KN_OPTION_PARENT, KnOption, KnOptionParent } from '@kenny/ui/option';
   host: { '[attr.aria-label]': 'null', '[attr.data-size]': 'size()' },
   styles: `
     :host {
-      --_height: var(--kn-size-md);
       display: block;
       min-inline-size: 0;
     }
 
-    :host([data-size='sm']) {
-      --_height: var(--kn-size-sm);
-    }
-
-    :host([data-size='lg']) {
-      --_height: var(--kn-size-lg);
-    }
-
+    /* The well comes from the shared kn-control class */
     .trigger {
       display: flex;
       align-items: center;
       gap: var(--kn-space-2);
-      box-sizing: border-box;
       inline-size: 100%;
-      block-size: var(--kn-select-height, var(--_height));
-      padding: 0 var(--kn-space-2) 0 var(--kn-space-3);
-      border: 0;
-      border-radius: var(--kn-select-radius, var(--kn-radius-md));
-      background: var(--kn-select-bg, var(--kn-color-field));
-      box-shadow: inset 0 0 0 1px var(--kn-color-field-border);
-      color: var(--kn-color-text);
-      font: inherit;
-      font-size: var(--kn-text-md);
+      padding: 0 var(--kn-space-2) 0 var(--kn-field-padding, var(--kn-space-3));
       text-align: start;
       cursor: pointer;
     }
 
-    :host([data-size='sm']) .trigger {
-      border-radius: var(--kn-select-radius, var(--kn-radius-sm));
-      font-size: var(--kn-text-sm);
-    }
-
-    :host([data-size='lg']) .trigger {
-      font-size: var(--kn-text-lg);
-      padding-inline-start: var(--kn-space-4);
-    }
-
-    @media (hover: hover) {
-      .trigger:hover:not(:disabled) {
-        box-shadow: inset 0 0 0 1px var(--kn-color-field-border-hover);
-      }
-    }
-
-    .trigger:focus-visible,
-    .trigger[aria-expanded='true'] {
-      outline: var(--kn-focus-width) solid var(--kn-color-focus);
-      outline-offset: -1px;
-    }
-
-    .trigger[aria-invalid='true'] {
-      box-shadow: inset 0 0 0 1px var(--kn-color-danger);
-      background: var(--kn-color-danger-soft);
-    }
-
-    .trigger:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
+    .trigger[data-size='lg'] {
+      padding-inline-start: var(--kn-field-padding, var(--kn-space-4));
     }
 
     .value {
@@ -160,10 +122,10 @@ import { KN_OPTION_PARENT, KnOption, KnOptionParent } from '@kenny/ui/option';
       overflow-y: auto;
       overscroll-behavior: contain;
       border-radius: calc(var(--kn-radius-sm) + var(--kn-space-1-5));
-      background: var(--kn-glass-bg-strong);
-      backdrop-filter: var(--kn-glass-filter-strong);
-      -webkit-backdrop-filter: var(--kn-glass-filter-strong);
-      box-shadow: var(--kn-shadow-glass-lg);
+      background: var(--kn-select-panel-bg, var(--kn-color-surface-raised));
+      backdrop-filter: var(--kn-surface-filter-raised);
+      -webkit-backdrop-filter: var(--kn-surface-filter-raised);
+      box-shadow: var(--kn-select-panel-shadow, var(--kn-elevation-popup));
       outline: none;
       animation: kn-pop-in var(--kn-duration-normal) var(--kn-ease-spring);
     }
@@ -180,7 +142,7 @@ export class KnSelect<T = unknown> extends KnFormControl<T | null> implements Kn
   /** Текст, пока ничего не выбрано. */
   readonly placeholder = input<string>('Выберите…');
   /** Размер. */
-  readonly size = input<KnSize>('md');
+  readonly size = input<KnSize>(knDefaultSize());
   /** Сравнение значений; нужно, если значения — объекты. */
   readonly compareWith = input<(a: T | null, b: T | null) => boolean>(Object.is);
 
@@ -207,6 +169,7 @@ export class KnSelect<T = unknown> extends KnFormControl<T | null> implements Kn
 
   constructor() {
     super();
+    useControlStyles();
     this.keyManager.change.subscribe(() => {
       const active = this.keyManager.activeItem;
       this.activeId.set(active?.id ?? null);

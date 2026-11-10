@@ -53,7 +53,7 @@ import { KnTab, KnTabs } from '@kenny/ui/tabs';
       <kn-checkbox [(checked)]="notify">Уведомить участников</kn-checkbox>
       <kn-switch [(checked)]="shared">Публичная ссылка</kn-switch>
       <div class="actions">
-        <button kn-button variant="glass" tone="neutral">В черновики</button>
+        <button kn-button variant="outline" tone="neutral">В черновики</button>
         <button kn-button>Создать</button>
       </div>
     </kn-card>

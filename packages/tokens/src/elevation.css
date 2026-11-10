@@ -1,23 +1,30 @@
-/* Kenny tokens — elevation. Shadows are tinted with cobalt ink instead of neutral black. */
+/*
+ * Kenny tokens — elevation.
+ *
+ * `--kn-shadow-*` are raw shadows. `--kn-elevation-*` are roles: what separates a surface
+ * of a given kind from the page — a hairline, a shadow, or both. Components use the roles.
+ */
 :root {
-  --kn-shadow-color: light-dark(rgb(16 28 78 / 0.09), rgb(0 0 0 / 0.42));
-  --kn-shadow-color-strong: light-dark(rgb(16 28 78 / 0.16), rgb(0 0 0 / 0.6));
+  --kn-shadow-color: light-dark(rgb(15 18 25 / 0.08), rgb(0 0 0 / 0.5));
+  --kn-shadow-color-strong: light-dark(rgb(15 18 25 / 0.14), rgb(0 0 0 / 0.64));
 
   --kn-shadow-xs: 0 1px 2px var(--kn-shadow-color);
-  --kn-shadow-sm: 0 1px 2px var(--kn-shadow-color), 0 3px 8px var(--kn-shadow-color);
-  --kn-shadow-md: 0 2px 4px var(--kn-shadow-color), 0 10px 28px var(--kn-shadow-color);
-  --kn-shadow-lg: 0 4px 10px var(--kn-shadow-color), 0 22px 56px var(--kn-shadow-color-strong);
-  --kn-shadow-xl: 0 8px 18px var(--kn-shadow-color), 0 36px 96px var(--kn-shadow-color-strong);
+  --kn-shadow-sm: 0 1px 2px var(--kn-shadow-color), 0 2px 6px var(--kn-shadow-color);
+  --kn-shadow-md: 0 2px 4px var(--kn-shadow-color), 0 8px 20px var(--kn-shadow-color);
+  --kn-shadow-lg: 0 4px 8px var(--kn-shadow-color), 0 16px 40px var(--kn-shadow-color-strong);
+  --kn-shadow-xl: 0 8px 16px var(--kn-shadow-color), 0 28px 72px var(--kn-shadow-color-strong);
 
-  /* Light catching the top edge of a filled control: solid buttons, checked boxes, current page */
-  --kn-shadow-highlight: inset 0 1px 0 0 rgb(255 255 255 / 0.22);
+  /* Light catching the top edge of a filled control (solid buttons, checked boxes). Off by default. */
+  --kn-shadow-highlight: 0 0 0 0 transparent;
 
-  /* Glass rim: specular top edge + outer hairline. Combine with an elevation shadow. */
-  --kn-glass-rim:
-    inset 0 1px 0 0 var(--kn-glass-specular), inset 0 0 0 1px var(--kn-glass-border),
-    0 0 0 0.5px var(--kn-glass-edge);
-  --kn-shadow-glass-sm: var(--kn-glass-rim), var(--kn-shadow-sm);
-  --kn-shadow-glass-md: var(--kn-glass-rim), var(--kn-shadow-md);
-  --kn-shadow-glass-lg: var(--kn-glass-rim), var(--kn-shadow-lg);
-  --kn-shadow-glass-xl: var(--kn-glass-rim), var(--kn-shadow-xl);
+  /* The edge of a surface: a hairline by default */
+  --kn-surface-rim: inset 0 0 0 1px var(--kn-color-border);
+
+  /* Roles */
+  --kn-elevation-raised: var(--kn-surface-rim); /* outline buttons, chips, small tiles */
+  --kn-elevation-card: var(--kn-surface-rim); /* cards, panels, sidebars, tables, toolbars */
+  --kn-elevation-popup:
+    var(--kn-surface-rim), var(--kn-shadow-md); /* menus, lists, popovers, toasts */
+  --kn-elevation-modal:
+    var(--kn-surface-rim), var(--kn-shadow-lg); /* dialogs, drawers, command palette */
 }

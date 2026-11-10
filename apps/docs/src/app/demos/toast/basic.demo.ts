@@ -6,10 +6,12 @@ import { KnToaster } from '@kenny/ui/toast';
   imports: [KnButton],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <button kn-button variant="glass" tone="neutral" (click)="saved()">Сохранить</button>
-    <button kn-button variant="glass" tone="neutral" (click)="archived()">В архив с отменой</button>
-    <button kn-button variant="glass" tone="neutral" (click)="warn()">Предупреждение</button>
-    <button kn-button variant="glass" tone="danger" (click)="failed()">Ошибка</button>
+    <button kn-button variant="outline" tone="neutral" (click)="saved()">Сохранить</button>
+    <button kn-button variant="outline" tone="neutral" (click)="archived()">
+      В архив с отменой
+    </button>
+    <button kn-button variant="outline" tone="neutral" (click)="warn()">Предупреждение</button>
+    <button kn-button variant="outline" tone="danger" (click)="failed()">Ошибка</button>
   `,
   styles: `
     :host {

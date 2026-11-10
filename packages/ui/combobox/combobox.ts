@@ -16,7 +16,13 @@ import {
   viewChild,
 } from '@angular/core';
 import { _IdGenerator, ActiveDescendantKeyManager } from '@angular/cdk/a11y';
-import { KnAnchoredOverlay, KnFormControl, KnSize } from '@kenny/ui/core';
+import {
+  KnAnchoredOverlay,
+  knDefaultSize,
+  KnFormControl,
+  KnSize,
+  useControlStyles,
+} from '@kenny/ui/core';
 import { KnIcon } from '@kenny/ui/icon';
 import { KN_OPTION_PARENT, KnOption, KnOptionParent } from '@kenny/ui/option';
 
@@ -30,7 +36,12 @@ import { KN_OPTION_PARENT, KnOption, KnOptionParent } from '@kenny/ui/option';
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [{ provide: KN_OPTION_PARENT, useExisting: KnCombobox }],
   template: `
-    <div #control class="control" [attr.data-invalid]="isInvalid() ? '' : null">
+    <div
+      #control
+      class="control kn-control"
+      [attr.data-size]="size()"
+      [attr.data-invalid]="isInvalid() ? '' : null"
+    >
       <input
         #input
         class="input"
@@ -104,54 +115,15 @@ import { KN_OPTION_PARENT, KnOption, KnOptionParent } from '@kenny/ui/option';
   host: { '[attr.aria-label]': 'null', '[attr.data-size]': 'size()' },
   styles: `
     :host {
-      --_height: var(--kn-size-md);
       display: block;
       min-inline-size: 0;
     }
 
-    :host([data-size='sm']) {
-      --_height: var(--kn-size-sm);
-      font-size: var(--kn-text-sm);
-    }
-
-    :host([data-size='lg']) {
-      --_height: var(--kn-size-lg);
-      font-size: var(--kn-text-lg);
-    }
-
+    /* The well comes from the shared kn-control class */
     .control {
       display: flex;
       align-items: center;
-      box-sizing: border-box;
-      block-size: var(--kn-combobox-height, var(--_height));
-      padding-inline: var(--kn-space-3) var(--kn-space-1);
-      border-radius: var(--kn-combobox-radius, var(--kn-radius-md));
-      background: var(--kn-combobox-bg, var(--kn-color-field));
-      box-shadow: inset 0 0 0 1px var(--kn-color-field-border);
-    }
-
-    :host([data-size='sm']) .control {
-      border-radius: var(--kn-combobox-radius, var(--kn-radius-sm));
-    }
-
-    @media (hover: hover) {
-      .control:hover {
-        box-shadow: inset 0 0 0 1px var(--kn-color-field-border-hover);
-      }
-    }
-
-    .control:has(.input:focus-visible) {
-      outline: var(--kn-focus-width) solid var(--kn-color-focus);
-      outline-offset: -1px;
-    }
-
-    .control[data-invalid] {
-      box-shadow: inset 0 0 0 1px var(--kn-color-danger);
-      background: var(--kn-color-danger-soft);
-    }
-
-    .control:has(.input:disabled) {
-      opacity: 0.5;
+      padding-inline: var(--kn-field-padding, var(--kn-space-3)) var(--kn-space-1);
     }
 
     .input {
@@ -163,7 +135,6 @@ import { KN_OPTION_PARENT, KnOption, KnOptionParent } from '@kenny/ui/option';
       background: none;
       color: var(--kn-color-text);
       font: inherit;
-      font-size: var(--kn-text-md);
       outline: none;
     }
 
@@ -215,10 +186,10 @@ import { KN_OPTION_PARENT, KnOption, KnOptionParent } from '@kenny/ui/option';
       overflow-y: auto;
       overscroll-behavior: contain;
       border-radius: calc(var(--kn-radius-sm) + var(--kn-space-1-5));
-      background: var(--kn-glass-bg-strong);
-      backdrop-filter: var(--kn-glass-filter-strong);
-      -webkit-backdrop-filter: var(--kn-glass-filter-strong);
-      box-shadow: var(--kn-shadow-glass-lg);
+      background: var(--kn-combobox-panel-bg, var(--kn-color-surface-raised));
+      backdrop-filter: var(--kn-surface-filter-raised);
+      -webkit-backdrop-filter: var(--kn-surface-filter-raised);
+      box-shadow: var(--kn-combobox-panel-shadow, var(--kn-elevation-popup));
       animation: kn-pop-in var(--kn-duration-normal) var(--kn-ease-spring);
     }
 
@@ -243,7 +214,7 @@ export class KnCombobox<T = unknown> extends KnFormControl<T | null> implements 
   /** Подсказка в пустом поле. */
   readonly placeholder = input<string>('');
   /** Размер. */
-  readonly size = input<KnSize>('md');
+  readonly size = input<KnSize>(knDefaultSize());
   /** `auto` — варианты фильтруются по тексту сами; `manual` — список формирует приложение. */
   readonly filterMode = input<'auto' | 'manual'>('auto');
   /** Показывать кнопку очистки, когда значение выбрано. */
@@ -296,6 +267,7 @@ export class KnCombobox<T = unknown> extends KnFormControl<T | null> implements 
 
   constructor() {
     super();
+    useControlStyles();
     this.keyManager.change.subscribe(() =>
       this.activeId.set(this.keyManager.activeItem?.id ?? null),
     );

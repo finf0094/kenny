@@ -32,10 +32,7 @@
               "node_modules/@fontsource-variable/jetbrains-mono/wght.css",
               "packages/tokens/src/index.css",
               "packages/tokens/src/base.css",
-              "apps/docs/src/generated/preset-glass.css",
-              "packages/tokens/src/presets/classic.css",
-              "packages/tokens/src/presets/tonal.css",
-              "packages/tokens/src/presets/crisp.css",
+              "apps/docs/src/generated/presets.css",
               "apps/docs/src/app/snippets/my-preset.css",
               "apps/docs/src/styles.css"
             ]
@@ -100,10 +97,7 @@
               "node_modules/@fontsource-variable/onest/wght.css",
               "packages/tokens/src/index.css",
               "packages/tokens/src/base.css",
-              "apps/docs/src/generated/preset-glass.css",
-              "packages/tokens/src/presets/classic.css",
-              "packages/tokens/src/presets/tonal.css",
-              "packages/tokens/src/presets/crisp.css",
+              "apps/docs/src/generated/presets.css",
               "apps/playground/src/styles.css"
             ]
           },

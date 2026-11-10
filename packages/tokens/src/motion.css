@@ -90,6 +90,9 @@
     1
   );
 
+  /* How far a button shrinks while pressed; 1 switches the effect off */
+  --kn-press-scale: 0.97;
+
   /* Stagger step for list items: `animation-delay: calc(var(--kn-index) * var(--kn-stagger))` */
   --kn-stagger: 28ms;
 

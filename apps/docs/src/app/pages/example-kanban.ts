@@ -462,10 +462,10 @@ const TASKS: Task[] = [
       min-block-size: 0;
       padding: var(--kn-space-3);
       border-radius: var(--kn-radius-lg);
-      background: var(--kn-glass-bg-subtle);
-      backdrop-filter: var(--kn-glass-filter);
-      -webkit-backdrop-filter: var(--kn-glass-filter);
-      box-shadow: var(--kn-glass-rim);
+      background: var(--kn-color-surface-subtle);
+      backdrop-filter: var(--kn-surface-filter);
+      -webkit-backdrop-filter: var(--kn-surface-filter);
+      box-shadow: var(--kn-surface-rim);
     }
 
     .kb-column h2 {
@@ -504,8 +504,8 @@ const TASKS: Task[] = [
       gap: var(--kn-space-2);
       padding: var(--kn-space-3);
       border-radius: var(--kn-radius-md);
-      background: var(--kn-glass-bg-strong);
-      box-shadow: var(--kn-shadow-glass-sm);
+      background: var(--kn-color-surface-raised);
+      box-shadow: var(--kn-elevation-raised);
       cursor: grab;
       touch-action: none;
     }
@@ -580,7 +580,7 @@ const TASKS: Task[] = [
 
     /* CDK drag-and-drop states */
     .kb-card.cdk-drag-preview {
-      box-shadow: var(--kn-shadow-glass-xl);
+      box-shadow: var(--kn-elevation-modal);
       cursor: grabbing;
       rotate: 2deg;
     }
@@ -601,10 +601,10 @@ const TASKS: Task[] = [
       min-block-size: 100%;
       padding: var(--kn-space-5);
       border-radius: var(--kn-radius-lg);
-      background: var(--kn-glass-bg-strong);
-      backdrop-filter: var(--kn-glass-filter-strong);
-      -webkit-backdrop-filter: var(--kn-glass-filter-strong);
-      box-shadow: var(--kn-shadow-glass-md);
+      background: var(--kn-color-surface-raised);
+      backdrop-filter: var(--kn-surface-filter-raised);
+      -webkit-backdrop-filter: var(--kn-surface-filter-raised);
+      box-shadow: var(--kn-elevation-card);
     }
 
     /* Inside the bottom sheet the drawer is the surface */

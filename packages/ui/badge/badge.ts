@@ -1,5 +1,5 @@
 import { booleanAttribute, ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { KnTone } from '@kenny/ui/core';
+import { KnBadgeVariant, knDefaults, KnTone } from '@kenny/ui/core';
 
 /** Короткая метка статуса или счётчик. */
 @Component({
@@ -96,7 +96,7 @@ export class KnBadge {
   /** Смысловая окраска. */
   readonly tone = input<KnTone>('neutral');
   /** Насыщенность заливки. */
-  readonly variant = input<'soft' | 'solid' | 'outline'>('soft');
+  readonly variant = input<KnBadgeVariant>(knDefaults('badge').variant ?? 'soft');
   /** Размер. */
   readonly size = input<'md' | 'lg'>('md');
   /** Точка-индикатор перед текстом. */

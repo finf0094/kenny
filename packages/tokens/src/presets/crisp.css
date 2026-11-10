@@ -11,6 +11,7 @@
   --kn-color-canvas: light-dark(#f2f3f5, #0e0f11);
   --kn-color-surface: light-dark(#ffffff, #18191c);
   --kn-color-surface-raised: light-dark(#ffffff, #1f2024);
+  --kn-color-surface-subtle: light-dark(#e9ebee, #131416);
   --kn-color-surface-sunken: light-dark(rgb(17 20 28 / 0.055), rgb(255 255 255 / 0.06));
 
   /* Text */
@@ -32,17 +33,6 @@
   --kn-color-hover: light-dark(rgb(17 20 28 / 0.055), rgb(255 255 255 / 0.07));
   --kn-color-pressed: light-dark(rgb(17 20 28 / 0.1), rgb(255 255 255 / 0.13));
   --kn-color-scrim: light-dark(rgb(12 14 18 / 0.5), rgb(0 0 0 / 0.66));
-
-  /* Material: opaque */
-  --kn-glass-bg: var(--kn-color-surface);
-  --kn-glass-bg-strong: var(--kn-color-surface-raised);
-  --kn-glass-bg-subtle: light-dark(#e9ebee, #131416);
-  --kn-glass-border: var(--kn-color-border);
-  --kn-glass-edge: var(--kn-color-border);
-  --kn-glass-specular: transparent;
-  --kn-glass-filter: none;
-  --kn-glass-filter-strong: none;
-  --kn-scrim-filter: none;
 
   /* Shape: tight */
   --kn-radius-xs: 0.125rem; /* 2 */
@@ -69,16 +59,16 @@
   --kn-shadow-md: 0 1px 2px var(--kn-shadow-color), 0 4px 12px var(--kn-shadow-color);
   --kn-shadow-lg: 0 2px 4px var(--kn-shadow-color), 0 10px 28px var(--kn-shadow-color-strong);
   --kn-shadow-xl: 0 4px 8px var(--kn-shadow-color), 0 20px 48px var(--kn-shadow-color-strong);
-  --kn-shadow-highlight: 0 0 0 0 transparent;
-  --kn-glass-rim: inset 0 0 0 1px var(--kn-color-border);
-  --kn-shadow-glass-sm: var(--kn-glass-rim), var(--kn-shadow-xs);
-  --kn-shadow-glass-md: var(--kn-glass-rim), var(--kn-shadow-xs);
-  --kn-shadow-glass-lg: var(--kn-glass-rim), var(--kn-shadow-md);
-  --kn-shadow-glass-xl: var(--kn-glass-rim), var(--kn-shadow-lg);
+  --kn-surface-rim: inset 0 0 0 1px var(--kn-color-border);
+  --kn-elevation-raised: var(--kn-surface-rim), var(--kn-shadow-xs);
+  --kn-elevation-card: var(--kn-surface-rim), var(--kn-shadow-xs);
+  --kn-elevation-popup: var(--kn-surface-rim), var(--kn-shadow-md);
+  --kn-elevation-modal: var(--kn-surface-rim), var(--kn-shadow-lg);
 
   /* Motion: quick and exact, no overshoot */
   --kn-ease-spring: cubic-bezier(0.2, 0, 0, 1);
   --kn-ease-spring-bouncy: cubic-bezier(0.2, 0, 0, 1);
+  --kn-press-scale: 1;
 
   /* Components */
   --kn-tooltip-bg: light-dark(#15171c, #ececee);

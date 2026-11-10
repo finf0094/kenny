@@ -27,7 +27,7 @@ import {
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <button kn-button variant="glass" tone="neutral" [knMenuTrigger]="file">
+    <button kn-button variant="outline" tone="neutral" [knMenuTrigger]="file">
       Файл <kn-icon name="chevron-down" [size]="16" />
     </button>
     <button kn-icon-button variant="ghost" tone="neutral" aria-label="Вид" [knMenuTrigger]="view">

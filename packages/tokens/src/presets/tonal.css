@@ -4,6 +4,7 @@
  * Surfaces are tinted with the accent instead of being outlined: the page, the cards and
  * the fields are steps of one tone. Capsule buttons, generous radii, soft elevation shadows,
  * no borders. Follows the accent scale, so re-colouring `--kn-accent-*` re-tints everything.
+ * The family of looks that builds colour from a single key tone.
  *
  * Usage: import after the tokens and set `data-kn-preset="tonal"` on <html> or on any block.
  */
@@ -20,6 +21,10 @@
   --kn-color-surface-raised: light-dark(
     color-mix(in srgb, var(--kn-accent-500) 11%, #ffffff),
     color-mix(in srgb, var(--kn-accent-400) 13%, #1c1d22)
+  );
+  --kn-color-surface-subtle: light-dark(
+    color-mix(in srgb, var(--kn-accent-500) 6%, #ffffff),
+    color-mix(in srgb, var(--kn-accent-400) 7%, #141518)
   );
   --kn-color-surface-sunken: light-dark(
     color-mix(in srgb, var(--kn-accent-800) 7%, transparent),
@@ -47,13 +52,27 @@
     color-mix(in srgb, var(--kn-accent-50) 34%, transparent)
   );
 
-  /* Fields: a filled well one step darker than the surface it sits on */
+  /* Fields: a filled well with a line under it; the line thickens and takes the accent on focus */
   --kn-color-field: light-dark(
     color-mix(in srgb, var(--kn-accent-800) 9%, transparent),
     color-mix(in srgb, var(--kn-accent-100) 10%, transparent)
   );
   --kn-color-field-border: transparent;
-  --kn-color-field-border-hover: var(--kn-color-border-strong);
+  --kn-color-field-border-hover: var(--kn-color-text);
+  --kn-color-field-underline: var(--kn-color-text-muted);
+  --kn-field-border-width: 0px;
+  --kn-field-underline-width: 1px;
+  --kn-field-underline-focus-width: 2px;
+  --kn-field-focus-width: 0px;
+  --kn-radius-field: 0.25rem 0.25rem 0 0;
+  --kn-radius-field-sm: 0.25rem 0.25rem 0 0;
+
+  /* The active row of a list is a tonal fill, not a solid accent */
+  --kn-color-selection: light-dark(
+    color-mix(in srgb, var(--kn-accent-600) 16%, transparent),
+    color-mix(in srgb, var(--kn-accent-300) 24%, transparent)
+  );
+  --kn-color-on-selection: var(--kn-color-text);
 
   /* Interaction layers */
   --kn-color-hover: light-dark(
@@ -65,20 +84,6 @@
     color-mix(in srgb, var(--kn-accent-100) 15%, transparent)
   );
   --kn-color-scrim: light-dark(rgb(20 22 30 / 0.4), rgb(0 0 0 / 0.6));
-
-  /* Material: opaque tinted containers */
-  --kn-glass-bg: var(--kn-color-surface);
-  --kn-glass-bg-strong: var(--kn-color-surface-raised);
-  --kn-glass-bg-subtle: light-dark(
-    color-mix(in srgb, var(--kn-accent-500) 6%, #ffffff),
-    color-mix(in srgb, var(--kn-accent-400) 7%, #141518)
-  );
-  --kn-glass-border: transparent;
-  --kn-glass-edge: transparent;
-  --kn-glass-specular: transparent;
-  --kn-glass-filter: none;
-  --kn-glass-filter-strong: none;
-  --kn-scrim-filter: none;
 
   /* Shape: large radii, capsule controls */
   --kn-radius-xs: 0.25rem; /* 4 */
@@ -103,20 +108,34 @@
   --kn-shadow-md: 0 1px 3px var(--kn-shadow-color), 0 4px 8px 3px var(--kn-shadow-color);
   --kn-shadow-lg: 0 2px 3px var(--kn-shadow-color), 0 6px 10px 4px var(--kn-shadow-color-strong);
   --kn-shadow-xl: 0 4px 4px var(--kn-shadow-color), 0 8px 12px 6px var(--kn-shadow-color-strong);
-  --kn-shadow-highlight: 0 0 0 0 transparent;
-  --kn-glass-rim: 0 0 0 0 transparent;
-  /* Small surfaces (outlined buttons, chips) sit on a container of the same tone: outline them */
-  --kn-shadow-glass-sm: inset 0 0 0 1px
+  /* No hairline around containers: tone does the separating */
+  --kn-surface-rim: 0 0 0 0 transparent;
+  /* Small surfaces (outline buttons, chips) sit on a container of the same tone: outline them */
+  --kn-elevation-raised: inset 0 0 0 1px
     light-dark(
       color-mix(in srgb, var(--kn-accent-900) 22%, transparent),
       color-mix(in srgb, var(--kn-accent-100) 24%, transparent)
     );
-  --kn-shadow-glass-md: var(--kn-glass-rim);
-  --kn-shadow-glass-lg: var(--kn-shadow-md);
-  --kn-shadow-glass-xl: var(--kn-shadow-lg);
+  --kn-elevation-card: var(--kn-surface-rim);
+  --kn-elevation-popup: var(--kn-shadow-md);
+  --kn-elevation-modal: var(--kn-shadow-lg);
+
+  /* Motion: feedback is a state layer, not a change of size */
+  --kn-press-scale: 1;
 
   /* Components */
+  --kn-button-tracking: 0.006em;
   --kn-tabs-thumb: light-dark(#ffffff, color-mix(in srgb, var(--kn-accent-300) 26%, #1c1d22));
+  /* Switch: an outlined track; the thumb is small and dark while off, large and light while on */
+  --kn-switch-width: 3.25rem;
+  --kn-switch-height: 2rem;
+  --kn-switch-gap: 4px;
+  --kn-switch-track: var(--kn-color-surface-sunken);
+  --kn-switch-track-shadow: inset 0 0 0 2px var(--kn-color-border-strong);
+  --kn-switch-thumb: var(--kn-color-on-accent);
+  --kn-switch-thumb-off: var(--kn-color-text-subtle);
+  --kn-switch-thumb-off-scale: 0.67;
+  --kn-switch-thumb-shadow: none;
   --kn-tooltip-bg: light-dark(#2f3036, #e5e4ea);
   --kn-tooltip-color: light-dark(#f2f0f7, #1a1b20);
 }

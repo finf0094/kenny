@@ -19,7 +19,7 @@ import Basic from '../demos/drawer/basic.demo';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <docs-playground [controls]="controls" [code]="code()">
-      <button kn-button variant="glass" tone="neutral" (click)="open()">Открыть панель</button>
+      <button kn-button variant="outline" tone="neutral" (click)="open()">Открыть панель</button>
     </docs-playground>
     <ng-template #content>
       <kn-drawer-header heading="Панель" description="Настройки из playground применены" />

@@ -1,12 +1,21 @@
 /*
- * The wallpaper glass sits on: crisp cobalt and amber discs, not blurry blobs — hard edges
- * are what make the backdrop blur of a glass pane visible.
+ * The wallpaper that glass sits on: crisp cobalt and amber discs, not blurry blobs — hard
+ * edges are what make the backdrop blur of a translucent pane visible.
  *
- * The loud shapes belong to the glass style: they are what the blur
- * has to work on. Opaque presets get a plain page, so the shapes turn transparent there.
- * Declared per preset scope, so a glass block nested in another preset gets them back.
+ * Only the glass style gets it. Opaque styles have a plain page, so the shapes are
+ * transparent there. The colours are declared per style scope: a glass block nested in a
+ * page of another style gets its wallpaper back.
  */
 :root,
+[data-kn-preset] {
+  --docs-disc-a: transparent;
+  --docs-disc-b: transparent;
+  --docs-disc-c: transparent;
+  --docs-ring: transparent;
+  --docs-glow: transparent;
+  --docs-stage: var(--kn-color-surface-subtle);
+}
+
 [data-kn-preset='glass'] {
   --docs-disc-a: light-dark(#2f5ff0, #2a52d6);
   --docs-disc-b: light-dark(#ffb23e, #e08a1c);
@@ -14,17 +23,6 @@
   --docs-ring: light-dark(rgb(31 75 219 / 0.16), rgb(157 185 255 / 0.14));
   --docs-glow: light-dark(#dfe8ff, #0b1436);
   --docs-stage: light-dark(#e9eef9, #080d1f);
-}
-
-[data-kn-preset='classic'],
-[data-kn-preset='tonal'],
-[data-kn-preset='crisp'] {
-  --docs-disc-a: transparent;
-  --docs-disc-b: transparent;
-  --docs-disc-c: transparent;
-  --docs-ring: transparent;
-  --docs-glow: transparent;
-  --docs-stage: var(--kn-color-canvas);
 }
 
 /*

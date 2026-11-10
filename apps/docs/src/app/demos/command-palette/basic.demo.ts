@@ -7,7 +7,7 @@ import { KnIcon } from '@kenny/ui/icon';
   imports: [KnButton, KnIcon],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <button kn-button variant="glass" tone="neutral" (click)="palette.open()">
+    <button kn-button variant="outline" tone="neutral" (click)="palette.open()">
       <kn-icon name="search" /> Открыть палитру
       <kbd>Ctrl K</kbd>
     </button>

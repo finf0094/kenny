@@ -33,9 +33,9 @@ import Context from '../demos/menu/context.demo';
       inline-size: 16rem;
       block-size: 9rem;
       border-radius: var(--kn-radius-lg);
-      background: var(--kn-glass-bg);
-      backdrop-filter: var(--kn-glass-filter);
-      box-shadow: var(--kn-shadow-glass-sm);
+      background: var(--kn-color-surface);
+      backdrop-filter: var(--kn-surface-filter);
+      box-shadow: var(--kn-elevation-raised);
       text-align: center;
     }
 

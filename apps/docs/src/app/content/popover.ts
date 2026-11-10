@@ -22,7 +22,9 @@ const PLACEMENTS = [
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <docs-playground [controls]="controls" [code]="code()">
-      <button kn-button variant="glass" tone="neutral" [knPopoverTrigger]="popover">Открыть</button>
+      <button kn-button variant="outline" tone="neutral" [knPopoverTrigger]="popover">
+        Открыть
+      </button>
       <kn-popover
         #popover
         aria-label="Пример панели"

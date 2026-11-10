@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, input, model } from '@angular/core';
-import { KnFormControl, KnSize } from '@kenny/ui/core';
+import { knDefaultSize, KnFormControl, KnSize } from '@kenny/ui/core';
 
 /**
  * Флажок на нативном `<input type="checkbox">`: клавиатура, формы и скринридеры
@@ -35,18 +35,19 @@ import { KnFormControl, KnSize } from '@kenny/ui/core';
   host: { '[attr.aria-label]': 'null', '[attr.data-size]': 'size()' },
   styles: `
     :host {
-      --_box: 1.25rem;
+      --_k: 1;
+      --_box: calc(var(--kn-checkbox-size, 1.25rem) * var(--_k));
       display: inline-flex;
       vertical-align: middle;
     }
 
     :host([data-size='sm']) {
-      --_box: 1.0625rem;
+      --_k: 0.85;
       font-size: var(--kn-text-sm);
     }
 
     :host([data-size='lg']) {
-      --_box: 1.5rem;
+      --_k: 1.2;
       font-size: var(--kn-text-lg);
     }
 
@@ -78,7 +79,7 @@ import { KnFormControl, KnSize } from '@kenny/ui/core';
       margin-block-start: calc((1lh - var(--_box)) / 2);
       border-radius: var(--kn-checkbox-radius, var(--kn-radius-xs));
       background: var(--kn-color-field);
-      box-shadow: inset 0 0 0 1.5px var(--kn-color-border-strong);
+      box-shadow: inset 0 0 0 var(--kn-checkbox-border-width, 1.5px) var(--kn-color-border-strong);
       transition: transform var(--kn-duration-normal) var(--kn-ease-spring);
     }
 
@@ -160,7 +161,7 @@ export class KnCheckbox extends KnFormControl<boolean> {
   /** Промежуточное состояние («выбрано частично»). Сбрасывается при переключении. */
   readonly indeterminate = model(false);
   /** Размер. */
-  readonly size = input<KnSize>('md');
+  readonly size = input<KnSize>(knDefaultSize());
 
   protected readonly model = this.checked;
 

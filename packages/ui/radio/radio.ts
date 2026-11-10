@@ -9,7 +9,7 @@ import {
   model,
 } from '@angular/core';
 import { _IdGenerator } from '@angular/cdk/a11y';
-import { KnFormControl, KnSize } from '@kenny/ui/core';
+import { knDefaultSize, KnFormControl, KnSize } from '@kenny/ui/core';
 
 /**
  * Группа радиокнопок: один выбор из нескольких. Владеет значением и общим именем,
@@ -50,7 +50,7 @@ export class KnRadioGroup<T = unknown> extends KnFormControl<T | null> {
   /** Направление раскладки. */
   readonly orientation = input<'vertical' | 'horizontal'>('vertical');
   /** Размер всех радиокнопок группы. */
-  readonly size = input<KnSize>('md');
+  readonly size = input<KnSize>(knDefaultSize());
 
   protected readonly model = this.value;
   /** Shared native `name`: this is what makes the browser treat the inputs as one group. */
@@ -93,17 +93,18 @@ export class KnRadioGroup<T = unknown> extends KnFormControl<T | null> {
   host: { '[attr.data-size]': 'group.size()' },
   styles: `
     :host {
-      --_box: 1.25rem;
+      --_k: 1;
+      --_box: calc(var(--kn-radio-size, 1.25rem) * var(--_k));
       display: inline-flex;
     }
 
     :host([data-size='sm']) {
-      --_box: 1.0625rem;
+      --_k: 0.85;
       font-size: var(--kn-text-sm);
     }
 
     :host([data-size='lg']) {
-      --_box: 1.5rem;
+      --_k: 1.2;
       font-size: var(--kn-text-lg);
     }
 
@@ -135,7 +136,7 @@ export class KnRadioGroup<T = unknown> extends KnFormControl<T | null> {
       margin-block-start: calc((1lh - var(--_box)) / 2);
       border-radius: 50%;
       background: var(--kn-color-field);
-      box-shadow: inset 0 0 0 1.5px var(--kn-color-border-strong);
+      box-shadow: inset 0 0 0 var(--kn-radio-border-width, 1.5px) var(--kn-color-border-strong);
       transition: transform var(--kn-duration-normal) var(--kn-ease-spring);
     }
 

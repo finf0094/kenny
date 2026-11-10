@@ -2,7 +2,7 @@
 @import '@kenny/tokens/kenny.css';
 
 /* Один стиль на всё приложение: */
-@import '@kenny/tokens/presets/classic.css';
+@import '@kenny/tokens/presets/tonal.css';
 
 /* Или все сразу, если стиль переключается на лету: */
 /* @import '@kenny/tokens/presets.css'; */

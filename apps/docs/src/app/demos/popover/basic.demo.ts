@@ -10,7 +10,7 @@ import { KnSwitch } from '@kenny/ui/switch';
   imports: [KnPopover, KnPopoverTrigger, KnButton, KnIcon, KnField, KnSlider, KnSwitch],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <button kn-button variant="glass" tone="neutral" [knPopoverTrigger]="display">
+    <button kn-button variant="outline" tone="neutral" [knPopoverTrigger]="display">
       <kn-icon name="sliders" /> Экран
     </button>
 

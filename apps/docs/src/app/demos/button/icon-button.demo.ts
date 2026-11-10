@@ -8,7 +8,7 @@ import { KnIcon } from '@kenny/ui/icon';
   template: `
     <button kn-icon-button aria-label="Добавить"><kn-icon name="plus" /></button>
     <button kn-icon-button variant="soft" aria-label="Изменить"><kn-icon name="edit" /></button>
-    <button kn-icon-button variant="glass" tone="neutral" aria-label="В избранное">
+    <button kn-icon-button variant="outline" tone="neutral" aria-label="В избранное">
       <kn-icon name="star" />
     </button>
     <button kn-icon-button variant="ghost" tone="neutral" aria-label="Ещё">
@@ -18,10 +18,10 @@ import { KnIcon } from '@kenny/ui/icon';
       <kn-icon name="trash" />
     </button>
     <span class="divider" aria-hidden="true"></span>
-    <button kn-icon-button size="sm" variant="glass" tone="neutral" aria-label="Закрыть">
+    <button kn-icon-button size="sm" variant="outline" tone="neutral" aria-label="Закрыть">
       <kn-icon name="x" />
     </button>
-    <button kn-icon-button size="lg" variant="glass" tone="neutral" aria-label="Поиск">
+    <button kn-icon-button size="lg" variant="outline" tone="neutral" aria-label="Поиск">
       <kn-icon name="search" />
     </button>
   `,

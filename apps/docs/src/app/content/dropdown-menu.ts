@@ -12,7 +12,7 @@ import Dropdown from '../demos/menu/dropdown.demo';
   template: `
     <docs-playground [controls]="controls" [code]="code()">
       <div style="display: grid; gap: 0.75rem; justify-items: center">
-        <button kn-button variant="glass" tone="neutral" [knMenuTrigger]="menu">Действия</button>
+        <button kn-button variant="outline" tone="neutral" [knMenuTrigger]="menu">Действия</button>
         <small>Выбрано: {{ last() }}</small>
       </div>
       <ng-template #menu>

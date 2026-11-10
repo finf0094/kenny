@@ -21,7 +21,7 @@ import { KnSwitch } from '@kenny/ui/switch';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @for (side of sides; track side.id) {
-      <button kn-button variant="glass" tone="neutral" (click)="open(side.id)">
+      <button kn-button variant="outline" tone="neutral" (click)="open(side.id)">
         {{ side.label }}
       </button>
     }

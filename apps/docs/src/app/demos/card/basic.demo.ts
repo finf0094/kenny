@@ -7,17 +7,17 @@ import { KnCard } from '@kenny/ui/card';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <kn-card>
-      <h3 knCardHeader>Стекло</h3>
-      <p>Вариант по умолчанию: размывает то, что под ним, и ловит блик по верхней кромке.</p>
+      <h3 knCardHeader>Поверхность</h3>
+      <p>Вариант по умолчанию: лежит на странице, а её край рисует выбранный стиль.</p>
       <div knCardFooter>
         <button kn-button size="sm">Открыть</button>
         <button kn-button size="sm" variant="ghost" tone="neutral">Позже</button>
       </div>
     </kn-card>
 
-    <kn-card variant="solid">
-      <h3 knCardHeader>Сплошная</h3>
-      <p>Непрозрачная поверхность для длинного текста и плотных данных.</p>
+    <kn-card variant="raised">
+      <h3 knCardHeader>Приподнятая</h3>
+      <p>Парит над страницей, как всплывающий слой: для того, что должно выделяться.</p>
     </kn-card>
 
     <kn-card variant="outline">

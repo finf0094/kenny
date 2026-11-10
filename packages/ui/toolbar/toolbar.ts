@@ -7,6 +7,7 @@ import {
   input,
 } from '@angular/core';
 import { Directionality } from '@angular/cdk/bidi';
+import { knDefaults, KnToolbarVariant } from '@kenny/ui/core';
 
 const FOCUSABLE =
   'button:not(:disabled), a[href], input:not(:disabled), select:not(:disabled), [role="combobox"]:not(:disabled), [tabindex="0"], [data-kn-toolbar-item]';
@@ -43,11 +44,11 @@ const FOCUSABLE =
       border-radius: var(--kn-toolbar-radius, var(--kn-radius-lg));
     }
 
-    :host([data-variant='glass']) {
-      background: var(--kn-glass-bg);
-      backdrop-filter: var(--kn-glass-filter);
-      -webkit-backdrop-filter: var(--kn-glass-filter);
-      box-shadow: var(--kn-shadow-glass-md);
+    :host([data-variant='surface']) {
+      background: var(--kn-toolbar-bg, var(--kn-color-surface));
+      backdrop-filter: var(--kn-surface-filter);
+      -webkit-backdrop-filter: var(--kn-surface-filter);
+      box-shadow: var(--kn-toolbar-shadow, var(--kn-elevation-card));
     }
   `,
 })
@@ -56,8 +57,8 @@ export class KnToolbar {
   readonly ariaLabel = input<string | null>(null, { alias: 'aria-label' });
   /** Направление навигации стрелками. */
   readonly orientation = input<'horizontal' | 'vertical'>('horizontal');
-  /** `glass` — плавающая стеклянная капсула, `plain` — без фона. */
-  readonly variant = input<'glass' | 'plain'>('glass');
+  /** `surface` — плавающая панель на поверхности, `plain` — без фона. */
+  readonly variant = input<KnToolbarVariant>(knDefaults('toolbar').variant ?? 'surface');
 
   private readonly element = inject<ElementRef<HTMLElement>>(ElementRef).nativeElement;
   private readonly dir = inject(Directionality, { optional: true });

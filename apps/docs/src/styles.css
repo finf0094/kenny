@@ -1,5 +1,14 @@
 @import './wallpaper.css';
 
+/* The site's typefaces. The library defaults to the system font; this is how you set your own. */
+:root {
+  --kn-font-sans:
+    'Onest Variable', 'Onest', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif;
+  --kn-font-mono:
+    'JetBrains Mono Variable', 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+}
+
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 6rem;

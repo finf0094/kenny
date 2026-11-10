@@ -57,10 +57,10 @@ import { examples } from '../core/nav';
       padding: 0;
       list-style: none;
       border-radius: var(--kn-radius-xl);
-      background: var(--kn-glass-bg);
-      backdrop-filter: var(--kn-glass-filter);
-      -webkit-backdrop-filter: var(--kn-glass-filter);
-      box-shadow: var(--kn-shadow-glass-md);
+      background: var(--kn-color-surface);
+      backdrop-filter: var(--kn-surface-filter);
+      -webkit-backdrop-filter: var(--kn-surface-filter);
+      box-shadow: var(--kn-elevation-card);
       overflow: hidden;
     }
 

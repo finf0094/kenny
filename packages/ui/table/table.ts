@@ -12,7 +12,7 @@ import {
   TemplateRef,
 } from '@angular/core';
 import { KnCheckbox } from '@kenny/ui/checkbox';
-import { KnSize } from '@kenny/ui/core';
+import { knDefaultSize, KnSize } from '@kenny/ui/core';
 import { KnIcon } from '@kenny/ui/icon';
 
 export interface KnColumn<T> {
@@ -150,10 +150,10 @@ export class KnCell<T = unknown> {
       display: block;
       overflow: auto;
       border-radius: var(--kn-table-radius, var(--kn-radius-lg));
-      background: var(--kn-table-bg, var(--kn-glass-bg));
-      backdrop-filter: var(--kn-glass-filter);
-      -webkit-backdrop-filter: var(--kn-glass-filter);
-      box-shadow: var(--kn-shadow-glass-md);
+      background: var(--kn-table-bg, var(--kn-color-surface));
+      backdrop-filter: var(--kn-surface-filter);
+      -webkit-backdrop-filter: var(--kn-surface-filter);
+      box-shadow: var(--kn-table-shadow, var(--kn-elevation-card));
     }
 
     :host([data-size='sm']) {
@@ -199,7 +199,7 @@ export class KnCell<T = unknown> {
       position: sticky;
       inset-block-start: 0;
       z-index: var(--kn-z-raised);
-      background: var(--kn-glass-bg-strong);
+      background: var(--kn-color-surface-raised);
     }
 
     tbody tr {
@@ -309,7 +309,7 @@ export class KnTable<T = unknown> {
   /** Имя свойства-идентификатора или функция; нужна для стабильных строк и сравнения при выборе. */
   readonly trackBy = input<(keyof T & string) | ((row: T) => unknown) | null>(null);
   /** Плотность строк. */
-  readonly size = input<KnSize>('md');
+  readonly size = input<KnSize>(knDefaultSize());
   /** Закрепляет заголовок при прокрутке (нужна ограниченная высота). */
   readonly stickyHeader = input(false, { transform: booleanAttribute });
   /** Текст, когда строк нет. Для сложной разметки используйте слот `knTableEmpty`. */

@@ -55,9 +55,9 @@ import {
       gap: var(--kn-space-2);
       padding: var(--kn-space-3) var(--kn-space-4);
       border-radius: var(--kn-radius-md);
-      background: var(--kn-glass-bg);
-      backdrop-filter: var(--kn-glass-filter);
-      box-shadow: var(--kn-shadow-glass-sm);
+      background: var(--kn-color-surface);
+      backdrop-filter: var(--kn-surface-filter);
+      box-shadow: var(--kn-elevation-raised);
       cursor: context-menu;
     }
 

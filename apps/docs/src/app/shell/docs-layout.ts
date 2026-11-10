@@ -55,10 +55,10 @@ import { DocsNav } from './docs-nav';
       min-inline-size: 0;
       padding: clamp(var(--kn-space-5), 4vw, var(--kn-space-12));
       border-radius: var(--kn-radius-xl);
-      background: var(--kn-glass-bg-strong);
-      backdrop-filter: var(--kn-glass-filter-strong);
-      -webkit-backdrop-filter: var(--kn-glass-filter-strong);
-      box-shadow: var(--kn-shadow-glass-md);
+      background: var(--kn-color-surface-raised);
+      backdrop-filter: var(--kn-surface-filter-raised);
+      -webkit-backdrop-filter: var(--kn-surface-filter-raised);
+      box-shadow: var(--kn-elevation-card);
     }
 
     @media (max-width: 78rem) {

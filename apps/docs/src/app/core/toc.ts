@@ -85,10 +85,10 @@ export class TocService {
     nav {
       padding: var(--kn-space-4);
       border-radius: var(--kn-radius-lg);
-      background: var(--kn-glass-bg-strong);
-      backdrop-filter: var(--kn-glass-filter-strong);
-      -webkit-backdrop-filter: var(--kn-glass-filter-strong);
-      box-shadow: var(--kn-shadow-glass-sm);
+      background: var(--kn-color-surface-raised);
+      backdrop-filter: var(--kn-surface-filter-raised);
+      -webkit-backdrop-filter: var(--kn-surface-filter-raised);
+      box-shadow: var(--kn-elevation-raised);
     }
 
     .title {

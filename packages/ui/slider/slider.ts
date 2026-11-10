@@ -6,12 +6,12 @@ import {
   model,
   numberAttribute,
 } from '@angular/core';
-import { KnFormControl, KnSize } from '@kenny/ui/core';
+import { knDefaultSize, KnFormControl, KnSize } from '@kenny/ui/core';
 
 /**
  * Ползунок для выбора числа из диапазона. Внутри нативный `<input type="range">`,
  * поэтому стрелки, Home/End, PageUp/PageDown и RTL работают как в браузере;
- * стеклянный бегунок и заливка двигаются только через `transform`.
+ * бегунок и заливка двигаются только через `transform`.
  */
 @Component({
   selector: 'kn-slider',
@@ -47,8 +47,9 @@ import { KnFormControl, KnSize } from '@kenny/ui/core';
   },
   styles: `
     :host {
-      --_thumb: 1.5rem;
-      --_track: 0.375rem;
+      --_k: 1;
+      --_thumb: calc(var(--kn-slider-thumb-size, 1.5rem) * var(--_k));
+      --_track: calc(var(--kn-slider-track-size, 0.375rem) * var(--_k));
       /* Distance the thumb travels: track width minus the thumb itself */
       --_travel: calc(100cqi - var(--_thumb));
 
@@ -61,13 +62,11 @@ import { KnFormControl, KnSize } from '@kenny/ui/core';
     }
 
     :host([data-size='sm']) {
-      --_thumb: 1.125rem;
-      --_track: 0.25rem;
+      --_k: 0.75;
     }
 
     :host([data-size='lg']) {
-      --_thumb: 1.875rem;
-      --_track: 0.5rem;
+      --_k: 1.25;
     }
 
     .track {
@@ -76,7 +75,7 @@ import { KnFormControl, KnSize } from '@kenny/ui/core';
       inset-block-start: calc(50% - var(--_track) / 2);
       block-size: var(--_track);
       border-radius: var(--kn-radius-full);
-      background: var(--kn-color-border-strong);
+      background: var(--kn-slider-track, var(--kn-color-border-strong));
       overflow: hidden;
     }
 
@@ -98,11 +97,13 @@ import { KnFormControl, KnSize } from '@kenny/ui/core';
       inline-size: var(--_thumb);
       block-size: var(--_thumb);
       border-radius: 50%;
-      background: #fff;
-      box-shadow:
+      background: var(--kn-slider-thumb, #fff);
+      box-shadow: var(
+        --kn-slider-thumb-shadow,
         inset 0 0 0 0.5px rgb(8 12 28 / 0.08),
         0 1px 2px rgb(8 12 28 / 0.14),
-        0 4px 12px rgb(8 12 28 / 0.2);
+        0 4px 12px rgb(8 12 28 / 0.2)
+      );
       transform: translateX(calc(var(--_ratio) * var(--_travel) * var(--kn-dir)));
     }
 
@@ -169,7 +170,7 @@ export class KnSlider extends KnFormControl<number> {
   /** Шаг. */
   readonly step = input(1, { transform: numberAttribute });
   /** Размер. */
-  readonly size = input<KnSize>('md');
+  readonly size = input<KnSize>(knDefaultSize());
   /** Превращает значение в текст для скринридера, например `v => v + ' %'`. */
   readonly formatValue = input<((value: number) => string) | null>(null);
 

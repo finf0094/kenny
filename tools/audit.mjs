@@ -2,7 +2,7 @@
 /* global document, window, getComputedStyle, localStorage */
 //
 //   node tools/audit.mjs [distDir] [--only=/components/button,/docs/tokens] [--theme=light|dark]
-//                        [--preset=glass,classic,tonal,crisp] [--concurrency=4]
+//                        [--preset=default,glass,tonal,crisp,soft] [--concurrency=4]
 //
 // Opens every prerendered route in headless Chrome, in every style preset and both themes,
 // and fails on:
@@ -38,7 +38,7 @@ const axeSource = await readFile(
 const presets =
   typeof flags.preset === 'string'
     ? flags.preset.split(',')
-    : ['glass', 'classic', 'tonal', 'crisp'];
+    : ['default', 'glass', 'tonal', 'crisp', 'soft'];
 const concurrency = Number(flags.concurrency ?? 4);
 
 const server = await serve(join(distDir, 'browser'));

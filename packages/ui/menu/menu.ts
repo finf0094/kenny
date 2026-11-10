@@ -56,10 +56,10 @@ class KnMenuThemeScope {
       overflow-y: auto;
       overscroll-behavior: contain;
       border-radius: calc(var(--kn-radius-sm) + var(--kn-space-1-5));
-      background: var(--kn-menu-bg, var(--kn-glass-bg-strong));
-      backdrop-filter: var(--kn-glass-filter-strong);
-      -webkit-backdrop-filter: var(--kn-glass-filter-strong);
-      box-shadow: var(--kn-shadow-glass-lg);
+      background: var(--kn-menu-bg, var(--kn-color-surface-raised));
+      backdrop-filter: var(--kn-surface-filter-raised);
+      -webkit-backdrop-filter: var(--kn-surface-filter-raised);
+      box-shadow: var(--kn-menu-shadow, var(--kn-elevation-popup));
       color: var(--kn-color-text);
       outline: none;
       animation: kn-pop-in var(--kn-duration-normal) var(--kn-ease-spring);
@@ -105,8 +105,8 @@ const itemStyles = `
   :host(:focus),
   :host(:hover:not([aria-disabled='true'])),
   :host([aria-expanded='true']) {
-    background: var(--kn-color-accent);
-    color: var(--kn-color-on-accent);
+    background: var(--kn-color-selection);
+    color: var(--kn-color-on-selection);
   }
 
   :host([data-tone='danger']:focus),

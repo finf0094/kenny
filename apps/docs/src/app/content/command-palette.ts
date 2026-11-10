@@ -11,7 +11,7 @@ import Basic from '../demos/command-palette/basic.demo';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <docs-playground [controls]="controls" [code]="code()">
-      <button kn-button variant="glass" tone="neutral" (click)="palette.open()">
+      <button kn-button variant="outline" tone="neutral" (click)="palette.open()">
         Открыть палитру
       </button>
     </docs-playground>

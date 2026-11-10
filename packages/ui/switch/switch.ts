@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, input, model } from '@angular/core';
-import { KnFormControl, KnSize } from '@kenny/ui/core';
+import { knDefaultSize, KnFormControl, KnSize } from '@kenny/ui/core';
 
 /**
  * Переключатель для настроек, которые применяются сразу. Нативный checkbox с
@@ -31,23 +31,23 @@ import { KnFormControl, KnSize } from '@kenny/ui/core';
   `,
   host: { '[attr.aria-label]': 'null', '[attr.data-size]': 'size()' },
   styles: `
+    /* Geometry is given for the medium size; small and large scale it */
     :host {
-      --_h: 1.5rem;
-      --_w: 2.625rem;
-      --_gap: 2px;
+      --_k: 1;
+      --_h: calc(var(--kn-switch-height, 1.5rem) * var(--_k));
+      --_w: calc(var(--kn-switch-width, 2.625rem) * var(--_k));
+      --_gap: var(--kn-switch-gap, 2px);
       display: inline-flex;
       vertical-align: middle;
     }
 
     :host([data-size='sm']) {
-      --_h: 1.25rem;
-      --_w: 2.125rem;
+      --_k: 0.82;
       font-size: var(--kn-text-sm);
     }
 
     :host([data-size='lg']) {
-      --_h: 1.875rem;
-      --_w: 3.25rem;
+      --_k: 1.25;
       font-size: var(--kn-text-lg);
     }
 
@@ -78,8 +78,8 @@ import { KnFormControl, KnSize } from '@kenny/ui/core';
       block-size: var(--_h);
       margin-block-start: calc((1lh - var(--_h)) / 2);
       border-radius: var(--kn-radius-full);
-      background: var(--kn-color-border-strong);
-      box-shadow: inset 0 1px 2px rgb(0 0 0 / 0.08);
+      background: var(--kn-switch-track, var(--kn-color-border-strong));
+      box-shadow: var(--kn-switch-track-shadow, inset 0 1px 2px rgb(0 0 0 / 0.08));
       overflow: hidden;
     }
 
@@ -99,10 +99,14 @@ import { KnFormControl, KnSize } from '@kenny/ui/core';
       inset-inline-start: var(--_gap);
       inline-size: calc(var(--_h) - var(--_gap) * 2);
       border-radius: var(--kn-radius-full);
-      background: #fff;
-      box-shadow:
+      background: var(--kn-switch-thumb-off, var(--kn-switch-thumb, #fff));
+      box-shadow: var(
+        --kn-switch-thumb-shadow,
         0 1px 1px rgb(0 0 0 / 0.1),
-        0 2px 6px rgb(8 12 28 / 0.22);
+        0 2px 6px rgb(8 12 28 / 0.22)
+      );
+      /* A style may draw the thumb smaller while the switch is off */
+      transform: scale(var(--kn-switch-thumb-off-scale, 1));
       transform-origin: calc(50% - 50% * var(--kn-dir)) 50%;
       transition: transform var(--kn-duration-slow) var(--kn-ease-spring);
     }
@@ -112,13 +116,14 @@ import { KnFormControl, KnSize } from '@kenny/ui/core';
     }
 
     .native:checked + .track .thumb {
+      background: var(--kn-switch-thumb, #fff);
       transform: translateX(calc((var(--_w) - var(--_h)) * var(--kn-dir)));
       transform-origin: calc(50% + 50% * var(--kn-dir)) 50%;
     }
 
     /* Pressing stretches the thumb towards where it is about to go */
     .root:active .native:not(:disabled) + .track .thumb {
-      transform: scaleX(1.18);
+      transform: scale(var(--kn-switch-thumb-off-scale, 1)) scaleX(1.18);
     }
 
     .root:active .native:checked:not(:disabled) + .track .thumb {
@@ -153,7 +158,7 @@ export class KnSwitch extends KnFormControl<boolean> {
   /** Включён ли переключатель. Двусторонняя привязка: `[(checked)]`. */
   readonly checked = model(false);
   /** Размер. */
-  readonly size = input<KnSize>('md');
+  readonly size = input<KnSize>(knDefaultSize());
 
   protected readonly model = this.checked;
 

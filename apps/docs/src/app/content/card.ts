@@ -24,14 +24,14 @@ import Interactive from '../demos/card/interactive.demo';
   `,
 })
 class Playground {
-  protected readonly variant = choice('variant', ['glass', 'solid', 'outline']);
+  protected readonly variant = choice('variant', ['surface', 'raised', 'outline', 'plain']);
   protected readonly padding = choice('padding', ['none', 'sm', 'md', 'lg'], 'md');
   protected readonly interactive = toggle('interactive');
   protected readonly controls = [this.variant, this.padding, this.interactive];
   protected readonly code = computed(
     () =>
       `<kn-card${attrs({
-        variant: [this.variant.value(), 'glass'],
+        variant: [this.variant.value(), 'surface'],
         padding: [this.padding.value(), 'md'],
         interactive: [this.interactive.value()],
       })}>\n  <strong knCardHeader>Квартальный отчёт</strong>\n  <span>Обновлён сегодня в 14:20</span>\n</kn-card>`,

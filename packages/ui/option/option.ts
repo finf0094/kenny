@@ -70,8 +70,8 @@ export const KN_OPTION_PARENT = new InjectionToken<KnOptionParent>('KN_OPTION_PA
     }
 
     :host([data-active]) {
-      background: var(--kn-color-accent);
-      color: var(--kn-color-on-accent);
+      background: var(--kn-color-selection);
+      color: var(--kn-color-on-selection);
     }
 
     :host([aria-disabled='true']) {
