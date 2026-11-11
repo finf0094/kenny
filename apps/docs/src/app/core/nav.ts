@@ -44,6 +44,7 @@ export const componentGroups: { label: string; items: ComponentNavItem[] }[] = [
       c('textarea', 'Textarea', () => import('../content/textarea')),
       c('select', 'Select', () => import('../content/select')),
       c('combobox', 'Combobox', () => import('../content/combobox')),
+      c('tag-input', 'Tag Input', () => import('../content/tag-input')),
       c('checkbox', 'Checkbox', () => import('../content/checkbox')),
       c('radio', 'Radio', () => import('../content/radio')),
       c('switch', 'Switch', () => import('../content/switch')),

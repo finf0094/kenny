@@ -6,6 +6,7 @@ import { ComponentDoc } from '../core/doc-types';
 import { attrs, choice, DocsPlayground, text, toggle } from '../core/playground';
 import Basic from '../demos/select/basic.demo';
 import Forms from '../demos/select/forms.demo';
+import Multiple from '../demos/select/multiple.demo';
 
 @Component({
   imports: [DocsPlayground, KnSelect, KnOption],
@@ -55,7 +56,7 @@ export default {
     'Выбор одного значения из короткого списка. Если вариантов больше десяти или нужен поиск по вхождению — берите Combobox.',
   api: { classes: [...data.api.classes, ...option.api.classes], cssVars: data.api.cssVars },
   sources: data.sources,
-  imports: ['KnSelect', 'KnOption', 'KnOptionGroup'],
+  imports: ['KnSelect', 'KnMultiSelect', 'KnOption', 'KnOptionGroup'],
   demos: [
     {
       source: 'basic',
@@ -63,6 +64,13 @@ export default {
       description:
         'Варианты можно группировать и отключать. Список открывается шириной не меньше поля.',
       component: Basic,
+    },
+    {
+      source: 'multiple',
+      title: 'Несколько значений',
+      description:
+        'kn-multi-select — тот же список, но значение — массив: список остаётся открытым, а выбранные перечислены в поле в порядке списка.',
+      component: Multiple,
     },
     {
       source: 'forms',
@@ -82,6 +90,11 @@ export default {
     { keys: ['↓', '↑'], action: 'Перемещает активный вариант, пропуская отключённые.' },
     { keys: ['Home', 'End'], action: 'Первый и последний вариант.' },
     { keys: ['Enter', 'Пробел', 'Tab'], action: 'Выбирает активный вариант и закрывает список.' },
+    {
+      keys: ['Enter', 'Пробел'],
+      action:
+        'С multiple — отмечает и снимает вариант, список остаётся открытым; Tab только закрывает.',
+    },
     { keys: ['Esc'], action: 'Закрывает список без изменений.' },
     { keys: ['Буквы'], action: 'Поиск по первым буквам; в закрытом списке сразу меняет значение.' },
   ],

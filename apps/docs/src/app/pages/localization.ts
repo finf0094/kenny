@@ -114,13 +114,14 @@ const SAMPLE: Record<string, string | number> = {
   'datePicker.change': '3 октября 2026 г.',
   'pagination.page': 4,
   'table.selectRow': 2,
+  tagInput: 'дизайн',
 };
 
 function rows(): Row[] {
   const show = (labels: KnLabels, group: string, name: string): string => {
     const value = (labels as unknown as Record<string, Record<string, unknown>>)[group][name];
     return typeof value === 'function'
-      ? (value as (arg: unknown) => string)(SAMPLE[`${group}.${name}`])
+      ? (value as (arg: unknown) => string)(SAMPLE[`${group}.${name}`] ?? SAMPLE[group])
       : String(value);
   };
   return Object.entries(knLabelsEn).flatMap(([group, labels]) =>

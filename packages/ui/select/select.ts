@@ -2,12 +2,14 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  Directive,
   contentChildren,
   ElementRef,
   inject,
   Injector,
   input,
   model,
+  ModelSignal,
   signal,
   TemplateRef,
   viewChild,
@@ -24,17 +26,8 @@ import {
 import { KnIcon } from '@kenny/ui/icon';
 import { KN_OPTION_PARENT, KnOption, KnOptionParent } from '@kenny/ui/option';
 
-/**
- * Выбор одного значения из списка. Реализует паттерн APG «Select-Only Combobox»:
- * фокус остаётся на поле, варианты подсвечиваются через `aria-activedescendant`,
- * работает поиск по первым буквам.
- */
-@Component({
-  selector: 'kn-select',
-  imports: [KnIcon],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [{ provide: KN_OPTION_PARENT, useExisting: KnSelect }],
-  template: `
+/** Shared by the single and the multiple select: one look, one behaviour. */
+const template = `
     <button
       #trigger
       class="trigger kn-control"
@@ -70,14 +63,15 @@ import { KN_OPTION_PARENT, KnOption, KnOptionParent } from '@kenny/ui/option';
         [id]="listId"
         [attr.aria-label]="ariaLabel()"
         [attr.aria-labelledby]="labelledBy()"
+        [attr.aria-multiselectable]="multiple ? 'true' : null"
         (mousedown)="$event.preventDefault()"
       >
         <ng-content />
       </div>
     </ng-template>
-  `,
-  host: { '[attr.aria-label]': 'null', '[attr.data-size]': 'size()' },
-  styles: `
+`;
+
+const styles = `
     :host {
       display: block;
       min-inline-size: 0;
@@ -135,12 +129,16 @@ import { KN_OPTION_PARENT, KnOption, KnOptionParent } from '@kenny/ui/option';
       animation: kn-pop-out var(--kn-duration-fast) var(--kn-ease-in) forwards;
       pointer-events: none;
     }
-  `,
-})
-export class KnSelect<T = unknown> extends KnFormControl<T | null> implements KnOptionParent<T> {
+`;
+
+/** @internal Everything the two selects have in common. */
+@Directive()
+export abstract class KnSelectBase<T, V> extends KnFormControl<V> implements KnOptionParent<T> {
   protected readonly labels = injectKnLabels();
-  /** Выбранное значение. Двусторонняя привязка: `[(value)]`. */
-  readonly value = model<T | null>(null);
+  /** The public model: one value or a list of them. */
+  abstract readonly value: ModelSignal<V>;
+  /** Several values at once: the list stays open and the value is an array. */
+  protected abstract readonly multiple: boolean;
   /** Текст, пока ничего не выбрано. По умолчанию — из `provideKnLabels`. */
   readonly placeholder = input<string>();
   /** Размер. */
@@ -148,7 +146,6 @@ export class KnSelect<T = unknown> extends KnFormControl<T | null> implements Kn
   /** Сравнение значений; нужно, если значения — объекты. */
   readonly compareWith = input<(a: T | null, b: T | null) => boolean>(Object.is);
 
-  protected readonly model = this.value;
   protected readonly overlay = new KnAnchoredOverlay();
   private readonly ids = inject(_IdGenerator);
   protected readonly listId = this.ids.getId('kn-select-list-');
@@ -164,10 +161,21 @@ export class KnSelect<T = unknown> extends KnFormControl<T | null> implements Kn
     .withTypeAhead(300);
   protected readonly activeId = signal<string | null>(null);
 
-  private readonly selectedOption = computed(() =>
-    this.options().find((option) => this.compareWith()(option.value(), this.value())),
+  /** The value as a list, whatever the mode. */
+  private readonly selection = computed<readonly T[]>(() => {
+    const value: unknown = this.value();
+    if (value === null || value === undefined) return [];
+    return this.multiple ? (value as T[]) : [value as T];
+  });
+  private readonly selectedOptions = computed(() =>
+    this.options().filter((option) => this.isSelected(option.value())),
   );
-  protected readonly selectedText = computed(() => this.selectedOption()?.text() ?? '');
+  /** Texts of the chosen options, in the order of the list. */
+  protected readonly selectedText = computed(() =>
+    this.selectedOptions()
+      .map((option) => option.text())
+      .join(', '),
+  );
 
   constructor() {
     super();
@@ -176,20 +184,32 @@ export class KnSelect<T = unknown> extends KnFormControl<T | null> implements Kn
       const active = this.keyManager.activeItem;
       this.activeId.set(active?.id ?? null);
       // Type-ahead on a closed select changes the value directly (the match arrives debounced).
-      if (active && !active.disabled && !this.overlay.isOpen()) {
-        this.commit(active.value());
+      // Not in multiple mode: there a letter must not silently add or drop a value.
+      if (active && !active.disabled && !this.overlay.isOpen() && !this.multiple) {
+        this.commit(active.value() as unknown as V);
       }
     });
     this.overlay.dismissed.subscribe(() => void this.close());
   }
 
   isSelected(value: T): boolean {
-    return this.compareWith()(value, this.value());
+    const same = this.compareWith();
+    return this.selection().some((item) => same(item, value));
   }
 
   pick(option: KnOption<T>): void {
-    this.commit(option.value());
-    void this.close();
+    const value = option.value();
+    if (!this.multiple) {
+      this.commit(value as unknown as V);
+      void this.close();
+      return;
+    }
+    const same = this.compareWith();
+    const selection = this.selection();
+    const next = this.isSelected(value)
+      ? selection.filter((item) => !same(item, value))
+      : [...selection, value];
+    this.commit(next as unknown as V);
   }
 
   activate(option: KnOption<T>): void {
@@ -209,7 +229,7 @@ export class KnSelect<T = unknown> extends KnFormControl<T | null> implements Kn
       matchWidth: true,
       transformOriginOn: '.panel',
     });
-    const selected = this.selectedOption();
+    const selected = this.selectedOptions()[0];
     if (selected) {
       this.keyManager.setActiveItem(selected);
     } else {
@@ -255,7 +275,9 @@ export class KnSelect<T = unknown> extends KnFormControl<T | null> implements Kn
 
     if (key === 'Enter' || key === ' ' || key === 'Tab' || (key === 'ArrowUp' && event.altKey)) {
       const active = this.keyManager.activeItem;
-      if (active && !active.disabled && !this.keyManager.isTyping()) {
+      // Tab leaves a multiple select as it is: only Enter and Space change the selection
+      const picks = key !== 'Tab' || !this.multiple;
+      if (picks && active && !active.disabled && !this.keyManager.isTyping()) {
         if (key !== 'Tab') event.preventDefault();
         this.pick(active);
         return;
@@ -266,5 +288,55 @@ export class KnSelect<T = unknown> extends KnFormControl<T | null> implements Kn
       }
     }
     this.keyManager.onKeydown(event);
+  }
+}
+
+/**
+ * Выбор одного значения из списка. Реализует паттерн APG «Select-Only Combobox»:
+ * фокус остаётся на поле, варианты подсвечиваются через `aria-activedescendant`,
+ * работает поиск по первым буквам.
+ */
+@Component({
+  selector: 'kn-select',
+  imports: [KnIcon],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [{ provide: KN_OPTION_PARENT, useExisting: KnSelect }],
+  template,
+  host: { '[attr.aria-label]': 'null', '[attr.data-size]': 'size()' },
+  styles,
+})
+export class KnSelect<T = unknown> extends KnSelectBase<T, T | null> {
+  /** Выбранное значение. Двусторонняя привязка: `[(value)]`. */
+  readonly value = model<T | null>(null);
+  protected readonly model = this.value;
+  protected readonly multiple = false;
+
+  protected override coerce(value: T | null): T | null {
+    return value ?? null;
+  }
+}
+
+/**
+ * Выбор нескольких значений из списка: значение — массив, список не закрывается после
+ * выбора, выбранные перечислены в поле в порядке списка. Тот же паттерн APG, что у
+ * `kn-select`, с `aria-multiselectable`.
+ */
+@Component({
+  selector: 'kn-multi-select',
+  imports: [KnIcon],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [{ provide: KN_OPTION_PARENT, useExisting: KnMultiSelect }],
+  template,
+  host: { '[attr.aria-label]': 'null', '[attr.data-size]': 'size()' },
+  styles,
+})
+export class KnMultiSelect<T = unknown> extends KnSelectBase<T, T[]> {
+  /** Выбранные значения. Двусторонняя привязка: `[(value)]`. */
+  readonly value = model<T[]>([]);
+  protected readonly model = this.value;
+  protected readonly multiple = true;
+
+  protected override coerce(value: T[]): T[] {
+    return Array.isArray(value) ? value : [];
   }
 }

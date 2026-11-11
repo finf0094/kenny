@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { KnField } from '@kenny/ui/field';
 import { expectNoA11yViolations } from '../testing/a11y';
 import { stable } from '../testing/stable';
-import { KnOption, KnSelect } from './index';
+import { KnMultiSelect, KnOption, KnSelect } from './index';
 
 const template = `
   <kn-field label="Город">
@@ -100,5 +100,66 @@ describe('KnSelect', () => {
     await expectNoA11yViolations(document.body);
     await user.click(trigger);
     await expectNoA11yViolations(document.body);
+  });
+
+  describe('KnMultiSelect', () => {
+    const many = `
+      <kn-multi-select aria-label="Навыки" [formControl]="control" placeholder="Не выбраны">
+        <kn-option value="ts">TypeScript</kn-option>
+        <kn-option value="css">CSS</kn-option>
+        <kn-option value="a11y">Доступность</kn-option>
+      </kn-multi-select>`;
+
+    async function setupMany(initial: string[] = []) {
+      const control = new FormControl<string[]>(initial, { nonNullable: true });
+      await render(many, {
+        imports: [KnMultiSelect, KnOption, ReactiveFormsModule],
+        componentProperties: { control },
+      });
+      return { control, user: userEvent.setup(), trigger: screen.getByRole('combobox') };
+    }
+
+    it('collects values, keeps the list open and lists the chosen in the field', async () => {
+      const { control, user, trigger } = await setupMany(['css']);
+      expect(trigger).toHaveTextContent('CSS');
+      await user.click(trigger);
+      const list = await screen.findByRole('listbox');
+      expect(list).toHaveAttribute('aria-multiselectable', 'true');
+      await user.click(screen.getByRole('option', { name: 'TypeScript' }));
+      await stable();
+      expect(control.value).toEqual(['css', 'ts']);
+      // Shown in the order of the list, not of the clicks
+      expect(trigger).toHaveTextContent('TypeScript, CSS');
+      expect(screen.getByRole('listbox')).toBeInTheDocument();
+      await user.click(screen.getByRole('option', { name: 'CSS' }));
+      await stable();
+      expect(control.value).toEqual(['ts']);
+      expect(screen.getByRole('option', { name: 'CSS' })).toHaveAttribute('aria-selected', 'false');
+    });
+
+    it('toggles with Space and Enter from the keyboard; Tab leaves without changing', async () => {
+      const { control, user, trigger } = await setupMany();
+      await user.tab();
+      await user.keyboard('{ArrowDown}');
+      await screen.findByRole('listbox');
+      await user.keyboard(' ');
+      await user.keyboard('{ArrowDown}{Enter}');
+      await stable();
+      expect(control.value).toEqual(['ts', 'css']);
+      await user.keyboard('{ArrowDown}');
+      await user.tab();
+      await stable();
+      expect(control.value).toEqual(['ts', 'css']);
+      await waitFor(() => expect(screen.queryByRole('listbox')).not.toBeInTheDocument());
+      expect(trigger).toHaveTextContent('TypeScript, CSS');
+    });
+
+    it('does not change the value by type-ahead while closed', async () => {
+      const { control, user } = await setupMany(['css']);
+      await user.tab();
+      await user.keyboard('t');
+      await new Promise((done) => setTimeout(done, 400));
+      expect(control.value).toEqual(['css']);
+    });
   });
 });

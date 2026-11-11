@@ -51,6 +51,16 @@ export interface KnLabels {
   splitter: { label: string };
   stepper: { label: string; done: string; current: string };
   table: { selectAll: string; selectRow: (row: number) => string; empty: string };
+  tagInput: {
+    selected: string;
+    remove: (tag: string) => string;
+    added: (tag: string) => string;
+    removed: (tag: string) => string;
+    marked: (tag: string) => string;
+    duplicate: (tag: string) => string;
+    limit: (tag: string) => string;
+    invalid: (tag: string) => string;
+  };
   toast: { region: string; close: string };
 }
 
@@ -106,6 +116,16 @@ export const knLabelsEn: KnLabels = {
     selectRow: (row) => `Select row ${row}`,
     empty: 'No data',
   },
+  tagInput: {
+    selected: 'Selected',
+    remove: (tag) => `Remove ${tag}`,
+    added: (tag) => `${tag} added`,
+    removed: (tag) => `${tag} removed`,
+    marked: (tag) => `${tag}. Backspace removes it`,
+    duplicate: (tag) => `${tag} is already in the list`,
+    limit: () => 'No more can be added',
+    invalid: (tag) => `${tag} cannot be added`,
+  },
   toast: { region: 'Notifications', close: 'Dismiss notification' },
 };
 
@@ -157,6 +177,16 @@ export const knLabelsRu: KnLabels = {
     selectAll: 'Выбрать все строки',
     selectRow: (row) => `Выбрать строку ${row}`,
     empty: 'Нет данных',
+  },
+  tagInput: {
+    selected: 'Выбрано',
+    remove: (tag) => `Убрать ${tag}`,
+    added: (tag) => `${tag} добавлено`,
+    removed: (tag) => `${tag} убрано`,
+    marked: (tag) => `${tag}. Backspace — убрать`,
+    duplicate: (tag) => `${tag} уже есть в списке`,
+    limit: () => 'Больше добавить нельзя',
+    invalid: (tag) => `${tag} нельзя добавить`,
   },
   toast: { region: 'Уведомления', close: 'Закрыть уведомление' },
 };

@@ -58,6 +58,7 @@ function objectProp(obj, key, sf) {
   if (!obj || !ts.isObjectLiteralExpression(obj)) return undefined;
   for (const prop of obj.properties) {
     if (ts.isPropertyAssignment(prop) && prop.name.getText(sf) === key) return prop.initializer;
+    if (ts.isShorthandPropertyAssignment(prop) && prop.name.text === key) return prop.name;
   }
   return undefined;
 }
@@ -189,7 +190,18 @@ function parseFile(file, text, classes, aliases) {
       }
       const selector = objectProp(dec?.arg, 'selector', sf);
       // Parts: the class names in the template are the hooks for styling from outside
-      const template = objectProp(dec?.arg, 'template', sf);
+      let template = objectProp(dec?.arg, 'template', sf);
+      // `template,` — a constant shared by several components of the file
+      if (template && ts.isIdentifier(template)) {
+        const name = template.text;
+        template = undefined;
+        ts.forEachChild(sf, (statement) => {
+          if (!ts.isVariableStatement(statement)) return;
+          for (const declaration of statement.declarationList.declarations) {
+            if (declaration.name.getText(sf) === name) template = declaration.initializer;
+          }
+        });
+      }
       const parts = [];
       if (template && ts.isStringLiteralLike(template)) {
         for (const match of template.text.matchAll(/\sclass="([^"]+)"/g)) {
