@@ -515,6 +515,30 @@ try {
       });
     },
   );
+
+  await scenario(
+    'Chat: Enter sends, the answer arrives, focus stays in the composer',
+    '/examples/chat',
+    async (page) => {
+      await focusIn(page, 'textarea[aria-label="Сообщение агенту"]');
+      const count = () => page.$$eval('.thread .message', (els) => els.length);
+      const before = await count();
+      await page.keyboard.type('Какие счета просрочены?');
+      await press(page, 'Enter');
+      await page.waitForFunction(
+        () => document.querySelector('.thread').getAttribute('aria-busy') === 'false',
+        { timeout: 8000 },
+      );
+      expect(
+        (await count()) === before + 2,
+        `expected two new messages, got ${(await count()) - before}`,
+      );
+      const focused = await active(page);
+      expect(focused.tag === 'textarea', `focus moved to <${focused.tag}>`);
+      const table = await page.$('.thread .message:last-of-type table');
+      expect(Boolean(table), 'the answer has no table of invoices');
+    },
+  );
 } finally {
   await browser.close();
   server.close();

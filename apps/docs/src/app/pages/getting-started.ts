@@ -74,7 +74,7 @@ import { DocsCode } from '../core/code-block';
           каждого.
         </li>
         <li>
-          <a routerLink="/examples">Примеры</a> — три экрана, целиком собранные из библиотеки.
+          <a routerLink="/examples">Примеры</a> — четыре экрана, целиком собранные из библиотеки.
         </li>
       </ul>
     </article>

@@ -132,4 +132,10 @@ export const examples: (NavItem & { description: string })[] = [
     icon: 'columns',
     description: 'Доска с перетаскиванием карточек и боковой панелью задачи на разделителе.',
   },
+  {
+    path: '/examples/chat',
+    title: 'Чат с агентом',
+    icon: 'zap',
+    description: 'Диалоги, лента с шагами агента и ответом по словам, поле ввода с вложениями.',
+  },
 ];

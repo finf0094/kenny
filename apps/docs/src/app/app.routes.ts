@@ -68,6 +68,11 @@ export const routes: Routes = [
         title: 'Канбан · Kenny',
         loadComponent: () => import('./pages/example-kanban'),
       },
+      {
+        path: 'chat',
+        title: 'Чат с агентом · Kenny',
+        loadComponent: () => import('./pages/example-chat'),
+      },
     ],
   },
   {
