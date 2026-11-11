@@ -45,6 +45,7 @@ export default {
   slug: 'date-picker',
   title: 'DatePicker',
   entry: 'date-picker',
+  apiClasses: ['KnDatePicker', 'KnCalendar'],
   description:
     'Поле даты: дату можно напечатать в формате локали или выбрать в календаре. Календарь доступен и отдельно — как <kn-calendar>.',
   api: data.api,

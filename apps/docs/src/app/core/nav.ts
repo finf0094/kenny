@@ -52,6 +52,8 @@ export const componentGroups: { label: string; items: ComponentNavItem[] }[] = [
       c('number-input', 'Number Input', () => import('../content/number-input')),
       c('toggle-group', 'Toggle Group', () => import('../content/toggle-group')),
       c('date-picker', 'DatePicker', () => import('../content/date-picker')),
+      c('date-range-picker', 'Date Range Picker', () => import('../content/date-range-picker')),
+      c('time-picker', 'Time Picker', () => import('../content/time-picker')),
     ],
   },
   {

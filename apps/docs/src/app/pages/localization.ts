@@ -115,6 +115,7 @@ const SAMPLE: Record<string, string | number> = {
   'pagination.page': 4,
   'table.selectRow': 2,
   tagInput: 'дизайн',
+  fileUpload: 'отчёт.pdf',
 };
 
 function rows(): Row[] {

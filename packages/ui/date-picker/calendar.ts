@@ -27,6 +27,16 @@ interface Cell {
   today: boolean;
   selected: boolean;
   disabled: boolean;
+  /** Inside the range, its ends included. */
+  inRange: boolean;
+  /** `start`, `end` or `both` when the range is a single day. */
+  edge: 'start' | 'end' | 'both' | null;
+}
+
+/** Начало и конец периода. Пока выбран только первый день, `end` равен `null`. */
+export interface KnCalendarRange {
+  start: Date | null;
+  end: Date | null;
 }
 
 /**
@@ -73,7 +83,12 @@ interface Cell {
             <tr>
               @for (cell of week; track $index) {
                 @if (cell) {
-                  <td role="gridcell" [attr.aria-selected]="cell.selected">
+                  <td
+                    role="gridcell"
+                    [attr.aria-selected]="cell.selected"
+                    [attr.data-in-range]="cell.inRange ? '' : null"
+                    [attr.data-edge]="cell.edge"
+                  >
                     <button
                       class="day"
                       type="button"
@@ -84,7 +99,8 @@ interface Cell {
                       [attr.aria-disabled]="cell.disabled ? 'true' : null"
                       [tabindex]="cell.iso === focusedIso() ? 0 : -1"
                       (click)="select(cell)"
-                      (focus)="focused.set(cell.date)"
+                      (focus)="focused.set(cell.date); hovered.set(cell.date)"
+                      (pointerenter)="hovered.set(cell.date)"
                     >
                       {{ cell.day }}
                     </button>
@@ -229,6 +245,23 @@ interface Cell {
       animation: kn-pop-in var(--kn-duration-normal) var(--kn-ease-spring-bouncy);
     }
 
+    /* A range is a band behind the days: square between the ends, round at them */
+    td[data-in-range] {
+      background: var(--kn-calendar-range, var(--kn-color-accent-soft));
+    }
+
+    td[data-edge='start'],
+    td[data-edge='both'] {
+      border-start-start-radius: 50%;
+      border-end-start-radius: 50%;
+    }
+
+    td[data-edge='end'],
+    td[data-edge='both'] {
+      border-start-end-radius: 50%;
+      border-end-end-radius: 50%;
+    }
+
     .day[aria-disabled='true'] {
       color: var(--kn-color-text-disabled);
       cursor: not-allowed;
@@ -257,6 +290,11 @@ export class KnCalendar {
   readonly dateFilter = input<((date: Date) => boolean) | null>(null);
   /** Локаль для названий и первого дня недели. По умолчанию `LOCALE_ID`. */
   readonly locale = input<string>(inject(LOCALE_ID));
+  /**
+   * Период вместо одной даты: дни между началом и концом закрашиваются, а пока конец не
+   * выбран, период тянется за указателем и фокусом. Выбор по-прежнему приходит в `pick`.
+   */
+  readonly range = input<KnCalendarRange | null>(null);
   /** Пользователь выбрал дату (срабатывает и при повторном выборе той же даты). */
   readonly pick = output<Date>();
 
@@ -268,6 +306,8 @@ export class KnCalendar {
   /** The day that owns the tab stop; follows the value until the user navigates. */
   protected readonly focused = linkedSignal(() => startOfDay(this.value() ?? new Date()));
   protected readonly direction = signal<1 | -1>(1);
+  /** The day under the pointer or the focus: the far end of a range that is being picked. */
+  protected readonly hovered = signal<Date | null>(null);
   protected readonly focusedIso = computed(() => isoDate(this.focused()));
   protected readonly monthKey = computed(
     () => `${this.focused().getFullYear()}-${this.focused().getMonth()}`,
@@ -299,16 +339,29 @@ export class KnCalendar {
     const offset = (new Date(year, month, 1).getDay() - firstDayOfWeek(this.locale()) + 7) % 7;
     const days = new Date(year, month + 1, 0).getDate();
     const cells: (Cell | null)[] = Array.from({ length: offset }, () => null);
+    const range = this.range();
+    // While only the start is chosen the range follows the pointer, in either direction
+    const far = range?.start ? (range.end ?? this.hovered() ?? range.start) : null;
+    const [from, to] =
+      range?.start && far
+        ? [range.start, far].map(startOfDay).sort((a, b) => a.getTime() - b.getTime())
+        : [null, null];
     for (let day = 1; day <= days; day++) {
       const date = new Date(year, month, day);
+      const isStart = !!from && sameDay(date, from);
+      const isEnd = !!to && sameDay(date, to);
       cells.push({
         date,
         day,
         iso: isoDate(date),
         label: label.format(date),
         today: sameDay(date, today),
-        selected: sameDay(date, this.value()),
+        selected: range
+          ? sameDay(date, range.start) || sameDay(date, range.end)
+          : sameDay(date, this.value()),
         disabled: this.isDisabled(date),
+        inRange: !!from && !!to && date >= from && date <= to,
+        edge: isStart && isEnd ? 'both' : isStart ? 'start' : isEnd ? 'end' : null,
       });
     }
     while (cells.length % 7 !== 0) cells.push(null);

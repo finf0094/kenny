@@ -32,6 +32,11 @@ export interface KnLabels {
     change: (date: string) => string;
     previousMonth: string;
     nextMonth: string;
+    rangeDialog: string;
+    rangePlaceholder: string;
+    rangeStart: string;
+    rangeEnd: string;
+    clear: string;
     day: string;
     month: string;
     year: string;
@@ -51,6 +56,7 @@ export interface KnLabels {
   splitter: { label: string };
   stepper: { label: string; done: string; current: string };
   table: { selectAll: string; selectRow: (row: number) => string; empty: string };
+  timePicker: { hours: string; minutes: string; period: string };
   tagInput: {
     selected: string;
     remove: (tag: string) => string;
@@ -93,6 +99,11 @@ export const knLabelsEn: KnLabels = {
     change: (date) => `Change date, ${date}`,
     previousMonth: 'Previous month',
     nextMonth: 'Next month',
+    rangeDialog: 'Choose a period',
+    rangePlaceholder: 'Start – end',
+    rangeStart: 'Choose the first day',
+    rangeEnd: 'Choose the last day',
+    clear: 'Clear',
     day: 'dd',
     month: 'mm',
     year: 'yyyy',
@@ -116,6 +127,7 @@ export const knLabelsEn: KnLabels = {
     selectRow: (row) => `Select row ${row}`,
     empty: 'No data',
   },
+  timePicker: { hours: 'Hours', minutes: 'Minutes', period: 'AM or PM' },
   tagInput: {
     selected: 'Selected',
     remove: (tag) => `Remove ${tag}`,
@@ -155,6 +167,11 @@ export const knLabelsRu: KnLabels = {
     change: (date) => `Изменить дату, ${date}`,
     previousMonth: 'Предыдущий месяц',
     nextMonth: 'Следующий месяц',
+    rangeDialog: 'Выбор периода',
+    rangePlaceholder: 'Начало – конец',
+    rangeStart: 'Выберите первый день',
+    rangeEnd: 'Выберите последний день',
+    clear: 'Очистить',
     day: 'дд',
     month: 'мм',
     year: 'гггг',
@@ -178,6 +195,7 @@ export const knLabelsRu: KnLabels = {
     selectRow: (row) => `Выбрать строку ${row}`,
     empty: 'Нет данных',
   },
+  timePicker: { hours: 'Часы', minutes: 'Минуты', period: 'До или после полудня' },
   tagInput: {
     selected: 'Выбрано',
     remove: (tag) => `Убрать ${tag}`,
