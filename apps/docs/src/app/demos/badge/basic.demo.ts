@@ -17,7 +17,7 @@ import { KnBadge } from '@kenny/ui/badge';
       <kn-badge variant="solid" tone="accent">99+</kn-badge>
       <kn-badge variant="solid" tone="danger">3</kn-badge>
       <kn-badge variant="outline" tone="accent">Бета</kn-badge>
-      <kn-badge variant="outline" tone="success">v0.1.0</kn-badge>
+      <kn-badge variant="outline" tone="success">v0.2.0</kn-badge>
       <kn-badge size="lg" tone="accent">Большой</kn-badge>
     </div>
   `,

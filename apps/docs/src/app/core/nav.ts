@@ -20,6 +20,7 @@ export const guides: NavItem[] = [
   { path: '/docs/theming', title: 'Темизация', icon: 'droplet' },
   { path: '/docs/tokens', title: 'Токены', icon: 'layers' },
   { path: '/docs/motion', title: 'Motion', icon: 'motion' },
+  { path: '/docs/localization', title: 'Локализация', icon: 'book' },
   { path: '/docs/accessibility', title: 'Доступность', icon: 'accessibility' },
 ];
 

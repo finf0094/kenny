@@ -125,7 +125,7 @@
 
   /* Components */
   --kn-button-tracking: 0.006em;
-  --kn-tabs-thumb: light-dark(#ffffff, color-mix(in srgb, var(--kn-accent-300) 26%, #1c1d22));
+  --kn-color-thumb: light-dark(#ffffff, color-mix(in srgb, var(--kn-accent-300) 26%, #1c1d22));
   /* Switch: an outlined track; the thumb is small and dark while off, large and light while on */
   --kn-switch-width: 3.25rem;
   --kn-switch-height: 2rem;

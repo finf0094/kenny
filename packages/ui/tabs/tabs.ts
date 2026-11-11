@@ -185,7 +185,7 @@ export type { KnTabsVariant } from '@kenny/ui/core';
     :host([data-variant='segmented']) .indicator {
       inset-block: 3px;
       border-radius: max(0px, calc(var(--kn-radius-control) - 3px));
-      background: var(--kn-tabs-thumb, var(--kn-tabs-indicator, var(--kn-color-surface-raised)));
+      background: var(--kn-tabs-thumb, var(--kn-tabs-indicator, var(--kn-color-thumb)));
       box-shadow: var(--kn-tabs-thumb-shadow, var(--kn-elevation-raised), var(--kn-shadow-xs));
     }
 

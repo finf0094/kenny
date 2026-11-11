@@ -72,6 +72,9 @@
   --kn-color-text-subtle: light-dark(#5c6272, #8d93a2);
   --kn-color-text-disabled: light-dark(rgb(23 26 33 / 0.4), rgb(238 240 244 / 0.38));
 
+  /* The raised thumb of a segmented control: the active tab, a pressed toggle */
+  --kn-color-thumb: light-dark(var(--kn-ink-0), #3b414e);
+
   /* The unfilled part of a progress bar or a slider */
   --kn-color-track: light-dark(rgb(23 26 33 / 0.1), rgb(255 255 255 / 0.14));
 

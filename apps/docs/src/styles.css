@@ -199,3 +199,38 @@ kbd {
   font-weight: var(--kn-weight-medium);
   white-space: nowrap;
 }
+
+/* ---- View transitions ---- */
+
+/* Pages cross-fade quickly */
+::view-transition-group(root) {
+  animation-duration: 200ms;
+}
+
+/* A change of theme, style or accent spreads as a circle from the point of the press */
+.docs-repaint::view-transition-old(root),
+.docs-repaint::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+.docs-repaint::view-transition-new(root) {
+  animation: docs-reveal 620ms cubic-bezier(0.2, 0, 0, 1) both;
+}
+
+@keyframes docs-reveal {
+  from {
+    clip-path: circle(0 at var(--docs-vt-x) var(--docs-vt-y));
+  }
+  to {
+    clip-path: circle(var(--docs-vt-r) at var(--docs-vt-x) var(--docs-vt-y));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}

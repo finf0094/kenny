@@ -8,14 +8,16 @@ import { KnCard } from '@kenny/ui/card';
 import { KnCheckbox } from '@kenny/ui/checkbox';
 import { KnCommandPalette } from '@kenny/ui/command-palette';
 import { KnIcon } from '@kenny/ui/icon';
+import { KnNumber } from '@kenny/ui/motion';
 import { KnProgress } from '@kenny/ui/progress';
 import { KnSlider } from '@kenny/ui/slider';
 import { KnSwitch } from '@kenny/ui/switch';
 import { KnTab, KnTabs } from '@kenny/ui/tabs';
+import { KnToggle, KnToggleGroup } from '@kenny/ui/toggle-group';
 import { KnToaster } from '@kenny/ui/toast';
 import { KnToolbar, KnToolbarSeparator } from '@kenny/ui/toolbar';
 import { KnTooltip } from '@kenny/ui/tooltip';
-import { allComponents, componentGroups } from '../core/nav';
+import { componentGroups } from '../core/nav';
 import { ACCENTS, PRESETS, ThemeService } from '../core/theme';
 
 const INSTALL = 'pnpm add @kenny/ui @kenny/tokens @angular/cdk';
@@ -44,6 +46,9 @@ const PERIODS = [
     KnToolbarSeparator,
     KnTooltip,
     KnCheckbox,
+    KnToggleGroup,
+    KnToggle,
+    KnNumber,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
@@ -159,18 +164,19 @@ const PERIODS = [
             </div>
           </kn-card>
 
-          <div class="styles" role="group" aria-label="Стиль сайта">
-            <span class="styles-label">Тот же код в другом стиле</span>
-            @for (preset of presets; track preset.id) {
-              <button
-                class="chip"
-                type="button"
-                [attr.aria-pressed]="theme.preset() === preset.id"
-                (click)="theme.preset.set(preset.id)"
-              >
-                {{ preset.label }}
-              </button>
-            }
+          <div class="styles">
+            <span id="hero-styles" class="styles-label">Тот же код в другом стиле</span>
+            <kn-toggle-group
+              aria-labelledby="hero-styles"
+              size="sm"
+              requireSelection
+              [value]="theme.preset()"
+              (valueChange)="setPreset($event)"
+            >
+              @for (preset of presets; track preset.id) {
+                <button kn-toggle [value]="preset.id">{{ preset.label }}</button>
+              }
+            </kn-toggle-group>
           </div>
         </div>
       </section>
@@ -189,6 +195,12 @@ const PERIODS = [
           <kn-switch [checked]="true">Переключатель</kn-switch>
           <kn-checkbox [checked]="true">Флажок</kn-checkbox>
           <button kn-button variant="outline" tone="neutral">Нажмите и держите</button>
+          <button class="wave" kn-button variant="soft">Волна от нажатия</button>
+          <button kn-button variant="ghost" tone="neutral" (click)="likes.update(more)">
+            <kn-icon name="plus" />
+            <span aria-live="polite"><kn-number [value]="likes()" [duration]="700" /></span>
+          </button>
+          <kn-badge tone="success" dot pulse>Идёт запись</kn-badge>
         </div>
       </section>
 
@@ -377,6 +389,10 @@ const PERIODS = [
       margin-block-start: var(--kn-space-5);
     }
 
+    .styles kn-toggle-group {
+      --kn-toggle-padding: var(--kn-space-2);
+    }
+
     .styles-label {
       flex-basis: 100%;
       margin-block-end: var(--kn-space-1);
@@ -384,33 +400,10 @@ const PERIODS = [
       color: var(--kn-color-text-muted);
     }
 
-    .chip {
-      block-size: var(--kn-size-sm);
-      padding: 0 var(--kn-space-3);
-      border: 0;
-      border-radius: var(--kn-radius-control);
-      background: var(--kn-color-surface);
-      box-shadow: var(--kn-elevation-raised);
-      color: var(--kn-color-text);
-      font: inherit;
-      font-size: var(--kn-text-sm);
-      font-weight: var(--kn-weight-medium);
-      cursor: pointer;
-    }
-
-    .chip:hover {
-      background: var(--kn-color-surface-sunken);
-    }
-
-    .chip[aria-pressed='true'] {
-      background: var(--kn-color-accent);
-      box-shadow: none;
-      color: var(--kn-color-on-accent);
-    }
-
-    .chip:focus-visible {
-      outline: var(--kn-focus-width) solid var(--kn-color-focus);
-      outline-offset: var(--kn-focus-offset);
+    /* The wave is a token: this one button switches it on for itself */
+    .wave {
+      --kn-ripple-opacity: 0.16;
+      --kn-press-scale: 1;
     }
 
     .row {
@@ -666,7 +659,9 @@ export default class HomePage {
   private readonly clipboard = inject(Clipboard);
 
   protected readonly install = INSTALL;
-  protected readonly count = allComponents.length;
+  protected readonly count = componentGroups
+    .filter((group) => group.label !== 'Движение')
+    .reduce((count, group) => count + group.items.length, 0);
   protected readonly groups = componentGroups;
   protected readonly accents = ACCENTS;
   protected readonly presets = PRESETS;
@@ -676,8 +671,14 @@ export default class HomePage {
   protected readonly brightness = signal(64);
   protected readonly saving = signal(false);
   protected readonly copied = signal(false);
+  protected readonly likes = signal(128);
+  protected readonly more = (likes: number): number => likes + 17;
 
   protected readonly periods = PERIODS;
+
+  protected setPreset(id: unknown): void {
+    if (typeof id === 'string') this.theme.preset.set(id);
+  }
 
   protected hours(minutes: number): number {
     return Math.floor(minutes / 60);

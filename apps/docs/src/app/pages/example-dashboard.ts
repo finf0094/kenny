@@ -9,6 +9,7 @@ import { KnEmptyState } from '@kenny/ui/empty-state';
 import { KnIcon } from '@kenny/ui/icon';
 import { KnInput, KnInputGroup } from '@kenny/ui/input';
 import { KnMenu, KnMenuItem, KnMenuSeparator, KnMenuTrigger } from '@kenny/ui/menu';
+import { KnNumber } from '@kenny/ui/motion';
 import { KnPagination } from '@kenny/ui/pagination';
 import { KnPanel } from '@kenny/ui/panel';
 import { KnProgress } from '@kenny/ui/progress';
@@ -83,6 +84,7 @@ const PAGE_SIZE = 6;
     KnSidebarGroup,
     KnSidebarItem,
     KnIcon,
+    KnNumber,
     KnButton,
     KnBreadcrumbs,
     KnBreadcrumb,
@@ -167,7 +169,9 @@ const PAGE_SIZE = 6;
           @for (metric of metrics(); track metric.label) {
             <kn-card>
               <div class="metric-label">{{ metric.label }}</div>
-              <div class="metric-value">{{ metric.value }}</div>
+              <div class="metric-value">
+                <kn-number [value]="metric.value" [options]="metric.format" />
+              </div>
               <kn-badge [tone]="metric.tone">{{ metric.delta }}</kn-badge>
             </kn-card>
           }
@@ -618,29 +622,38 @@ export default class DashboardExample {
     const invoices = this.invoices();
     const sum = (status: Status) =>
       invoices.filter((i) => i.status === status).reduce((total, i) => total + i.amount, 0);
-    const compact = new Intl.NumberFormat('ru', { notation: 'compact', maximumFractionDigits: 1 });
+    const compact: Intl.NumberFormatOptions = {
+      style: 'currency',
+      currency: 'RUB',
+      notation: 'compact',
+      maximumFractionDigits: 1,
+    };
     return [
       {
         label: 'Оплачено',
-        value: `${compact.format(sum('paid'))} ₽`,
+        value: sum('paid'),
+        format: compact,
         delta: '+12% к октябрю',
         tone: 'success' as const,
       },
       {
         label: 'Ожидает оплаты',
-        value: `${compact.format(sum('pending'))} ₽`,
+        value: sum('pending'),
+        format: compact,
         delta: `${invoices.filter((i) => i.status === 'pending').length} счетов`,
         tone: 'warning' as const,
       },
       {
         label: 'Просрочено',
-        value: `${compact.format(sum('overdue'))} ₽`,
+        value: sum('overdue'),
+        format: compact,
         delta: `${invoices.filter((i) => i.status === 'overdue').length} счёта`,
         tone: 'danger' as const,
       },
       {
         label: 'Всего счетов',
-        value: String(invoices.length),
+        value: invoices.length,
+        format: {} as Intl.NumberFormatOptions,
         delta: 'за период',
         tone: 'neutral' as const,
       },

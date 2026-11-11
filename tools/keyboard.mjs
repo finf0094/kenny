@@ -362,6 +362,89 @@ try {
       expect(current === 'Motion', `aria-current is on "${current}"`);
     },
   );
+
+  await scenario(
+    'Toggle group: one tab stop, arrows move focus, Space presses, Tab leaves',
+    '/components/toggle-group',
+    async (page) => {
+      await focusIn(page, 'kn-toggle-group button[aria-pressed="true"]');
+      expect((await active(page)).text === 'Доска', 'focus is not on the pressed toggle');
+      await press(page, 'ArrowRight');
+      const next = await active(page);
+      expect(next.text === 'Календарь', `ArrowRight moved to "${next.text}"`);
+      const untouched = await page.$eval('kn-toggle-group button[aria-pressed="true"]', (el) =>
+        el.textContent.trim(),
+      );
+      expect(untouched === 'Доска', 'moving the focus changed the value');
+      await press(page, 'Space');
+      const pressed = await page.evaluate(() =>
+        document.activeElement.getAttribute('aria-pressed'),
+      );
+      expect(pressed === 'true', 'Space did not press the focused toggle');
+      await press(page, 'Tab');
+      const outside = await page.evaluate(() =>
+        document.activeElement.closest('kn-toggle-group')?.getAttribute('aria-labelledby'),
+      );
+      expect(outside !== 'view-label', 'Tab stayed inside the group');
+    },
+  );
+
+  await scenario(
+    'Number input: arrows step, typed text is applied on Enter and clamped',
+    '/components/number-input',
+    async (page) => {
+      await focusIn(page, 'kn-number-input input[role="spinbutton"]');
+      const value = () => page.evaluate(() => document.activeElement.getAttribute('aria-valuenow'));
+      expect((await value()) === '5', `initial value is ${await value()}`);
+      await press(page, 'ArrowUp');
+      await press(page, 'ArrowUp');
+      expect((await value()) === '7', `two steps up gave ${await value()}`);
+      await press(page, 'End');
+      expect((await value()) === '50', `End gave ${await value()}`);
+      await page.keyboard.down('Control');
+      await page.keyboard.press('KeyA');
+      await page.keyboard.up('Control');
+      await page.keyboard.type('999');
+      await press(page, 'Enter');
+      expect((await value()) === '50', `typed 999 was not clamped: ${await value()}`);
+      await page.keyboard.down('Control');
+      await page.keyboard.press('KeyA');
+      await page.keyboard.up('Control');
+      await page.keyboard.type('12');
+      await press(page, 'Enter');
+      expect((await value()) === '12', `typed 12 gave ${await value()}`);
+    },
+  );
+
+  await scenario(
+    'Chip: filter chips toggle with Enter, the remove button removes',
+    '/components/chip',
+    async (page) => {
+      await focusIn(page, 'kn-chip button.remove');
+      const before = await page.$$eval('kn-chip button.remove', (els) => els.length);
+      await press(page, 'Enter');
+      const after = await page.$$eval('kn-chip button.remove', (els) => els.length);
+      expect(after === before - 1, `remove left ${after} of ${before} chips`);
+      await focusIn(page, 'kn-chip button.body[aria-pressed="false"]');
+      await press(page, 'Enter');
+      const pressed = await page.evaluate(() =>
+        document.activeElement.getAttribute('aria-pressed'),
+      );
+      expect(pressed === 'true', 'Enter did not select the chip');
+    },
+  );
+
+  await scenario(
+    'Alert: the close button is reachable and removes the message',
+    '/components/alert',
+    async (page) => {
+      await focusIn(page, 'kn-alert button.close');
+      await press(page, 'Enter');
+      await page.waitForFunction(() => !document.querySelector('kn-alert button.close'), {
+        timeout: 3000,
+      });
+    },
+  );
 } finally {
   await browser.close();
   server.close();

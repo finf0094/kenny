@@ -1,8 +1,9 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { KnIcon } from '@kenny/ui/icon';
 import { KnToggle, KnToggleGroup } from '@kenny/ui/toggle-group';
 
 @Component({
-  imports: [KnToggleGroup, KnToggle],
+  imports: [KnToggleGroup, KnToggle, KnIcon],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="field">
@@ -18,10 +19,23 @@ import { KnToggle, KnToggleGroup } from '@kenny/ui/toggle-group';
       <span id="days-label" class="label">Дни доставки: {{ days().length }} из 5</span>
       <kn-toggle-group aria-labelledby="days-label" multiple [(value)]="days">
         @for (day of week; track day.value) {
-          <button kn-toggle [value]="day.value" [attr.aria-label]="day.name">
-            {{ day.short }}
-          </button>
+          <button kn-toggle [value]="day.value">{{ day.short }}</button>
         }
+      </kn-toggle-group>
+    </div>
+
+    <div class="field">
+      <span id="align-label" class="label">Выравнивание — только иконки</span>
+      <kn-toggle-group aria-labelledby="align-label" requireSelection [(value)]="align">
+        <button kn-toggle value="left" aria-label="По левому краю">
+          <kn-icon name="align-left" />
+        </button>
+        <button kn-toggle value="center" aria-label="По центру">
+          <kn-icon name="align-center" />
+        </button>
+        <button kn-toggle value="right" aria-label="По правому краю">
+          <kn-icon name="align-right" />
+        </button>
       </kn-toggle-group>
     </div>
 
@@ -69,11 +83,12 @@ import { KnToggle, KnToggleGroup } from '@kenny/ui/toggle-group';
 export default class ToggleGroupBasicDemo {
   protected readonly view = signal<string | null>('board');
   protected readonly days = signal<string[]>(['mon', 'wed', 'fri']);
+  protected readonly align = signal<string | null>('left');
   protected readonly week = [
-    { value: 'mon', short: 'Пн', name: 'Понедельник' },
-    { value: 'tue', short: 'Вт', name: 'Вторник' },
-    { value: 'wed', short: 'Ср', name: 'Среда' },
-    { value: 'thu', short: 'Чт', name: 'Четверг' },
-    { value: 'fri', short: 'Пт', name: 'Пятница' },
+    { value: 'mon', short: 'Пн' },
+    { value: 'tue', short: 'Вт' },
+    { value: 'wed', short: 'Ср' },
+    { value: 'thu', short: 'Чт' },
+    { value: 'fri', short: 'Пт' },
   ];
 }

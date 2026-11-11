@@ -35,14 +35,16 @@ body {
 }
 
 /*
- * A block with its own theme or style preset re-reads the text colour and the body size,
- * so plain text inside it matches the components around it. Zero specificity: any rule wins.
+ * A block with its own theme or style preset re-reads the text colour, the typeface and
+ * the body size, so plain text inside it matches the components around it. Zero
+ * specificity: any rule wins.
  */
 :where([data-theme], [data-kn-preset]):not(:root) {
   color: var(--kn-color-text);
 }
 
 :where([data-kn-preset]):not(:root) {
+  font-family: var(--kn-font-sans);
   font-size: var(--kn-text-md);
 }
 

@@ -1,5 +1,7 @@
-import { DOCUMENT } from '@angular/common';
+import { Clipboard } from '@angular/cdk/clipboard';
+import { DOCUMENT, Location } from '@angular/common';
 import {
+  afterNextRender,
   afterRenderEffect,
   ChangeDetectionStrategy,
   Component,
@@ -15,11 +17,14 @@ import { KnField } from '@kenny/ui/field';
 import { KnIcon } from '@kenny/ui/icon';
 import { KnInput } from '@kenny/ui/input';
 import { KnOption, KnSelect } from '@kenny/ui/select';
+import { KnToggle, KnToggleGroup } from '@kenny/ui/toggle-group';
 import { DocsCode } from '../core/code-block';
 import { DocsPresetPreview } from '../core/preset-preview';
 import {
   contrast,
+  decodeOptions,
   DEFAULT_OPTIONS,
+  encodeOptions,
   slug,
   styleCss,
   StyleOptions,
@@ -96,11 +101,44 @@ const CHOICES: Choice[] = [
   },
   {
     key: 'motion',
-    label: 'Движение',
-    hint: 'Переключатели, индикаторы, нажатие кнопок',
+    label: 'Характер движения',
+    hint: 'Переключатели, индикаторы, окна',
     options: [
       { value: 'spring', label: 'С пружиной' },
       { value: 'flat', label: 'Без перелёта' },
+    ],
+  },
+  {
+    key: 'tempo',
+    label: 'Темп',
+    hint: 'Множитель всех длительностей',
+    options: [
+      { value: 'brisk', label: 'Быстро — × 0,7' },
+      { value: 'regular', label: 'Обычно — × 1' },
+      { value: 'calm', label: 'Спокойно — × 1,4' },
+    ],
+  },
+  {
+    key: 'press',
+    label: 'Отклик на нажатие',
+    hint: 'Кнопки, вкладки, пункты меню',
+    options: [
+      { value: 'squeeze', label: 'Сжатие' },
+      { value: 'wave', label: 'Волна' },
+      { value: 'both', label: 'Сжатие и волна' },
+      { value: 'none', label: 'Ничего' },
+    ],
+  },
+  {
+    key: 'font',
+    label: 'Шрифт',
+    hint: 'Системные семейства; свой шрифт впишите в файл',
+    options: [
+      { value: 'system', label: 'Системный' },
+      { value: 'humanist', label: 'Гуманистический' },
+      { value: 'rounded', label: 'Скруглённый' },
+      { value: 'serif', label: 'С засечками' },
+      { value: 'mono', label: 'Моноширинный' },
     ],
   },
 ];
@@ -120,6 +158,8 @@ const PREVIEW = 'builder-preview';
     KnIcon,
     DocsCode,
     DocsPresetPreview,
+    KnToggleGroup,
+    KnToggle,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
@@ -201,13 +241,30 @@ const PREVIEW = 'builder-preview';
             class="stage kn-wallpaper-sm"
             aria-label="Предпросмотр стиля"
             [attr.data-kn-preset]="previewName"
+            [attr.data-theme]="previewTheme() === 'auto' ? null : previewTheme()"
             [attr.data-docs-wallpaper]="translucent() ? '' : null"
           >
             <docs-preset-preview label="предпросмотр" />
           </section>
+          <div class="stage-bar">
+            <kn-toggle-group
+              aria-label="Тема предпросмотра"
+              size="sm"
+              requireSelection
+              [(value)]="previewTheme"
+            >
+              <button kn-toggle value="auto">Как на сайте</button>
+              <button kn-toggle value="light">Светлая</button>
+              <button kn-toggle value="dark">Тёмная</button>
+            </kn-toggle-group>
+            <button kn-button size="sm" variant="outline" tone="neutral" (click)="share()">
+              <kn-icon [name]="shared() ? 'check' : 'link'" />
+              {{ shared() ? 'Ссылка скопирована' : 'Скопировать ссылку на стиль' }}
+            </button>
+          </div>
           <p class="note">
-            Изменено значений: {{ changed() }}. Тему и акцент сайта переключает шапка — проверьте
-            стиль и в светлой, и в тёмной.
+            Изменено значений: {{ changed() }}. Ссылка открывает конструктор с теми же настройками —
+            удобно показать вариант коллеге.
           </p>
         </div>
       </div>
@@ -237,8 +294,8 @@ const PREVIEW = 'builder-preview';
       </ol>
       <p>
         Конструктор меняет то, из чего складывается характер: форму, плотность, материал и цвет.
-        Точные детали — геометрию переключателя, толщину линий, шрифт — допишите в тот же файл
-        переменными компонентов.
+        Точные детали — геометрию переключателя, толщину линий, собственный шрифт — допишите в тот
+        же файл переменными компонентов.
       </p>
     </article>
   `,
@@ -306,6 +363,15 @@ const PREVIEW = 'builder-preview';
       min-inline-size: 0;
     }
 
+    .stage-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--kn-space-3);
+      margin-block-start: var(--kn-space-3);
+    }
+
     .stage {
       padding: clamp(var(--kn-space-4), 4vw, var(--kn-space-8));
       border-radius: var(--kn-radius-lg);
@@ -369,6 +435,10 @@ export default class BuilderPage {
   protected readonly previewName = PREVIEW;
 
   protected readonly options = signal<StyleOptions>(DEFAULT_OPTIONS);
+  protected readonly previewTheme = signal<string | null>('auto');
+  protected readonly shared = signal(false);
+  private readonly clipboard = inject(Clipboard);
+  private readonly location = inject(Location);
   protected readonly name = signal('my-style');
 
   protected readonly id = computed(() => slug(this.name()));
@@ -403,6 +473,33 @@ export default class BuilderPage {
       sheet.textContent = css;
     });
     inject(DestroyRef).onDestroy(() => sheet?.remove());
+
+    // A shared link carries the options; keep the address in step with them afterwards
+    afterNextRender(() => {
+      const query = new URLSearchParams(this.document.defaultView?.location.search ?? '');
+      if (query.has('style')) this.options.set(decodeOptions(query.get('style')));
+      if (query.has('name')) this.name.set(query.get('name') ?? 'my-style');
+    });
+  }
+
+  /** The address of this very style: the constructor opens with the same options. */
+  private link(): string {
+    const encoded = encodeOptions(this.options());
+    const query = new URLSearchParams();
+    if (encoded) query.set('style', encoded);
+    if (this.id() !== 'my-style') query.set('name', this.id());
+    const text = query.toString();
+    return `/docs/builder${text ? `?${text}` : ''}`;
+  }
+
+  protected share(): void {
+    const path = this.link();
+    this.location.replaceState(path);
+    const origin = this.document.defaultView?.location.origin ?? '';
+    if (this.clipboard.copy(origin + this.location.prepareExternalUrl(path))) {
+      this.shared.set(true);
+      setTimeout(() => this.shared.set(false), 1800);
+    }
   }
 
   /** Current value of a choice as the select sees it. */

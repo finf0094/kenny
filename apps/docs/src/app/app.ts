@@ -97,7 +97,7 @@ const THEME_ICON = { system: 'monitor', light: 'sun', dark: 'moon' };
     <router-outlet />
 
     <footer class="footer">
-      <span>Kenny 0.1.0 — MIT</span>
+      <span>Kenny 0.2.0 — MIT</span>
       <span>Собрано из собственных компонентов на Angular 22</span>
     </footer>
 

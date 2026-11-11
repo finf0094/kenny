@@ -1,0 +1,16 @@
+/* Темп всей системы: 0.5 — вдвое быстрее, 1.5 — неторопливо. */
+:root {
+  --kn-duration-scale: 0.8;
+}
+
+/* Отклик на нажатие: волна вместо сжатия. */
+:root {
+  --kn-press-scale: 1;
+  --kn-ripple-opacity: 0.14;
+}
+
+/* Только в одном блоке страницы — например, в боковом меню. */
+.app-nav {
+  --kn-ripple-opacity: 0.12;
+  --kn-ripple-color: var(--kn-color-accent);
+}

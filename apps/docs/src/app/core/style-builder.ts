@@ -13,6 +13,11 @@ export interface StyleOptions {
   edge: 'border' | 'shadow' | 'both' | 'none' | null;
   material: 'opaque' | 'translucent' | null;
   motion: 'spring' | 'flat' | null;
+  /** What a press looks like: the control shrinks, a wave spreads, both or nothing. */
+  press: 'squeeze' | 'wave' | 'both' | 'none' | null;
+  /** Tempo of every transition. */
+  tempo: 'brisk' | 'regular' | 'calm' | null;
+  font: 'system' | 'humanist' | 'rounded' | 'serif' | 'mono' | null;
   /** Key accent colour as `#rrggbb`. */
   accent: string | null;
 }
@@ -26,6 +31,9 @@ export const DEFAULT_OPTIONS: StyleOptions = {
   edge: null,
   material: null,
   motion: null,
+  press: null,
+  tempo: null,
+  font: null,
   accent: null,
 };
 
@@ -70,7 +78,7 @@ function optionTokens(options: StyleOptions): Map<string, string> {
     set({
       '--kn-color-surface': 'light-dark(#ffffff, #171a21)',
       '--kn-color-surface-raised': 'light-dark(#ffffff, #1e222b)',
-      '--kn-color-surface-subtle': 'light-dark(#f6f7f9, #13161b)',
+      '--kn-color-surface-subtle': 'light-dark(rgb(23 26 33 / 0.04), rgb(255 255 255 / 0.045))',
       '--kn-surface-filter': 'none',
       '--kn-surface-filter-raised': 'none',
       '--kn-scrim-filter': 'none',
@@ -200,13 +208,38 @@ function optionTokens(options: StyleOptions): Map<string, string> {
     set({
       '--kn-ease-spring': 'cubic-bezier(0.2, 0, 0, 1)',
       '--kn-ease-spring-bouncy': 'cubic-bezier(0.2, 0, 0, 1)',
-      '--kn-press-scale': '1',
     });
   } else if (options.motion === 'spring') {
     set({
       '--kn-ease-spring': baseValue.get('--kn-ease-spring') ?? '',
       '--kn-ease-spring-bouncy': baseValue.get('--kn-ease-spring-bouncy') ?? '',
-      '--kn-press-scale': '0.97',
+    });
+  }
+
+  if (options.press) {
+    const squeeze = options.press === 'squeeze' || options.press === 'both';
+    const wave = options.press === 'wave' || options.press === 'both';
+    set({
+      '--kn-press-scale': squeeze ? '0.97' : '1',
+      '--kn-ripple-opacity': wave ? '0.14' : '0',
+    });
+  }
+
+  if (options.tempo) {
+    set({ '--kn-duration-scale': { brisk: '0.7', regular: '1', calm: '1.4' }[options.tempo] });
+  }
+
+  if (options.font) {
+    set({
+      '--kn-font-sans': {
+        system: baseValue.get('--kn-font-sans') ?? 'system-ui, sans-serif',
+        humanist:
+          "Seravek, 'Gill Sans Nova', Ubuntu, Calibri, 'DejaVu Sans', source-sans-pro, sans-serif",
+        rounded:
+          "ui-rounded, 'Hiragino Maru Gothic ProN', Quicksand, Comfortaa, Manjari, 'Arial Rounded MT', Calibri, source-sans-pro, sans-serif",
+        serif: "'Iowan Old Style', 'Palatino Linotype', 'URW Palladio L', P052, Georgia, serif",
+        mono: 'var(--kn-font-mono)',
+      }[options.font],
     });
   }
 
@@ -304,4 +337,30 @@ export function slug(name: string): string {
       .replace(/[^a-z0-9-]+/g, '-')
       .replace(/^-+|-+$/g, '') || 'my-style'
   );
+}
+
+/** Options as a compact query-string value, and back: a style can be shared as a link. */
+export function encodeOptions(options: StyleOptions): string {
+  const changed = Object.entries(options).filter(
+    ([key, value]) => value !== DEFAULT_OPTIONS[key as keyof StyleOptions],
+  );
+  return changed.map(([key, value]) => `${key}.${String(value).replace('#', '')}`).join('~');
+}
+
+export function decodeOptions(text: string | null | undefined): StyleOptions {
+  const options: Record<string, unknown> = { ...DEFAULT_OPTIONS };
+  for (const pair of (text ?? '').split('~')) {
+    const [key, ...rest] = pair.split('.');
+    const value = rest.join('.');
+    if (!(key in DEFAULT_OPTIONS) || !/^[\w-]+$/.test(value)) continue;
+    if (key === 'radius') {
+      const radius = Number(value);
+      if (Number.isFinite(radius) && radius >= 0 && radius <= 32) options[key] = radius;
+    } else if (key === 'accent') {
+      if (/^[0-9a-f]{6}$/i.test(value)) options[key] = `#${value}`;
+    } else {
+      options[key] = value;
+    }
+  }
+  return options as unknown as StyleOptions;
 }

@@ -102,6 +102,30 @@ describe('KnToggleGroup', () => {
     expect(screen.getByRole('button', { name: 'After' })).toHaveFocus();
   });
 
+  it('accepts bound values in a loop and follows a value set from outside', async () => {
+    @Component({
+      imports,
+      template: `
+        <kn-toggle-group aria-label="Day" [(value)]="day">
+          @for (item of days; track item) {
+            <button kn-toggle [value]="item">{{ item }}</button>
+          }
+        </kn-toggle-group>
+      `,
+    })
+    class Host {
+      readonly days = ['Mon', 'Tue', 'Wed'];
+      readonly day = signal<string | null>('Tue');
+    }
+    const { fixture } = await render(Host);
+    expect(screen.getByRole('button', { name: 'Tue' })).toHaveAttribute('tabindex', '0');
+    expect(screen.getByRole('button', { name: 'Mon' })).toHaveAttribute('tabindex', '-1');
+    fixture.componentInstance.day.set('Wed');
+    await fixture.whenStable();
+    expect(screen.getByRole('button', { name: 'Wed' })).toHaveAttribute('aria-pressed', 'true');
+    expect(screen.getByRole('button', { name: 'Wed' })).toHaveAttribute('tabindex', '0');
+  });
+
   it('works with reactive forms', async () => {
     const control = new FormControl<string | null>('right');
     const { fixture } = await render(

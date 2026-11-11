@@ -1,4 +1,5 @@
 import {
+  afterRenderEffect,
   booleanAttribute,
   ChangeDetectionStrategy,
   Component,
@@ -41,6 +42,7 @@ import { knDefaultSize, KnFormControl, KnSize, useRipple } from '@kenny/ui/core'
     :host {
       --_h: var(--kn-size-md);
       display: inline-flex;
+      flex-wrap: wrap;
       align-items: stretch;
       gap: var(--kn-toggle-group-gap, 2px);
       box-sizing: border-box;
@@ -107,6 +109,16 @@ export class KnToggleGroup<T = unknown> extends KnFormControl<T | T[] | null> {
   /** @internal The button that holds the focus: the tab stop follows it while it is inside. */
   readonly focused = signal<KnToggle<T> | null>(null);
 
+  constructor() {
+    super();
+    // Roving tabindex is written after rendering, when every button knows its value:
+    // a host binding would read sibling buttons before their inputs are set.
+    afterRenderEffect(() => {
+      const stop = this.tabStop();
+      for (const toggle of this.toggles()) toggle.element.tabIndex = toggle === stop ? 0 : -1;
+    });
+  }
+
   protected override coerce(value: T | T[] | null): T | T[] | null {
     return value ?? null;
   }
@@ -167,7 +179,6 @@ export class KnToggleGroup<T = unknown> extends KnFormControl<T | T[] | null> {
     type: 'button',
     '[attr.aria-pressed]': 'pressed()',
     '[disabled]': 'isDisabled()',
-    '[attr.tabindex]': 'tabindex()',
     '(click)': 'group.toggle(value())',
     '(focus)': 'group.focused.set(this)',
   },
@@ -182,7 +193,7 @@ export class KnToggleGroup<T = unknown> extends KnFormControl<T | T[] | null> {
       box-sizing: border-box;
       min-inline-size: calc(var(--_h) - 6px);
       block-size: calc(var(--_h) - 6px);
-      padding: 0 var(--kn-space-3);
+      padding: 0 var(--kn-toggle-padding, var(--kn-space-3));
       border: 0;
       border-radius: var(
         --kn-toggle-radius,
@@ -212,7 +223,7 @@ export class KnToggleGroup<T = unknown> extends KnFormControl<T | T[] | null> {
       inset: 0;
       z-index: -1;
       border-radius: inherit;
-      background: var(--kn-toggle-thumb, var(--kn-color-surface-raised));
+      background: var(--kn-toggle-thumb, var(--kn-color-thumb));
       box-shadow: var(
         --kn-toggle-thumb-shadow,
         var(--kn-shadow-xs),
@@ -267,7 +278,8 @@ export class KnToggle<T = unknown> {
   readonly pressed = computed(() => this.group.selection().includes(this.value()));
   /** @internal */
   readonly isDisabled = computed(() => this.disabled() || this.group.isDisabled());
-  protected readonly tabindex = computed(() => (this.group.tabStop() === this ? 0 : -1));
+  /** @internal */
+  readonly element = inject<ElementRef<HTMLButtonElement>>(ElementRef).nativeElement;
 
   constructor() {
     useRipple();

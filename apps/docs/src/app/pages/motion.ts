@@ -1,4 +1,19 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  effect,
+  inject,
+  signal,
+} from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { KnBadge } from '@kenny/ui/badge';
+import { KnChip } from '@kenny/ui/chip';
+import { KnIcon } from '@kenny/ui/icon';
+import { KnNumber } from '@kenny/ui/motion';
+import { KnSlider } from '@kenny/ui/slider';
+import { KnToggle, KnToggleGroup } from '@kenny/ui/toggle-group';
 import { KnButton } from '@kenny/ui/button';
 import { KnCheckbox } from '@kenny/ui/checkbox';
 import { KnCollapse } from '@kenny/ui/collapse';
@@ -37,8 +52,37 @@ const DURATIONS = [
   { token: '--kn-duration-slower', value: '560 мс', use: 'Редкие крупные переходы.' },
 ];
 
+const KEYFRAMES = [
+  { name: 'kn-fade-in / kn-fade-out', use: 'Проявление и исчезновение.' },
+  { name: 'kn-pop-in / kn-pop-out', use: 'Меню, поповеры, списки: вырастают из якоря.' },
+  { name: 'kn-rise-in / kn-rise-out', use: 'Диалоги и палитра: поднимаются и оседают.' },
+  { name: 'kn-slide-in / kn-slide-out', use: 'Выезжающие панели: сторона задаётся переменными.' },
+  { name: 'kn-stagger-in', use: 'Элементы списка, появляющиеся по очереди.' },
+  { name: 'kn-shift-in', use: 'Панель вкладки или шаг: приезжает сбоку на --kn-shift.' },
+  { name: 'kn-zoom-in', use: 'Содержимое, которое вырастает на месте.' },
+  { name: 'kn-ping', use: 'Кольцо, расходящееся от точки живого статуса.' },
+  { name: 'kn-shake', use: 'Короткое «нет»: неверный ввод, отклонённое действие.' },
+  { name: 'kn-spin, kn-shimmer', use: 'Индикаторы ожидания: Spinner и Skeleton.' },
+];
+
 @Component({
-  imports: [DocsCode, KnButton, KnSwitch, KnCheckbox, KnTabs, KnTab, KnCollapse],
+  imports: [
+    DocsCode,
+    RouterLink,
+    KnButton,
+    KnSwitch,
+    KnCheckbox,
+    KnTabs,
+    KnTab,
+    KnCollapse,
+    KnSlider,
+    KnToggleGroup,
+    KnToggle,
+    KnChip,
+    KnBadge,
+    KnNumber,
+    KnIcon,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <article class="prose">
@@ -141,6 +185,53 @@ const DURATIONS = [
         </table>
       </div>
 
+      <h2 id="tempo">Темп</h2>
+      <p>
+        Все длительности умножаются на <code>--kn-duration-scale</code>. Одна переменная делает
+        интерфейс резче или спокойнее, не трогая ни одного компонента. Ползунок меняет темп всего
+        сайта — откройте меню стилей или палитру команд, чтобы почувствовать разницу.
+      </p>
+      <div class="tempo">
+        <kn-slider
+          aria-label="Темп: множитель длительностей"
+          [min]="0.5"
+          [max]="2"
+          [step]="0.25"
+          [(value)]="scale"
+        />
+        <output>× {{ scale() }}</output>
+        <button kn-button size="sm" variant="soft" (click)="moved.set(!moved())">
+          Проверить на кривых
+        </button>
+      </div>
+      <docs-code snippet="motion-tempo.css" label="Темп и отклик на нажатие в своём стиле" />
+
+      <h2 id="press">Отклик на нажатие</h2>
+      <p>
+        Кнопка может сжиматься под пальцем, пускать волну от точки нажатия или делать и то и другое.
+        Это тоже токены: <code>--kn-press-scale</code> и <code>--kn-ripple-opacity</code>. Волна
+        встроена в кнопки, вкладки, пункты меню и списков, чипы и переключатели; своему элементу её
+        даёт директива <a routerLink="/components/ripple">knRipple</a>.
+      </p>
+      <div class="stage press">
+        <kn-toggle-group aria-label="Отклик на нажатие" requireSelection [(value)]="press">
+          <button kn-toggle value="squeeze">Сжатие</button>
+          <button kn-toggle value="wave">Волна</button>
+          <button kn-toggle value="both">Оба</button>
+          <button kn-toggle value="none">Ничего</button>
+        </kn-toggle-group>
+        <div
+          class="press-row"
+          [style.--kn-press-scale]="press() === 'squeeze' || press() === 'both' ? 0.95 : 1"
+          [style.--kn-ripple-opacity]="press() === 'wave' || press() === 'both' ? 0.16 : 0"
+        >
+          <button kn-button>Сохранить</button>
+          <button kn-button variant="soft">Поделиться</button>
+          <button kn-button variant="outline" tone="neutral">Отмена</button>
+          <kn-chip selectable [selected]="true">Фильтр</kn-chip>
+        </div>
+      </div>
+
       <h2 id="micro">Микровзаимодействия</h2>
       <p>
         Нажмите на каждый элемент. Ползунок растягивается под пальцем, галочка появляется с
@@ -155,7 +246,17 @@ const DURATIONS = [
           <kn-tab value="3" label="Три">Третья панель</kn-tab>
         </kn-tabs>
         <button kn-button>Кнопка</button>
+        <kn-badge tone="success" dot pulse>В сети</kn-badge>
+        <button kn-button variant="ghost" tone="neutral" (click)="count.update(more)">
+          <kn-icon name="plus" />
+          <span aria-live="polite"><kn-number [value]="count()" /></span>
+        </button>
       </div>
+      <p>
+        Панель вкладки приезжает с той стороны, куда сместился выбор. Точка статуса пульсирует
+        (<code>pulse</code> у Badge), число докручивается до нового значения —
+        <a routerLink="/components/number">Number</a>.
+      </p>
 
       <h2 id="height">Высота</h2>
       <p>
@@ -193,6 +294,36 @@ const DURATIONS = [
       </p>
       <docs-code snippet="motion-usage.css" label="Использование токенов движения" />
 
+      <h2 id="keyframes">Готовые keyframes</h2>
+      <p>
+        Общие анимации лежат в токенах и доступны по имени — используйте их для собственного
+        содержимого, чтобы оно двигалось так же, как компоненты.
+      </p>
+      <div class="scroll">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Имя</th>
+              <th scope="col">Что делает</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (frame of keyframes; track frame.name) {
+              <tr>
+                <th scope="row">
+                  <code>{{ frame.name }}</code>
+                </th>
+                <td>{{ frame.use }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+      <p>
+        Появление при прокрутке — директива <a routerLink="/components/reveal">knReveal</a>: она
+        сама следит за окном просмотра и ничего не делает при уменьшенном движении.
+      </p>
+
       <h2 id="stagger">Каскад</h2>
       <p>
         Строки таблицы и пункты палитры появляются друг за другом с шагом
@@ -221,6 +352,30 @@ const DURATIONS = [
     </article>
   `,
   styles: `
+    .tempo,
+    .press-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--kn-space-3);
+    }
+
+    .tempo kn-slider {
+      flex: 0 1 14rem;
+    }
+
+    .tempo output {
+      min-inline-size: 3.5rem;
+      font-variant-numeric: tabular-nums;
+      color: var(--kn-color-text-muted);
+    }
+
+    .stage.press {
+      display: grid;
+      justify-items: start;
+      gap: var(--kn-space-5);
+    }
+
     .lab {
       display: grid;
       gap: var(--kn-space-3);
@@ -337,6 +492,22 @@ export default class MotionPage {
   protected readonly durations = DURATIONS;
   protected readonly moved = signal(false);
   protected readonly open = signal(false);
+  protected readonly keyframes = KEYFRAMES;
+  protected readonly press = signal<string | null>('both');
+  protected readonly count = signal(1284);
+  protected readonly more = (count: number): number => count + 216;
+  /** Tempo of the whole site: the token lives on the root element, as it would in an app. */
+  protected readonly scale = signal(1);
+  private readonly root = inject(DOCUMENT).documentElement;
+
+  constructor() {
+    effect(() => {
+      const scale = this.scale();
+      if (scale === 1) this.root.style.removeProperty('--kn-duration-scale');
+      else this.root.style.setProperty('--kn-duration-scale', String(scale));
+    });
+    inject(DestroyRef).onDestroy(() => this.root.style.removeProperty('--kn-duration-scale'));
+  }
   protected readonly listVisible = signal(true);
   protected readonly items = ['Входящие', 'Черновики', 'Отправленные', 'Архив', 'Корзина'];
 

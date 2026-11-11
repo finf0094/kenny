@@ -1,6 +1,11 @@
 import { ApplicationConfig, LOCALE_ID, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
-import { provideRouter, withComponentInputBinding, withInMemoryScrolling } from '@angular/router';
+import {
+  provideRouter,
+  withComponentInputBinding,
+  withInMemoryScrolling,
+  withViewTransitions,
+} from '@angular/router';
 import { provideKnCommandPalette } from '@kenny/ui/command-palette';
 import { knLabelsRu, provideKnLabels } from '@kenny/ui/core';
 import { routes } from './app.routes';
@@ -13,6 +18,7 @@ export const appConfig: ApplicationConfig = {
       routes,
       withComponentInputBinding(),
       withInMemoryScrolling({ scrollPositionRestoration: 'enabled', anchorScrolling: 'enabled' }),
+      withViewTransitions({ skipInitialTransition: true }),
     ),
     provideClientHydration(withEventReplay()),
     provideKnCommandPalette({ placeholder: 'Поиск по документации' }),

@@ -127,32 +127,84 @@ export class ThemeService {
   readonly accent = signal(this.storage?.getItem('kn-accent') ?? 'cobalt');
   readonly preset = signal(this.storedPreset());
 
+  /** Where the last press happened: a change of theme or style spreads from that point. */
+  private origin: { x: number; y: number; at: number } | null = null;
+  private painted = 0;
+
   constructor() {
+    const view = this.document.defaultView;
+    view?.addEventListener?.(
+      'pointerdown',
+      (event) => (this.origin = { x: event.clientX, y: event.clientY, at: Date.now() }),
+      { capture: true, passive: true },
+    );
     effect(() => {
       const mode = this.mode();
-      const root = this.document.documentElement;
-      if (mode === 'system') root.removeAttribute('data-theme');
-      else root.setAttribute('data-theme', mode);
+      this.paint(() => {
+        const root = this.document.documentElement;
+        if (mode === 'system') root.removeAttribute('data-theme');
+        else root.setAttribute('data-theme', mode);
+      });
       this.storage?.setItem('kn-theme', mode);
     });
     effect(() => {
       const id = this.preset();
-      const root = this.document.documentElement;
-      // The default style needs no attribute: the base tokens already describe it
-      if (id === 'default') root.removeAttribute('data-kn-preset');
-      else root.setAttribute('data-kn-preset', id);
+      this.paint(() => {
+        const root = this.document.documentElement;
+        // The default style needs no attribute: the base tokens already describe it
+        if (id === 'default') root.removeAttribute('data-kn-preset');
+        else root.setAttribute('data-kn-preset', id);
+      });
       this.storage?.setItem('kn-preset', id);
     });
     effect(() => {
       const id = this.accent();
       const preset = ACCENTS.find((a) => a.id === id) ?? ACCENTS[0];
-      const style = this.document.documentElement.style;
-      STEPS.forEach((step, i) => {
-        if (preset.scale) style.setProperty(`--kn-accent-${step}`, preset.scale[i]);
-        else style.removeProperty(`--kn-accent-${step}`);
+      this.paint(() => {
+        const style = this.document.documentElement.style;
+        STEPS.forEach((step, i) => {
+          if (preset.scale) style.setProperty(`--kn-accent-${step}`, preset.scale[i]);
+          else style.removeProperty(`--kn-accent-${step}`);
+        });
       });
       this.storage?.setItem('kn-accent', id);
     });
+  }
+
+  /**
+   * Applies a change of look. The first three calls are the initial state and happen at
+   * once; later ones are revealed with a circle growing from the point of the press —
+   * a View Transition, skipped where the API is missing or motion is reduced.
+   */
+  private paint(write: () => void): void {
+    const view = this.document.defaultView;
+    const start = (
+      this.document as Document & {
+        startViewTransition?: (update: () => void) => { finished: Promise<void> };
+      }
+    ).startViewTransition;
+    const initial = this.painted++ < 3;
+    if (
+      initial ||
+      !view ||
+      typeof start !== 'function' ||
+      view.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+    ) {
+      write();
+      return;
+    }
+    const root = this.document.documentElement;
+    const recent = this.origin && Date.now() - this.origin.at < 1500 ? this.origin : null;
+    const focus = this.document.activeElement?.getBoundingClientRect();
+    const x = recent?.x ?? (focus ? focus.left + focus.width / 2 : view.innerWidth - 48);
+    const y = recent?.y ?? (focus ? focus.top + focus.height / 2 : 36);
+    const radius = Math.hypot(Math.max(x, view.innerWidth - x), Math.max(y, view.innerHeight - y));
+    root.style.setProperty('--docs-vt-x', `${x}px`);
+    root.style.setProperty('--docs-vt-y', `${y}px`);
+    root.style.setProperty('--docs-vt-r', `${radius}px`);
+    root.classList.add('docs-repaint');
+    const done = (): void => root.classList.remove('docs-repaint');
+    start.call(this.document, write).finished.then(done, done);
   }
 
   private storedPreset(): string {

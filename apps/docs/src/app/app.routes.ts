@@ -26,6 +26,7 @@ export const routes: Routes = [
       guide('theming', 'Темизация', () => import('./pages/theming')),
       guide('tokens', 'Токены', () => import('./pages/tokens')),
       guide('motion', 'Motion', () => import('./pages/motion')),
+      guide('localization', 'Локализация', () => import('./pages/localization')),
       guide('accessibility', 'Доступность', () => import('./pages/accessibility')),
     ],
   },
