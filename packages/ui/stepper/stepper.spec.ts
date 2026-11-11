@@ -35,7 +35,7 @@ describe('KnStepper', () => {
     await userEvent.click(screen.getByRole('button', { name: /Оплата/ }));
     await stable();
     expect(fixture.componentInstance.step()).toBe(2);
-    expect(screen.getByRole('button', { name: /Аккаунт.*выполнен/ })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Аккаунт.*completed/ })).toBeInTheDocument();
     expect(screen.getByText('Форма оплаты')).toBeVisible();
   });
 

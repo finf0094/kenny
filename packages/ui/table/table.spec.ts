@@ -90,10 +90,10 @@ describe('KnTable', () => {
   it('selects rows and reflects partial selection in the header checkbox', async () => {
     const { fixture } = await render(Host);
     const user = userEvent.setup();
-    await user.click(screen.getByRole('checkbox', { name: 'Выбрать строку 2' }));
+    await user.click(screen.getByRole('checkbox', { name: 'Select row 2' }));
     await stable();
     expect(fixture.componentInstance.selection().map((r) => r.id)).toEqual([2]);
-    const all = screen.getByRole<HTMLInputElement>('checkbox', { name: 'Выбрать все строки' });
+    const all = screen.getByRole<HTMLInputElement>('checkbox', { name: 'Select all rows' });
     expect(all.indeterminate).toBe(true);
 
     await user.click(all);
@@ -108,8 +108,8 @@ describe('KnTable', () => {
     const { fixture } = await render(Host);
     fixture.componentInstance.data.set([]);
     await stable();
-    expect(screen.getByText('Нет данных')).toBeInTheDocument();
-    expect(screen.getByRole('checkbox', { name: 'Выбрать все строки' })).toBeDisabled();
+    expect(screen.getByText('No data')).toBeInTheDocument();
+    expect(screen.getByRole('checkbox', { name: 'Select all rows' })).toBeDisabled();
   });
 
   it('keeps a visually hidden header in the accessibility tree', async () => {

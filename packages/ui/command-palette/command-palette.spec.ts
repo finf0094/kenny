@@ -47,7 +47,7 @@ describe('KnCommandPalette', () => {
 
   it('opens with Ctrl+K as a dialog with a focused combobox and grouped options', async () => {
     fireEvent.keyDown(document, { key: 'k', ctrlKey: true });
-    const dialog = await screen.findByRole('dialog', { name: 'Командная палитра' });
+    const dialog = await screen.findByRole('dialog', { name: 'Command palette' });
     const input = screen.getByRole('combobox');
     await waitFor(() => expect(input).toHaveFocus());
     expect(screen.getAllByRole('option')).toHaveLength(3);
@@ -67,7 +67,7 @@ describe('KnCommandPalette', () => {
     await user.type(input, 'ъъъ');
     await stable();
     expect(screen.queryAllByRole('option')).toHaveLength(0);
-    expect(screen.getByText(/Ничего не нашлось/)).toBeInTheDocument();
+    expect(screen.getByText(/Nothing found/)).toBeInTheDocument();
   });
 
   it('moves the active option with arrows and runs it with Enter', async () => {

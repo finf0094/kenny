@@ -25,29 +25,29 @@ describe('paginationRange', () => {
 describe('KnPagination', () => {
   it('marks the current page and disables "previous" on the first page', async () => {
     await render(Host);
-    expect(screen.getByRole('navigation', { name: 'Страницы' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Страница 1' })).toHaveAttribute(
+    expect(screen.getByRole('navigation', { name: 'Pagination' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Page 1' })).toHaveAttribute(
       'aria-current',
       'page',
     );
-    expect(screen.getByRole('button', { name: 'Предыдущая страница' })).toBeDisabled();
+    expect(screen.getByRole('button', { name: 'Previous page' })).toBeDisabled();
   });
 
   it('navigates by page buttons and next/previous', async () => {
     const { fixture } = await render(Host);
     const user = userEvent.setup();
-    await user.click(screen.getByRole('button', { name: 'Страница 4' }));
+    await user.click(screen.getByRole('button', { name: 'Page 4' }));
     await stable();
     expect(fixture.componentInstance.page()).toBe(4);
-    await user.click(screen.getByRole('button', { name: 'Следующая страница' }));
+    await user.click(screen.getByRole('button', { name: 'Next page' }));
     await stable();
-    expect(screen.getByRole('button', { name: 'Страница 5' })).toHaveAttribute(
+    expect(screen.getByRole('button', { name: 'Page 5' })).toHaveAttribute(
       'aria-current',
       'page',
     );
-    await user.click(screen.getByRole('button', { name: 'Страница 20' }));
+    await user.click(screen.getByRole('button', { name: 'Page 20' }));
     await stable();
-    expect(screen.getByRole('button', { name: 'Следующая страница' })).toBeDisabled();
+    expect(screen.getByRole('button', { name: 'Next page' })).toBeDisabled();
   });
 
   it('has no accessibility violations', async () => {

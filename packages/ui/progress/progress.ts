@@ -5,7 +5,7 @@ import {
   input,
   numberAttribute,
 } from '@angular/core';
-import { KnSize, KnTone } from '@kenny/ui/core';
+import { KnSize, KnTone, injectKnLabels } from '@kenny/ui/core';
 
 /**
  * Линейный индикатор прогресса. С числом в `value` показывает долю выполнения,
@@ -17,7 +17,7 @@ import { KnSize, KnTone } from '@kenny/ui/core';
   template: `<span class="fill"></span>`,
   host: {
     role: 'progressbar',
-    '[attr.aria-label]': 'ariaLabel()',
+    '[attr.aria-label]': 'ariaLabel() ?? labels().progress.label',
     '[attr.aria-valuemin]': 'value() === null ? null : 0',
     '[attr.aria-valuemax]': 'value() === null ? null : max()',
     '[attr.aria-valuenow]': 'value()',
@@ -95,6 +95,7 @@ import { KnSize, KnTone } from '@kenny/ui/core';
   `,
 })
 export class KnProgress {
+  protected readonly labels = injectKnLabels();
   /** Текущее значение или `null` для неопределённого состояния. */
   readonly value = input<number | null>(null);
   /** Значение, соответствующее 100%. */
@@ -104,7 +105,7 @@ export class KnProgress {
   /** Толщина полосы. */
   readonly size = input<KnSize>('md');
   /** Доступное имя: что именно загружается или выполняется. */
-  readonly ariaLabel = input<string>('Прогресс', { alias: 'aria-label' });
+  readonly ariaLabel = input<string | undefined>(undefined, { alias: 'aria-label' });
 
   protected readonly ratio = computed(() => {
     const value = this.value();

@@ -1,3 +1,4 @@
+import { injectKnLabels } from '@kenny/ui/core';
 import { booleanAttribute, ChangeDetectionStrategy, Component, input } from '@angular/core';
 
 /** Навигационная цепочка по паттерну APG Breadcrumb: `nav` со списком ссылок. */
@@ -6,7 +7,7 @@ import { booleanAttribute, ChangeDetectionStrategy, Component, input } from '@an
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { '[attr.aria-label]': 'null' },
   template: `
-    <nav [attr.aria-label]="ariaLabel()">
+    <nav [attr.aria-label]="ariaLabel() ?? labels().breadcrumbs.label">
       <ol>
         <ng-content />
       </ol>
@@ -31,8 +32,9 @@ import { booleanAttribute, ChangeDetectionStrategy, Component, input } from '@an
   `,
 })
 export class KnBreadcrumbs {
+  protected readonly labels = injectKnLabels();
   /** Доступное имя навигации. */
-  readonly ariaLabel = input<string>('Навигационная цепочка', { alias: 'aria-label' });
+  readonly ariaLabel = input<string | undefined>(undefined, { alias: 'aria-label' });
 }
 
 /**

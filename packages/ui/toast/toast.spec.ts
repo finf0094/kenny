@@ -22,7 +22,7 @@ describe('KnToaster', () => {
     toaster.success('Сохранено', 'Изменения применены');
     toaster.error('Не удалось отправить');
     await stable();
-    const region = screen.getByRole('region', { name: 'Уведомления' });
+    const region = screen.getByRole('region', { name: 'Notifications' });
     expect(within(region).getByRole('status')).toHaveTextContent('Сохранено');
     expect(within(region).getByRole('alert')).toHaveTextContent('Не удалось отправить');
     await expectNoA11yViolations(region);

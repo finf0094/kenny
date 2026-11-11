@@ -12,7 +12,7 @@ import {
   TemplateRef,
 } from '@angular/core';
 import { KnCheckbox } from '@kenny/ui/checkbox';
-import { knDefaultSize, KnSize } from '@kenny/ui/core';
+import { knDefaultSize, KnSize, injectKnLabels } from '@kenny/ui/core';
 import { KnIcon } from '@kenny/ui/icon';
 
 export interface KnColumn<T> {
@@ -62,7 +62,7 @@ export class KnCell<T = unknown> {
             <th class="check" scope="col">
               <kn-checkbox
                 size="sm"
-                aria-label="Выбрать все строки"
+                [aria-label]="labels().table.selectAll"
                 [checked]="allSelected()"
                 [indeterminate]="someSelected()"
                 [disabled]="data().length === 0"
@@ -105,7 +105,7 @@ export class KnCell<T = unknown> {
               <td class="check">
                 <kn-checkbox
                   size="sm"
-                  [aria-label]="'Выбрать строку ' + (i + 1)"
+                  [aria-label]="labels().table.selectRow(i + 1)"
                   [checked]="isSelected(row)"
                   (checkedChange)="toggleRow(row, $event)"
                 />
@@ -131,7 +131,9 @@ export class KnCell<T = unknown> {
         } @empty {
           <tr class="empty">
             <td [attr.colspan]="columns().length + (selectable() ? 1 : 0)">
-              <ng-content select="[knTableEmpty]">{{ emptyText() }}</ng-content>
+              <ng-content select="[knTableEmpty]">{{
+                emptyText() ?? labels().table.empty
+              }}</ng-content>
             </td>
           </tr>
         }
@@ -294,6 +296,7 @@ export class KnCell<T = unknown> {
   `,
 })
 export class KnTable<T = unknown> {
+  protected readonly labels = injectKnLabels();
   /** Строки таблицы. */
   readonly data = input.required<readonly T[]>();
   /** Описание колонок. */
@@ -313,7 +316,7 @@ export class KnTable<T = unknown> {
   /** Закрепляет заголовок при прокрутке (нужна ограниченная высота). */
   readonly stickyHeader = input(false, { transform: booleanAttribute });
   /** Текст, когда строк нет. Для сложной разметки используйте слот `knTableEmpty`. */
-  readonly emptyText = input<string>('Нет данных');
+  readonly emptyText = input<string>();
   /** Доступное имя таблицы. */
   readonly ariaLabel = input<string | null>(null, { alias: 'aria-label' });
 

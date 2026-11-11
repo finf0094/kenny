@@ -17,7 +17,7 @@ import { CdkDialogContainer, Dialog, DialogRef } from '@angular/cdk/dialog';
 import { createGlobalPositionStrategy } from '@angular/cdk/overlay';
 import { CdkPortalOutlet } from '@angular/cdk/portal';
 import { Observable } from 'rxjs';
-import { playExit } from '@kenny/ui/core';
+import { playExit, injectKnLabels } from '@kenny/ui/core';
 import { KnIcon } from '@kenny/ui/icon';
 
 export type KnDrawerSide = 'start' | 'end' | 'top' | 'bottom';
@@ -291,7 +291,12 @@ export class KnDialog {
       }
     </div>
     @if (closable()) {
-      <button class="close" type="button" [attr.aria-label]="closeLabel()" (click)="ref.close()">
+      <button
+        class="close"
+        type="button"
+        [attr.aria-label]="closeLabel() ?? labels().dialog.close"
+        (click)="ref.close()"
+      >
         <kn-icon name="x" />
       </button>
     }
@@ -353,14 +358,15 @@ export class KnDialog {
   `,
 })
 export class KnDialogHeader implements OnDestroy {
+  protected readonly labels = injectKnLabels();
   /** Заголовок окна. */
   readonly heading = input.required<string>();
   /** Пояснение под заголовком. */
   readonly description = input<string>('');
   /** Показывать кнопку закрытия. */
   readonly closable = input(true, { transform: booleanAttribute });
-  /** Подпись кнопки закрытия. */
-  readonly closeLabel = input<string>('Закрыть');
+  /** Подпись кнопки закрытия. По умолчанию — из `provideKnLabels`. */
+  readonly closeLabel = input<string>();
 
   protected readonly ref = inject(KnDialogRef);
   private readonly container = inject(KnDialogContainer);

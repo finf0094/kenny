@@ -62,11 +62,11 @@ export function formatDate(date: Date, locale: string): string {
   }).format(date);
 }
 
-/** A hint like `дд.мм.гггг` built from the locale's own order and separators. */
-export function datePattern(locale: string): string {
-  const letters = locale.startsWith('ru')
-    ? { day: 'дд', month: 'мм', year: 'гггг' }
-    : { day: 'dd', month: 'mm', year: 'yyyy' };
+/** A hint like `dd.mm.yyyy` built from the locale's own order and separators. */
+export function datePattern(
+  locale: string,
+  letters: { day: string; month: string; year: string } = { day: 'dd', month: 'mm', year: 'yyyy' },
+): string {
   return new Intl.DateTimeFormat(locale, { day: '2-digit', month: '2-digit', year: 'numeric' })
     .formatToParts(new Date(2001, 10, 22))
     .map((part) =>

@@ -17,6 +17,7 @@ import {
 } from '@angular/core';
 import { _IdGenerator } from '@angular/cdk/a11y';
 import { Dialog } from '@angular/cdk/dialog';
+import { injectKnLabels } from '@kenny/ui/core';
 import { KnDialogRef, openSurface } from '@kenny/ui/dialog';
 import { KnIcon } from '@kenny/ui/icon';
 
@@ -60,8 +61,9 @@ export class KnCommandPalette {
 
   /** Все зарегистрированные команды. */
   readonly commands = signal<KnCommand[]>([]);
-  /** Подсказка в поле поиска. */
-  readonly placeholder = signal('Поиск команд и разделов');
+  /** Подсказка в поле поиска. Пока не задана, берётся из `provideKnLabels`. */
+  readonly placeholder = signal<string | null>(null);
+  private readonly labels = injectKnLabels();
 
   /** Добавляет команды. Возвращает функцию, которая их убирает. */
   register(commands: KnCommand[]): () => void {
@@ -78,7 +80,7 @@ export class KnCommandPalette {
       this.dialog,
       this.injector,
       KnCommandPaletteView,
-      { ariaLabel: 'Командная палитра', autoFocus: 'input' },
+      { ariaLabel: this.labels().commandPalette.label, autoFocus: 'input' },
       { kind: 'dialog', size: '38rem', top: 'min(18vh, 10rem)' },
     );
     this.ref.closed.subscribe(() => (this.ref = null));
@@ -143,10 +145,10 @@ interface Group {
         aria-autocomplete="list"
         autocomplete="off"
         spellcheck="false"
-        [attr.aria-label]="palette.placeholder()"
+        [attr.aria-label]="placeholder()"
         [attr.aria-controls]="listId"
         [attr.aria-activedescendant]="activeId()"
-        [placeholder]="palette.placeholder()"
+        [placeholder]="placeholder()"
         [value]="query()"
         (input)="query.set($any($event.target).value)"
         (keydown)="onKeydown($event)"
@@ -157,7 +159,7 @@ interface Group {
       #list
       class="list"
       role="listbox"
-      aria-label="Команды"
+      [attr.aria-label]="labels().commandPalette.commands"
       [id]="listId"
       [attr.data-fresh]="query() ? null : ''"
     >
@@ -195,12 +197,12 @@ interface Group {
           }
         </div>
       } @empty {
-        <div class="empty" role="presentation">Ничего не нашлось по запросу «{{ query() }}»</div>
+        <div class="empty" role="presentation">{{ labels().commandPalette.empty(query()) }}</div>
       }
     </div>
     <div class="footer" aria-hidden="true">
-      <span><kbd>↑</kbd><kbd>↓</kbd> выбрать</span>
-      <span><kbd>↵</kbd> выполнить</span>
+      <span><kbd>↑</kbd><kbd>↓</kbd> {{ labels().commandPalette.navigate }}</span>
+      <span><kbd>↵</kbd> {{ labels().commandPalette.run }}</span>
       <span class="count">{{ flat().length }}</span>
     </div>
   `,
@@ -348,7 +350,11 @@ interface Group {
   `,
 })
 export class KnCommandPaletteView {
+  protected readonly labels = injectKnLabels();
   protected readonly palette = inject(KnCommandPalette);
+  protected readonly placeholder = computed(
+    () => this.palette.placeholder() ?? this.labels().commandPalette.placeholder,
+  );
   private readonly ref = inject(KnDialogRef);
   private readonly injector = inject(Injector);
   protected readonly listId = inject(_IdGenerator).getId('kn-command-list-');

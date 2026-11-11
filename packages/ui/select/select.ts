@@ -19,6 +19,7 @@ import {
   KnFormControl,
   KnSize,
   useControlStyles,
+  injectKnLabels,
 } from '@kenny/ui/core';
 import { KnIcon } from '@kenny/ui/icon';
 import { KN_OPTION_PARENT, KnOption, KnOptionParent } from '@kenny/ui/option';
@@ -56,7 +57,7 @@ import { KN_OPTION_PARENT, KnOption, KnOptionParent } from '@kenny/ui/option';
       (blur)="onBlur()"
     >
       <span class="value" [id]="valueId" [class.placeholder]="!selectedText()">
-        {{ selectedText() || placeholder() }}
+        {{ selectedText() || (placeholder() ?? labels().select.placeholder) }}
       </span>
       <kn-icon class="chevron" name="chevrons-up-down" />
     </button>
@@ -137,10 +138,11 @@ import { KN_OPTION_PARENT, KnOption, KnOptionParent } from '@kenny/ui/option';
   `,
 })
 export class KnSelect<T = unknown> extends KnFormControl<T | null> implements KnOptionParent<T> {
+  protected readonly labels = injectKnLabels();
   /** Выбранное значение. Двусторонняя привязка: `[(value)]`. */
   readonly value = model<T | null>(null);
-  /** Текст, пока ничего не выбрано. */
-  readonly placeholder = input<string>('Выберите…');
+  /** Текст, пока ничего не выбрано. По умолчанию — из `provideKnLabels`. */
+  readonly placeholder = input<string>();
   /** Размер. */
   readonly size = input<KnSize>(knDefaultSize());
   /** Сравнение значений; нужно, если значения — объекты. */

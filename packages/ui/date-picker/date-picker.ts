@@ -22,6 +22,7 @@ import {
   KnFormControl,
   KnSize,
   useControlStyles,
+  injectKnLabels,
 } from '@kenny/ui/core';
 import { KnIcon } from '@kenny/ui/icon';
 import { KnCalendar } from './calendar';
@@ -77,7 +78,13 @@ import { datePattern, formatDate, parseDate, startOfDay } from './date-utils';
     </div>
 
     <ng-template #panel>
-      <div class="panel" role="dialog" aria-modal="true" aria-label="Выбор даты" cdkTrapFocus>
+      <div
+        class="panel"
+        role="dialog"
+        aria-modal="true"
+        [attr.aria-label]="labels().datePicker.dialog"
+        cdkTrapFocus
+      >
         <kn-calendar
           [value]="value()"
           [min]="min()"
@@ -167,6 +174,7 @@ import { datePattern, formatDate, parseDate, startOfDay } from './date-utils';
   `,
 })
 export class KnDatePicker extends KnFormControl<Date | null> {
+  protected readonly labels = injectKnLabels();
   /** Выбранная дата. Двусторонняя привязка: `[(value)]`. */
   readonly value = model<Date | null>(null);
   /** Самая ранняя доступная дата. */
@@ -192,12 +200,13 @@ export class KnDatePicker extends KnFormControl<Date | null> {
   private readonly calendar = viewChild(KnCalendar);
 
   protected readonly text = signal('');
-  protected readonly pattern = computed(() => datePattern(this.locale()));
+  protected readonly pattern = computed(() => datePattern(this.locale(), this.labels().datePicker));
   protected readonly toggleLabel = computed(() => {
     const value = this.value();
+    const labels = this.labels().datePicker;
     return value
-      ? `Изменить дату, ${new Intl.DateTimeFormat(this.locale(), { dateStyle: 'long' }).format(value)}`
-      : 'Выбрать дату';
+      ? labels.change(new Intl.DateTimeFormat(this.locale(), { dateStyle: 'long' }).format(value))
+      : labels.choose;
   });
 
   constructor() {

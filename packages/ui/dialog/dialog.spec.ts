@@ -93,7 +93,7 @@ describe('KnDialog', () => {
     expect(fixture.componentInstance.result).toBe(false);
 
     await user.click(opener);
-    await user.click(await screen.findByRole('button', { name: 'Закрыть' }));
+    await user.click(await screen.findByRole('button', { name: 'Close' }));
     await waitFor(() => expect(screen.queryByRole('alertdialog')).not.toBeInTheDocument());
     expect(fixture.componentInstance.result).toBeUndefined();
 

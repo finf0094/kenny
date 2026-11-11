@@ -76,7 +76,7 @@ describe('KnCombobox', () => {
     await user.clear(input);
     await user.type(input, 'яяя');
     await stable();
-    expect(screen.getByText('Ничего не найдено')).toBeInTheDocument();
+    expect(screen.getByText('Nothing found')).toBeInTheDocument();
     expect(control.value).toBeNull();
     await user.tab();
     await stable();
@@ -86,7 +86,7 @@ describe('KnCombobox', () => {
   it('clears the value with the clear button', async () => {
     const { control, user } = await setup('at');
     await stable();
-    await user.click(screen.getByRole('button', { name: 'Очистить' }));
+    await user.click(screen.getByRole('button', { name: 'Clear' }));
     expect(control.value).toBeNull();
   });
 

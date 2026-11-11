@@ -1,3 +1,4 @@
+import { injectKnLabels } from '@kenny/ui/core';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -207,7 +208,7 @@ export class KnToaster {
             <button
               class="close"
               type="button"
-              aria-label="Закрыть уведомление"
+              [attr.aria-label]="labels().toast.close"
               (click)="toaster.dismiss(toast.id)"
             >
               <kn-icon name="x" />
@@ -219,7 +220,7 @@ export class KnToaster {
   `,
   host: {
     role: 'region',
-    'aria-label': 'Уведомления',
+    '[attr.aria-label]': 'labels().toast.region',
     '[attr.data-position]': 'toaster.position',
     '(pointerenter)': 'toaster.pauseAll()',
     '(pointerleave)': 'toaster.resumeAll()',
@@ -379,6 +380,7 @@ export class KnToaster {
   `,
 })
 export class KnToastViewport {
+  protected readonly labels = injectKnLabels();
   protected readonly toaster = inject(KnToaster);
   protected readonly icons = ICONS;
 }

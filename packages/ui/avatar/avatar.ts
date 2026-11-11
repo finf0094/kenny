@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, effect, input, signal } from '@angular/core';
-import { KnSize } from '@kenny/ui/core';
+import { KnSize, injectKnLabels } from '@kenny/ui/core';
 
 /**
  * Аватар пользователя. Пока изображение не загрузилось или недоступно,
@@ -96,6 +96,7 @@ import { KnSize } from '@kenny/ui/core';
   `,
 })
 export class KnAvatar {
+  protected readonly labels = injectKnLabels();
   /** Имя человека: из него берутся инициалы, цвет и текстовая альтернатива. */
   readonly name = input.required<string>();
   /** Адрес изображения. */
@@ -120,7 +121,7 @@ export class KnAvatar {
   });
 
   protected readonly label = computed(() => {
-    const names = { online: 'в сети', away: 'отошёл', busy: 'занят', offline: 'не в сети' };
+    const names = this.labels().avatar;
     const status = this.status();
     return status ? `${this.name()}, ${names[status]}` : this.name();
   });

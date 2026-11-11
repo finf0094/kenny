@@ -1,3 +1,4 @@
+import { injectKnLabels } from '@kenny/ui/core';
 import {
   booleanAttribute,
   ChangeDetectionStrategy,
@@ -17,7 +18,7 @@ import { _IdGenerator } from '@angular/cdk/a11y';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="header"><ng-content select="[knSidebarHeader]" /></div>
-    <nav class="nav" [attr.aria-label]="ariaLabel()">
+    <nav class="nav" [attr.aria-label]="ariaLabel() ?? labels().sidebar.label">
       <ng-content />
     </nav>
     <div class="footer"><ng-content select="[knSidebarFooter]" /></div>
@@ -68,10 +69,11 @@ import { _IdGenerator } from '@angular/cdk/a11y';
   `,
 })
 export class KnSidebar {
+  protected readonly labels = injectKnLabels();
   /** Свёрнута ли панель до иконок. Двусторонняя привязка: `[(collapsed)]`. */
   readonly collapsed = model(false);
   /** Доступное имя навигации. */
-  readonly ariaLabel = input<string>('Основная навигация', { alias: 'aria-label' });
+  readonly ariaLabel = input<string | undefined>(undefined, { alias: 'aria-label' });
 }
 
 /** Группа пунктов с заголовком. */

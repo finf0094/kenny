@@ -6,7 +6,7 @@ import {
   model,
   numberAttribute,
 } from '@angular/core';
-import { knDefaultSize, KnSize } from '@kenny/ui/core';
+import { knDefaultSize, KnSize, injectKnLabels } from '@kenny/ui/core';
 import { KnIcon } from '@kenny/ui/icon';
 
 /** Builds `[1, '…', 4, 5, 6, '…', 20]` for the given position. */
@@ -34,13 +34,13 @@ export function paginationRange(
   imports: [KnIcon],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <nav [attr.aria-label]="ariaLabel()">
+    <nav [attr.aria-label]="ariaLabel() ?? labels().pagination.label">
       <ul>
         <li>
           <button
             class="page nav"
             type="button"
-            aria-label="Предыдущая страница"
+            [attr.aria-label]="labels().pagination.previous"
             [disabled]="page() <= 1"
             (click)="go(page() - 1)"
           >
@@ -55,7 +55,7 @@ export function paginationRange(
               <button
                 class="page"
                 type="button"
-                [attr.aria-label]="'Страница ' + item"
+                [attr.aria-label]="labels().pagination.page(item)"
                 [attr.aria-current]="item === page() ? 'page' : null"
                 (click)="go(item)"
               >
@@ -68,7 +68,7 @@ export function paginationRange(
           <button
             class="page nav"
             type="button"
-            aria-label="Следующая страница"
+            [attr.aria-label]="labels().pagination.next"
             [disabled]="page() >= pageCount()"
             (click)="go(page() + 1)"
           >
@@ -184,6 +184,7 @@ export function paginationRange(
   `,
 })
 export class KnPagination {
+  protected readonly labels = injectKnLabels();
   /** Текущая страница, начиная с 1. Двусторонняя привязка: `[(page)]`. */
   readonly page = model(1);
   /** Общее количество записей. */
@@ -195,7 +196,7 @@ export class KnPagination {
   /** Размер кнопок. */
   readonly size = input<KnSize>(knDefaultSize());
   /** Доступное имя навигации. */
-  readonly ariaLabel = input<string>('Страницы', { alias: 'aria-label' });
+  readonly ariaLabel = input<string | undefined>(undefined, { alias: 'aria-label' });
 
   /** Количество страниц. */
   readonly pageCount = computed(() =>

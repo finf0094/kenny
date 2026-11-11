@@ -1,3 +1,4 @@
+import { injectKnLabels } from '@kenny/ui/core';
 import {
   booleanAttribute,
   ChangeDetectionStrategy,
@@ -22,7 +23,7 @@ import { KnIcon } from '@kenny/ui/icon';
   imports: [KnIcon],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <ol class="steps" [attr.aria-label]="ariaLabel()">
+    <ol class="steps" [attr.aria-label]="ariaLabel() ?? labels().stepper.label">
       @for (item of steps(); track item.id; let i = $index; let last = $last) {
         <li class="step" [attr.data-state]="state(i)">
           <button
@@ -238,14 +239,15 @@ import { KnIcon } from '@kenny/ui/icon';
   `,
 })
 export class KnStepper {
+  protected readonly labels = injectKnLabels();
   /** Индекс активного шага. Двусторонняя привязка: `[(step)]`. */
   readonly step = model(0);
   /** Линейный режим: нельзя перепрыгнуть вперёд через незавершённые шаги. */
   readonly linear = input(false, { transform: booleanAttribute });
   /** Расположение шапки. */
   readonly orientation = input<'horizontal' | 'vertical'>('horizontal');
-  /** Доступное имя списка шагов. */
-  readonly ariaLabel = input<string>('Шаги', { alias: 'aria-label' });
+  /** Доступное имя списка шагов. По умолчанию — из `provideKnLabels`. */
+  readonly ariaLabel = input<string | undefined>(undefined, { alias: 'aria-label' });
 
   protected readonly steps = contentChildren(forwardRef(() => KnStep));
 
@@ -274,7 +276,10 @@ export class KnStepper {
   }
 
   protected statusText(index: number): string {
-    return { done: ', выполнен', active: ', текущий', upcoming: '' }[this.state(index)];
+    const labels = this.labels().stepper;
+    return { done: `, ${labels.done}`, active: `, ${labels.current}`, upcoming: '' }[
+      this.state(index)
+    ];
   }
 }
 

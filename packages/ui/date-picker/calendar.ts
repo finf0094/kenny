@@ -1,3 +1,4 @@
+import { injectKnLabels } from '@kenny/ui/core';
 import {
   afterNextRender,
   ChangeDetectionStrategy,
@@ -38,11 +39,21 @@ interface Cell {
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="header">
-      <button class="nav" type="button" aria-label="Предыдущий месяц" (click)="shiftMonth(-1)">
+      <button
+        class="nav"
+        type="button"
+        [attr.aria-label]="labels().datePicker.previousMonth"
+        (click)="shiftMonth(-1)"
+      >
         <kn-icon name="chevron-left" />
       </button>
       <div class="title" [id]="titleId" aria-live="polite">{{ title() }}</div>
-      <button class="nav" type="button" aria-label="Следующий месяц" (click)="shiftMonth(1)">
+      <button
+        class="nav"
+        type="button"
+        [attr.aria-label]="labels().datePicker.nextMonth"
+        (click)="shiftMonth(1)"
+      >
         <kn-icon name="chevron-right" />
       </button>
     </div>
@@ -235,6 +246,7 @@ interface Cell {
   `,
 })
 export class KnCalendar {
+  protected readonly labels = injectKnLabels();
   /** Выбранная дата. Двусторонняя привязка: `[(value)]`. */
   readonly value = model<Date | null>(null);
   /** Самая ранняя доступная дата. */

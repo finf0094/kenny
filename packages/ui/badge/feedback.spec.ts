@@ -27,7 +27,7 @@ describe('KnBadge', () => {
 describe('KnAvatar', () => {
   it('falls back to initials with an accessible name', async () => {
     await render(`<kn-avatar name="Анна Орлова" status="online" />`, { imports: [KnAvatar] });
-    const avatar = screen.getByRole('img', { name: 'Анна Орлова, в сети' });
+    const avatar = screen.getByRole('img', { name: 'Анна Орлова, online' });
     expect(avatar).toHaveTextContent('АО');
   });
 
@@ -121,7 +121,7 @@ describe('KnBreadcrumbs', () => {
        </kn-breadcrumbs>`,
       { imports: [KnBreadcrumbs, KnBreadcrumb] },
     );
-    expect(screen.getByRole('navigation', { name: 'Навигационная цепочка' })).toBeInTheDocument();
+    expect(screen.getByRole('navigation', { name: 'Breadcrumb' })).toBeInTheDocument();
     expect(screen.getAllByRole('listitem')).toHaveLength(3);
     expect(screen.getByText('Kenny')).toHaveAttribute('aria-current', 'page');
     expect(screen.getAllByRole('link')).toHaveLength(2);

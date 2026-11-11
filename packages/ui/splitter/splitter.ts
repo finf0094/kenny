@@ -1,3 +1,4 @@
+import { injectKnLabels } from '@kenny/ui/core';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -134,7 +135,7 @@ export class KnSplitterPanel {
   host: {
     role: 'separator',
     tabindex: '0',
-    '[attr.aria-label]': 'ariaLabel()',
+    '[attr.aria-label]': 'ariaLabel() ?? labels().splitter.label',
     '[attr.aria-orientation]':
       'splitter.orientation() === "horizontal" ? "vertical" : "horizontal"',
     '[attr.aria-controls]': 'previous()?.id ?? null',
@@ -210,8 +211,9 @@ export class KnSplitterPanel {
   `,
 })
 export class KnSplitterHandle {
+  protected readonly labels = injectKnLabels();
   /** Доступное имя разделителя, например «Изменить ширину списка». */
-  readonly ariaLabel = input<string>('Изменить размер панелей', { alias: 'aria-label' });
+  readonly ariaLabel = input<string | undefined>(undefined, { alias: 'aria-label' });
   /** Шаг изменения с клавиатуры, %. С Shift шаг в пять раз больше. */
   readonly step = input(2, { transform: numberAttribute });
 

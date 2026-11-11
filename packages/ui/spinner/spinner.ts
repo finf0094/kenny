@@ -1,5 +1,5 @@
 import { booleanAttribute, ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { KnSize } from '@kenny/ui/core';
+import { KnSize, injectKnLabels } from '@kenny/ui/core';
 
 /**
  * Индикатор неопределённой загрузки. Объявляется скринридеру как `progressbar`
@@ -17,7 +17,7 @@ import { KnSize } from '@kenny/ui/core';
   `,
   host: {
     '[attr.role]': 'decorative() ? null : "progressbar"',
-    '[attr.aria-label]': 'decorative() ? null : label()',
+    '[attr.aria-label]': 'decorative() ? null : (label() ?? labels().spinner.label)',
     '[attr.aria-hidden]': 'decorative() ? "true" : null',
     '[attr.data-size]': 'size()',
   },
@@ -63,10 +63,11 @@ import { KnSize } from '@kenny/ui/core';
   `,
 })
 export class KnSpinner {
+  protected readonly labels = injectKnLabels();
   /** Размер индикатора. */
   readonly size = input<KnSize>('md');
-  /** Подпись для скринридера. */
-  readonly label = input<string>('Загрузка');
+  /** Подпись для скринридера. По умолчанию — из `provideKnLabels`. */
+  readonly label = input<string>();
   /** Скрывает индикатор от вспомогательных технологий. */
   readonly decorative = input(false, { transform: booleanAttribute });
 }

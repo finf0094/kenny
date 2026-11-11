@@ -22,6 +22,7 @@ import {
   KnFormControl,
   KnSize,
   useControlStyles,
+  injectKnLabels,
 } from '@kenny/ui/core';
 import { KnIcon } from '@kenny/ui/icon';
 import { KN_OPTION_PARENT, KnOption, KnOptionParent } from '@kenny/ui/option';
@@ -73,7 +74,7 @@ import { KN_OPTION_PARENT, KnOption, KnOptionParent } from '@kenny/ui/option';
           class="affix"
           type="button"
           tabindex="-1"
-          aria-label="Очистить"
+          [attr.aria-label]="labels().combobox.clear"
           (mousedown)="$event.preventDefault()"
           (click)="clear()"
         >
@@ -84,7 +85,7 @@ import { KN_OPTION_PARENT, KnOption, KnOptionParent } from '@kenny/ui/option';
         class="affix"
         type="button"
         tabindex="-1"
-        aria-label="Показать варианты"
+        [attr.aria-label]="labels().combobox.toggle"
         [disabled]="isDisabled()"
         (mousedown)="$event.preventDefault()"
         (click)="toggle()"
@@ -102,12 +103,12 @@ import { KN_OPTION_PARENT, KnOption, KnOptionParent } from '@kenny/ui/option';
         class="panel"
         role="listbox"
         [id]="listId"
-        [attr.aria-label]="ariaLabel() || placeholder() || 'Варианты'"
+        [attr.aria-label]="ariaLabel() || placeholder() || labels().combobox.options"
         (mousedown)="$event.preventDefault()"
       >
         <ng-content />
         @if (visibleCount() === 0) {
-          <div class="empty">{{ emptyText() }}</div>
+          <div class="empty">{{ emptyText() ?? labels().combobox.empty }}</div>
         }
       </div>
     </ng-template>
@@ -207,6 +208,7 @@ import { KN_OPTION_PARENT, KnOption, KnOptionParent } from '@kenny/ui/option';
   `,
 })
 export class KnCombobox<T = unknown> extends KnFormControl<T | null> implements KnOptionParent<T> {
+  protected readonly labels = injectKnLabels();
   /** Выбранное значение. Двусторонняя привязка: `[(value)]`. */
   readonly value = model<T | null>(null);
   /** Текст, который пользователь набирает прямо сейчас (пустая строка вне ввода). Привяжите `[(query)]`, чтобы загружать варианты с сервера. */
@@ -220,7 +222,7 @@ export class KnCombobox<T = unknown> extends KnFormControl<T | null> implements 
   /** Показывать кнопку очистки, когда значение выбрано. */
   readonly clearable = input(false, { transform: booleanAttribute });
   /** Текст, когда ни один вариант не подошёл. */
-  readonly emptyText = input<string>('Ничего не найдено');
+  readonly emptyText = input<string>();
   /** Сравнение значений; нужно, если значения — объекты. */
   readonly compareWith = input<(a: T | null, b: T | null) => boolean>(Object.is);
 
