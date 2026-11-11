@@ -116,6 +116,7 @@ const SAMPLE: Record<string, string | number> = {
   'table.selectRow': 2,
   tagInput: 'дизайн',
   fileUpload: 'отчёт.pdf',
+  'fileUpload.added': 3,
 };
 
 function rows(): Row[] {

@@ -42,6 +42,18 @@ export interface KnLabels {
     year: string;
   };
   dialog: { close: string };
+  fileUpload: {
+    browse: string;
+    browseMany: string;
+    drop: string;
+    files: string;
+    remove: (name: string) => string;
+    added: (count: number) => string;
+    removed: (name: string) => string;
+    type: (name: string) => string;
+    size: (name: string) => string;
+    count: (name: string) => string;
+  };
   numberInput: { increment: string; decrement: string };
   pagination: {
     label: string;
@@ -109,6 +121,18 @@ export const knLabelsEn: KnLabels = {
     year: 'yyyy',
   },
   dialog: { close: 'Close' },
+  fileUpload: {
+    browse: 'Choose a file',
+    browseMany: 'Choose files',
+    drop: 'or drop here',
+    files: 'Chosen files',
+    remove: (name) => `Remove ${name}`,
+    added: (count) => `Files added: ${count}`,
+    removed: (name) => `${name} removed`,
+    type: (name) => `${name}: this type is not accepted`,
+    size: (name) => `${name}: the file is too large`,
+    count: (name) => `${name}: too many files`,
+  },
   numberInput: { increment: 'Increase', decrement: 'Decrease' },
   pagination: {
     label: 'Pagination',
@@ -177,6 +201,18 @@ export const knLabelsRu: KnLabels = {
     year: 'гггг',
   },
   dialog: { close: 'Закрыть' },
+  fileUpload: {
+    browse: 'Выберите файл',
+    browseMany: 'Выберите файлы',
+    drop: 'или перетащите сюда',
+    files: 'Выбранные файлы',
+    remove: (name) => `Убрать ${name}`,
+    added: (count) => `Добавлено файлов: ${count}`,
+    removed: (name) => `${name} убран`,
+    type: (name) => `${name}: такой тип не принимается`,
+    size: (name) => `${name}: файл слишком большой`,
+    count: (name) => `${name}: слишком много файлов`,
+  },
   numberInput: { increment: 'Увеличить', decrement: 'Уменьшить' },
   pagination: {
     label: 'Страницы',

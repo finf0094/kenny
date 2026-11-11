@@ -54,6 +54,7 @@ export const componentGroups: { label: string; items: ComponentNavItem[] }[] = [
       c('date-picker', 'DatePicker', () => import('../content/date-picker')),
       c('date-range-picker', 'Date Range Picker', () => import('../content/date-range-picker')),
       c('time-picker', 'Time Picker', () => import('../content/time-picker')),
+      c('file-upload', 'File Upload', () => import('../content/file-upload')),
     ],
   },
   {
@@ -86,6 +87,7 @@ export const componentGroups: { label: string; items: ComponentNavItem[] }[] = [
     label: 'Данные и обратная связь',
     items: [
       c('table', 'Table', () => import('../content/table')),
+      c('tree', 'Tree', () => import('../content/tree')),
       c('pagination', 'Pagination', () => import('../content/pagination')),
       c('badge', 'Badge', () => import('../content/badge')),
       c('chip', 'Chip', () => import('../content/chip')),
