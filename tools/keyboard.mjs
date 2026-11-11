@@ -445,6 +445,76 @@ try {
       });
     },
   );
+
+  await scenario(
+    'Tree: arrows walk and open branches, Enter selects, one tab stop',
+    '/components/tree',
+    async (page) => {
+      await focusIn(page, 'kn-tree [role="treeitem"][tabindex="0"]');
+      await press(page, 'Home');
+      expect((await active(page)).text === 'Клиенты', 'Home did not reach the first node');
+      await press(page, 'ArrowRight');
+      await press(page, 'ArrowRight');
+      const inner = await active(page);
+      expect(inner.text === 'Договор № 14', `stepped into "${inner.text}"`);
+      await press(page, 'Enter');
+      const selected = await page.evaluate(() =>
+        document.activeElement.getAttribute('aria-selected'),
+      );
+      expect(selected === 'true', 'Enter did not select the node');
+      await press(page, 'ArrowLeft');
+      await press(page, 'ArrowLeft');
+      const closed = await page.evaluate(() =>
+        document.activeElement.getAttribute('aria-expanded'),
+      );
+      expect(closed === 'false', 'ArrowLeft did not close the branch');
+    },
+  );
+
+  await scenario(
+    'Time picker: digits fill the segments and move on, arrows spin',
+    '/components/time-picker',
+    async (page) => {
+      await focusIn(page, 'kn-time-picker input[data-segment="hours"]');
+      await page.keyboard.type('0915');
+      await pause(120);
+      const read = () =>
+        page.evaluate(() =>
+          [...document.querySelector('kn-time-picker').querySelectorAll('input.segment')]
+            .map((field) => field.value)
+            .join(':'),
+        );
+      expect((await read()) === '09:15', `typed 0915, got ${await read()}`);
+      await press(page, 'ArrowUp');
+      expect((await read()) === '09:20', `ArrowUp gave ${await read()}`);
+      await press(page, 'ArrowLeft');
+      await press(page, 'ArrowDown');
+      expect((await read()) === '08:20', `hours down gave ${await read()}`);
+    },
+  );
+
+  await scenario(
+    'Multi select: Space toggles options and the list stays open',
+    '/components/select',
+    async (page) => {
+      await focusIn(page, 'kn-multi-select [role="combobox"]');
+      await press(page, 'ArrowDown');
+      await page.waitForSelector('[role="listbox"][aria-multiselectable="true"]', {
+        timeout: 3000,
+      });
+      const count = () =>
+        page.$$eval('[role="listbox"] [role="option"][aria-selected="true"]', (els) => els.length);
+      const before = await count();
+      await press(page, 'ArrowDown');
+      await press(page, 'Space');
+      expect((await count()) !== before, 'Space did not change the selection');
+      expect(Boolean(await page.$('[role="listbox"]')), 'the list closed after a choice');
+      await press(page, 'Escape');
+      await page.waitForFunction(() => !document.querySelector('[role="listbox"]'), {
+        timeout: 3000,
+      });
+    },
+  );
 } finally {
   await browser.close();
   server.close();

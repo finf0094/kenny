@@ -1,6 +1,6 @@
 # Kenny
 
-UI-библиотека для Angular: 41 доступный компонент на signals, у которых настраивается всё, что
+UI-библиотека для Angular: 46 доступных компонентов на signals, у которых настраивается всё, что
 относится к виду, — от акцентного цвета до формы переключателя. Из зависимостей — только Angular CDK.
 
 [![CI](https://github.com/finf0094/kenny/actions/workflows/ci.yml/badge.svg)](https://github.com/finf0094/kenny/actions/workflows/ci.yml)
@@ -28,11 +28,12 @@ UI-библиотека для Angular: 41 доступный компонент
 - **Локализация**: встроенные подписи идут за `LOCALE_ID` — русские для `ru`, английские для
   остальных. Отдельные строки и целые языки переопределяются; набор может быть сигналом.
 
-Компоненты: Button, IconButton, Input, Textarea, Select, Combobox, Checkbox, Radio, Switch, Slider,
-Number Input, Toggle Group, DatePicker · Card, Panel, Accordion, Tabs, Sidebar, Splitter, Drawer,
-Toolbar, Divider · Dialog, Popover, Tooltip, Dropdown Menu, Context Menu, Toast, Command Palette ·
-Table, Pagination, Badge, Chip, Alert, Avatar, Progress, Skeleton, Spinner, Empty State,
-Breadcrumbs, Stepper · Number, Ripple, Reveal.
+Компоненты: Button, IconButton, Input, Textarea, Select, Multi Select, Combobox, Tag Input, Checkbox,
+Radio, Switch, Slider, Number Input, Toggle Group, DatePicker, Date Range Picker, Time Picker, File
+Upload · Card, Panel, Accordion, Tabs, Sidebar, Splitter, Drawer, Toolbar, Divider · Dialog, Popover,
+Tooltip, Dropdown Menu, Context Menu, Toast, Command Palette · Table (с виртуализацией строк), Tree,
+Pagination, Badge, Chip, Alert, Avatar, Progress, Skeleton, Spinner, Empty State, Breadcrumbs,
+Stepper · Number, Ripple, Reveal.
 
 ## Стили и настройка
 

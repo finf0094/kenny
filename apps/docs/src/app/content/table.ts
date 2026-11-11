@@ -4,6 +4,7 @@ import { data } from '../../generated/table';
 import { ComponentDoc } from '../core/doc-types';
 import { attrs, choice, DocsPlayground, toggle } from '../core/playground';
 import Basic from '../demos/table/basic.demo';
+import Virtual from '../demos/table/virtual.demo';
 
 interface Row {
   id: number;
@@ -77,6 +78,13 @@ export default {
         'Сортировка сравнивает числа как числа, даты как даты, строки — по правилам локали. Колонка «Статус» сортируется по тексту из value.',
       component: Basic,
     },
+    {
+      source: 'virtual',
+      title: 'Десять тысяч строк',
+      description:
+        'С virtual таблица рисует только видимые строки. Ей нужна ограниченная высота, а строкам — одинаковая: rowHeight в пикселях.',
+      component: Virtual,
+    },
   ],
   playground: Playground,
   slots: [
@@ -96,6 +104,7 @@ export default {
     { keys: ['Пробел'], action: 'На флажке: выбирает строку или все строки.' },
   ],
   a11y: [
+    'При virtual таблица сообщает полное число строк через aria-rowcount, а каждая строка — свой номер через aria-rowindex: скринридер знает, где он находится, хотя в DOM лишь часть строк.',
     'Настоящая таблица: <th scope="col">, скринридер читает заголовок колонки вместе с ячейкой.',
     'Сортируемый заголовок — кнопка внутри <th> с aria-sort (ascending, descending, none).',
     'Флажок в шапке показывает частичный выбор состоянием mixed; у каждого флажка строки своё имя.',

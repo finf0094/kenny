@@ -1,14 +1,19 @@
 import { NgTemplateOutlet } from '@angular/common';
 import {
+  afterNextRender,
   booleanAttribute,
   ChangeDetectionStrategy,
   Component,
   computed,
   contentChildren,
+  DestroyRef,
   Directive,
+  ElementRef,
   inject,
   input,
   model,
+  numberAttribute,
+  signal,
   TemplateRef,
 } from '@angular/core';
 import { KnCheckbox } from '@kenny/ui/checkbox';
@@ -55,7 +60,10 @@ export class KnCell<T = unknown> {
   imports: [KnCheckbox, KnIcon, NgTemplateOutlet],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <table [attr.aria-label]="ariaLabel()">
+    <table
+      [attr.aria-label]="ariaLabel()"
+      [attr.aria-rowcount]="virtual() ? rows().length + 1 : null"
+    >
       <thead>
         <tr>
           @if (selectable()) {
@@ -96,9 +104,17 @@ export class KnCell<T = unknown> {
         </tr>
       </thead>
       <tbody>
-        @for (row of rows(); track trackRow(row, $index); let i = $index) {
+        @if (window().before) {
+          <tr class="spacer" aria-hidden="true" [style.block-size.px]="window().before">
+            <td [attr.colspan]="columns().length + (selectable() ? 1 : 0)"></td>
+          </tr>
+        }
+        @for (item of window().items; track trackRow(item.row, item.index)) {
+          @let row = item.row;
+          @let i = item.index;
           <tr
             [attr.data-selected]="selectable() && isSelected(row) ? '' : null"
+            [attr.aria-rowindex]="virtual() ? i + 2 : null"
             [style.--kn-index]="i"
           >
             @if (selectable()) {
@@ -137,6 +153,11 @@ export class KnCell<T = unknown> {
             </td>
           </tr>
         }
+        @if (window().after) {
+          <tr class="spacer" aria-hidden="true" [style.block-size.px]="window().after">
+            <td [attr.colspan]="columns().length + (selectable() ? 1 : 0)"></td>
+          </tr>
+        }
       </tbody>
     </table>
   `,
@@ -144,6 +165,8 @@ export class KnCell<T = unknown> {
     '[attr.aria-label]': 'null',
     '[attr.data-size]': 'size()',
     '[attr.data-sticky]': 'stickyHeader() ? "" : null',
+    '[attr.data-virtual]': 'virtual() ? "" : null',
+    '[style.--_row.px]': 'virtual() ? rowHeight() : null',
   },
   styles: `
     :host {
@@ -207,6 +230,29 @@ export class KnCell<T = unknown> {
     tbody tr {
       animation: kn-stagger-in var(--kn-duration-normal) var(--kn-ease-out) backwards;
       animation-delay: calc(min(var(--kn-index, 0), 12) * var(--kn-stagger));
+    }
+
+    /*
+     * Virtual rows: every row has the same height, so the position of any of them is
+     * known without rendering the ones before it. Rows appear while scrolling — no cascade.
+     */
+    :host([data-virtual]) tbody tr {
+      animation: none;
+    }
+
+    :host([data-virtual]) tbody tr:not(.spacer):not(.empty) {
+      block-size: var(--_row);
+    }
+
+    :host([data-virtual]) tbody td {
+      padding-block: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    tbody tr.spacer td {
+      padding: 0;
+      box-shadow: none;
     }
 
     tbody tr + tr td {
@@ -315,10 +361,23 @@ export class KnTable<T = unknown> {
   readonly size = input<KnSize>(knDefaultSize());
   /** Закрепляет заголовок при прокрутке (нужна ограниченная высота). */
   readonly stickyHeader = input(false, { transform: booleanAttribute });
+  /**
+   * Рисует только строки, попавшие в окно прокрутки, — для тысяч записей. Таблице нужна
+   * ограниченная высота, а строкам — одинаковая (`rowHeight`).
+   */
+  readonly virtual = input(false, { transform: booleanAttribute });
+  /** Высота строки в пикселях при `virtual`. */
+  readonly rowHeight = input(44, { transform: numberAttribute });
   /** Текст, когда строк нет. Для сложной разметки используйте слот `knTableEmpty`. */
   readonly emptyText = input<string>();
   /** Доступное имя таблицы. */
   readonly ariaLabel = input<string | null>(null, { alias: 'aria-label' });
+
+  private readonly element = inject<ElementRef<HTMLElement>>(ElementRef).nativeElement;
+  private readonly destroyRef = inject(DestroyRef);
+  /** Scroll position and height of the table: what decides which rows are rendered. */
+  private readonly scrollTop = signal(0);
+  private readonly viewport = signal(640);
 
   private readonly cells = contentChildren<KnCell<T>>(KnCell);
   private readonly templates = computed(
@@ -356,6 +415,55 @@ export class KnTable<T = unknown> {
     () =>
       !this.allSelected() && this.data().some((row) => this.selectedIds().has(this.identify(row))),
   );
+
+  /**
+   * The rows to render and the empty space that stands in for the rest. Without `virtual`
+   * that is simply every row.
+   */
+  protected readonly window = computed(() => {
+    const rows = this.rows();
+    if (!this.virtual()) {
+      return { items: rows.map((row, index) => ({ row, index })), before: 0, after: 0 };
+    }
+    const height = Math.max(1, this.rowHeight());
+    // A few rows beyond each edge, so that fast scrolling does not show a gap
+    const overscan = 6;
+    const start = Math.max(0, Math.floor(this.scrollTop() / height) - overscan);
+    const end = Math.min(
+      rows.length,
+      Math.ceil((this.scrollTop() + this.viewport()) / height) + overscan,
+    );
+    return {
+      items: rows.slice(start, end).map((row, offset) => ({ row, index: start + offset })),
+      before: start * height,
+      after: (rows.length - end) * height,
+    };
+  });
+
+  constructor() {
+    afterNextRender(() => {
+      const host = this.element;
+      let frame = 0;
+      const measure = (): void => {
+        frame = 0;
+        this.scrollTop.set(host.scrollTop);
+        this.viewport.set(host.clientHeight);
+      };
+      // At most one measurement per frame, and none at all unless rows are virtual
+      const schedule = (): void => {
+        if (this.virtual() && !frame) frame = requestAnimationFrame(measure);
+      };
+      host.addEventListener('scroll', schedule, { passive: true });
+      const observer = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(schedule);
+      observer?.observe(host);
+      schedule();
+      this.destroyRef.onDestroy(() => {
+        host.removeEventListener('scroll', schedule);
+        observer?.disconnect();
+        cancelAnimationFrame(frame);
+      });
+    });
+  }
 
   protected cellTemplate(key: string) {
     return this.templates().get(key) ?? null;

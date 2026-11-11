@@ -142,4 +142,64 @@ describe('KnTable', () => {
     const { container } = await render(Host);
     await expectNoA11yViolations(container);
   });
+
+  describe('virtual rows', () => {
+    const data = Array.from({ length: 5000 }, (_, i) => ({ id: i + 1, name: `Row ${i + 1}` }));
+    const columns = [
+      { key: 'id', header: 'No', sortable: true },
+      { key: 'name', header: 'Name' },
+    ];
+    const frame = (): Promise<void> => new Promise((done) => setTimeout(done, 50));
+
+    async function setupVirtual() {
+      const view = await render(
+        `<kn-table virtual stickyHeader aria-label="Rows" trackBy="id" style="block-size: 400px"
+                   [rowHeight]="40" [data]="data" [columns]="columns" />`,
+        { imports: [KnTable], componentProperties: { data, columns } },
+      );
+      const host = view.container.querySelector<HTMLElement>('kn-table')!;
+      // jsdom has no layout: give the scroll container a height to measure
+      Object.defineProperty(host, 'clientHeight', { configurable: true, value: 400 });
+      host.dispatchEvent(new Event('scroll'));
+      await frame();
+      await view.fixture.whenStable();
+      return { ...view, host };
+    }
+    const rendered = (host: HTMLElement): HTMLElement[] =>
+      Array.from(host.querySelectorAll<HTMLElement>('tbody tr:not(.spacer)'));
+
+    it('renders a window of rows and reserves the height of the rest', async () => {
+      const { host } = await setupVirtual();
+      // 400 / 40 visible + 6 beyond the lower edge
+      expect(rendered(host)).toHaveLength(16);
+      expect(host.querySelector('tbody tr.spacer')).toHaveStyle({
+        blockSize: `${(5000 - 16) * 40}px`,
+      });
+      expect(screen.getByRole('table')).toHaveAttribute('aria-rowcount', '5001');
+      expect(rendered(host)[0]).toHaveAttribute('aria-rowindex', '2');
+    });
+
+    it('moves the window with the scroll position', async () => {
+      const { host, fixture } = await setupVirtual();
+      host.scrollTop = 40 * 1000;
+      host.dispatchEvent(new Event('scroll'));
+      await frame();
+      await fixture.whenStable();
+      const rows = rendered(host);
+      expect(rows).toHaveLength(22);
+      expect(rows[0]).toHaveTextContent('Row 995');
+      expect(rows[0]).toHaveAttribute('aria-rowindex', '996');
+      const [before, after] = Array.from(host.querySelectorAll<HTMLElement>('tbody tr.spacer'));
+      expect(before).toHaveStyle({ blockSize: `${994 * 40}px` });
+      expect(after).toHaveStyle({ blockSize: `${(5000 - 1016) * 40}px` });
+    });
+
+    it('keeps sorting over the whole data set', async () => {
+      const { host, fixture } = await setupVirtual();
+      await userEvent.click(screen.getByRole('button', { name: /No/ }));
+      await userEvent.click(screen.getByRole('button', { name: /No/ }));
+      await fixture.whenStable();
+      expect(rendered(host)[0]).toHaveTextContent('Row 5000');
+    });
+  });
 });

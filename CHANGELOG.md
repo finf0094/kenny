@@ -21,7 +21,11 @@
 
 - **Локализация**: подписи по `LOCALE_ID`, `provideKnLabels()`, наборы `knLabelsEn` и
   `knLabelsRu`, частичное переопределение, набор-сигнал для смены языка на лету.
-- **Компоненты**: Alert, Chip, Divider, Toggle Group, Number Input.
+- **Компоненты**: Alert, Chip, Divider, Toggle Group, Number Input, Multi Select, Tag Input, Date
+  Range Picker, Time Picker, File Upload, Tree.
+- **Table**: `virtual` и `rowHeight` — в DOM только видимые строки; `aria-rowcount` и
+  `aria-rowindex` сообщают настоящие размеры.
+- **Calendar**: вход `range` — закрашенный период, который тянется за указателем и фокусом.
 - **`@kenny/ui/motion`**: `KnNumber` (число со счётом), `KnReveal` (появление при прокрутке),
   `KnRipple` (волна для своих элементов).
 - **Движение**: волна от нажатия во всех нажимаемых компонентах (`--kn-ripple-opacity`), темп всей
