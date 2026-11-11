@@ -58,6 +58,8 @@ jobs:
           pnpm --dir dist/tokens pack --pack-destination "$RUNNER_TEMP"
           pnpm --dir dist/ui pack --pack-destination "$RUNNER_TEMP"
       # Headless Chrome is preinstalled on the runner at /usr/bin/google-chrome
+      - name: Size budget of every entry point
+        run: pnpm check:size
       - name: Contrast of control edges in every style and theme
         run: pnpm check:contrast
       - name: Accessibility audit of every documentation page

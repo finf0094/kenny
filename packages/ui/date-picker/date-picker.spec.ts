@@ -112,9 +112,9 @@ describe('KnDatePicker', () => {
 
   it('opens a dialog, focuses the selected day and picks a date', async () => {
     const { control, user } = await setup();
-    const toggle = screen.getByRole('button', { name: /Change date/ });
+    const toggle = screen.getByRole('button', { name: /Изменить дату/ });
     await user.click(toggle);
-    const dialog = await screen.findByRole('dialog', { name: 'Choose date' });
+    const dialog = await screen.findByRole('dialog', { name: 'Выбор даты' });
     await waitFor(() => expect(document.activeElement).toHaveAttribute('data-date', '2026-03-15'));
     await user.click(within(dialog).getByRole('button', { name: /18 марта 2026/ }));
     expect(control.value).toEqual(new Date(2026, 2, 18));
@@ -124,7 +124,7 @@ describe('KnDatePicker', () => {
 
   it('does not pick dates before min and closes on Escape', async () => {
     const { control, user } = await setup();
-    await user.click(screen.getByRole('button', { name: /Change date/ }));
+    await user.click(screen.getByRole('button', { name: /Изменить дату/ }));
     const dialog = await screen.findByRole('dialog');
     await user.click(within(dialog).getByRole('button', { name: /, 5 марта 2026/ }));
     expect(control.value).toEqual(new Date(2026, 2, 15));
@@ -135,7 +135,7 @@ describe('KnDatePicker', () => {
   it('has no accessibility violations, closed and open', async () => {
     const { user } = await setup();
     await expectNoA11yViolations(document.body);
-    await user.click(screen.getByRole('button', { name: /Change date/ }));
+    await user.click(screen.getByRole('button', { name: /Изменить дату/ }));
     await screen.findByRole('dialog');
     await expectNoA11yViolations(document.body);
   });

@@ -1,4 +1,4 @@
-import { signal } from '@angular/core';
+import { LOCALE_ID, signal } from '@angular/core';
 import { render, screen } from '@testing-library/angular';
 import { KnPagination } from '@kenny/ui/pagination';
 import { KnSelect } from '@kenny/ui/select';
@@ -19,6 +19,33 @@ describe('provideKnLabels', () => {
     expect(screen.getByRole('button', { name: 'Page 2' })).toBeInTheDocument();
     expect(screen.getByRole('progressbar', { name: 'Loading' })).toBeInTheDocument();
     expect(screen.getByText('Select…')).toBeInTheDocument();
+  });
+
+  it('follows LOCALE_ID without any provider', async () => {
+    await render(template, { imports, providers: [{ provide: LOCALE_ID, useValue: 'ru-RU' }] });
+    expect(screen.getByRole('navigation', { name: 'Страницы' })).toBeInTheDocument();
+    expect(screen.getByRole('progressbar', { name: 'Загрузка' })).toBeInTheDocument();
+    expect(screen.getByText('Выберите…')).toBeInTheDocument();
+  });
+
+  it("keeps the locale's own texts where an override leaves them out", async () => {
+    await render(template, {
+      imports,
+      providers: [
+        { provide: LOCALE_ID, useValue: 'ru' },
+        provideKnLabels({ pagination: { next: 'Дальше' } }),
+      ],
+    });
+    expect(screen.getByRole('button', { name: 'Дальше' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Предыдущая страница' })).toBeInTheDocument();
+  });
+
+  it('lets a full set win over the locale', async () => {
+    await render(template, {
+      imports,
+      providers: [{ provide: LOCALE_ID, useValue: 'ru' }, provideKnLabels(knLabelsEn)],
+    });
+    expect(screen.getByRole('button', { name: 'Next page' })).toBeInTheDocument();
   });
 
   it('switches every built-in text to a ready set', async () => {

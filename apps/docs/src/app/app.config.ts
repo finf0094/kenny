@@ -7,7 +7,6 @@ import {
   withViewTransitions,
 } from '@angular/router';
 import { provideKnCommandPalette } from '@kenny/ui/command-palette';
-import { knLabelsRu, provideKnLabels } from '@kenny/ui/core';
 import { routes } from './app.routes';
 import { docsIcons } from './core/icons';
 
@@ -23,7 +22,6 @@ export const appConfig: ApplicationConfig = {
     provideClientHydration(withEventReplay()),
     provideKnCommandPalette({ placeholder: 'Поиск по документации' }),
     docsIcons,
-    provideKnLabels(knLabelsRu),
     { provide: LOCALE_ID, useValue: 'ru' },
   ],
 };

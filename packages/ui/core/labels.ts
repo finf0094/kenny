@@ -1,4 +1,12 @@
-import { computed, inject, InjectionToken, isSignal, Provider, Signal } from '@angular/core';
+import {
+  computed,
+  inject,
+  InjectionToken,
+  isSignal,
+  LOCALE_ID,
+  Provider,
+  Signal,
+} from '@angular/core';
 
 /**
  * Every piece of text the components render themselves: accessible names of built-in
@@ -49,7 +57,7 @@ export interface KnLabels {
 /** A partial set of labels: override a single string without repeating the rest. */
 export type KnLabelsOverride = { [K in keyof KnLabels]?: Partial<KnLabels[K]> };
 
-/** English labels — the default. */
+/** English labels — used for every locale that has no set of its own. */
 export const knLabelsEn: KnLabels = {
   avatar: { online: 'online', away: 'away', busy: 'busy', offline: 'offline' },
   breadcrumbs: { label: 'Breadcrumb' },
@@ -153,31 +161,43 @@ export const knLabelsRu: KnLabels = {
   toast: { region: 'Уведомления', close: 'Закрыть уведомление' },
 };
 
+/**
+ * The set that ships for a locale: the language of the application is already declared
+ * once, through `LOCALE_ID`, and the built-in texts follow it. English for everything else.
+ */
+export function knLabelsFor(locale: string): KnLabels {
+  return locale.toLowerCase().startsWith('ru') ? knLabelsRu : knLabelsEn;
+}
+
 export const KN_LABELS = new InjectionToken<Signal<KnLabels>>('KN_LABELS', {
   providedIn: 'root',
-  factory: () => computed(() => knLabelsEn),
+  factory: () => {
+    const labels = knLabelsFor(inject(LOCALE_ID));
+    return computed(() => labels);
+  },
 });
 
-function merge(override: KnLabelsOverride): KnLabels {
+function merge(base: KnLabels, override: KnLabelsOverride): KnLabels {
   const result = {} as Record<string, object>;
-  for (const key of Object.keys(knLabelsEn) as (keyof KnLabels)[]) {
-    result[key] = { ...knLabelsEn[key], ...override[key] };
+  for (const key of Object.keys(base) as (keyof KnLabels)[]) {
+    result[key] = { ...base[key], ...override[key] };
   }
   return result as unknown as KnLabels;
 }
 
 /**
- * Sets the language of built-in texts. Pass a ready set (`knLabelsRu`), a partial override,
- * or a function returning either — it runs in an injection context, so it may `inject()`
- * a language service and return a signal: the components follow it without a reload.
+ * Changes built-in texts. Without it they follow `LOCALE_ID`: Russian for `ru`, English
+ * otherwise. Pass a ready set, a partial override, or a function returning either — it
+ * runs in an injection context, so it may `inject()` a language service and return a
+ * signal: the components follow it without a reload.
  *
  * ```ts
- * provideKnLabels(knLabelsRu)
  * provideKnLabels({ dialog: { close: 'Dismiss' } })
- * provideKnLabels(() => inject(Language).labels) // Signal<KnLabelsOverride>
+ * provideKnLabels(knLabelsEn)                       // English whatever the locale
+ * provideKnLabels(() => inject(Language).labels)    // Signal<KnLabelsOverride>
  * ```
  *
- * Anything left out falls back to English.
+ * Anything left out keeps the text of the locale's own set.
  */
 export function provideKnLabels(
   labels: KnLabelsOverride | (() => KnLabelsOverride | Signal<KnLabelsOverride>),
@@ -185,8 +205,11 @@ export function provideKnLabels(
   return {
     provide: KN_LABELS,
     useFactory: (): Signal<KnLabels> => {
+      const base = knLabelsFor(inject(LOCALE_ID));
       const source = typeof labels === 'function' ? labels() : labels;
-      return isSignal(source) ? computed(() => merge(source())) : computed(() => merge(source));
+      return isSignal(source)
+        ? computed(() => merge(base, source()))
+        : computed(() => merge(base, source));
     },
   };
 }
