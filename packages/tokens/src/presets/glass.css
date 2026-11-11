@@ -28,10 +28,11 @@
   --kn-color-border: light-dark(rgb(12 19 48 / 0.1), rgb(238 242 255 / 0.1));
   --kn-color-border-strong: light-dark(rgb(12 19 48 / 0.22), rgb(238 242 255 / 0.24));
 
-  /* Fields: a sunken well */
+  --kn-color-control-border: light-dark(rgb(12 19 48 / 0.5), rgb(238 242 255 / 0.38));
+
+  /* Fields: a sunken well with a clear rim */
   --kn-color-field: var(--kn-color-surface-sunken);
-  --kn-color-field-border: var(--kn-color-border);
-  --kn-color-field-border-hover: var(--kn-color-border-strong);
+  --kn-color-field-border-hover: light-dark(rgb(12 19 48 / 0.76), rgb(238 242 255 / 0.7));
 
   /* Interaction layers */
   --kn-color-hover: light-dark(rgb(12 19 48 / 0.06), rgb(238 242 255 / 0.08));

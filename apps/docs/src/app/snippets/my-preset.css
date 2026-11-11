@@ -13,7 +13,7 @@
 
   /* Поля: лист с заметной рамкой */
   --kn-color-field: var(--kn-color-surface);
-  --kn-color-field-border: var(--kn-color-border-strong);
+  --kn-color-control-border: light-dark(rgb(60 45 20 / 0.58), rgb(255 240 215 / 0.46));
 
   /* Форма */
   --kn-radius-xs: 1px;

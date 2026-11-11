@@ -37,6 +37,14 @@ describe('inheritTheme', () => {
     expect(target).toHaveAttribute('data-kn-preset', 'tonal');
   });
 
+  it('carries the tempo of the block the overlay was opened from', () => {
+    const { source, target } = scope({ 'data-kn-tempo': 'brisk' });
+    source.closest<HTMLElement>('[data-kn-tempo]')!.style.setProperty('--kn-duration-scale', '0.5');
+    inheritTheme(source, target);
+    expect(target).toHaveAttribute('data-kn-tempo', 'brisk');
+    expect(target.style.getPropertyValue('--kn-duration-scale')).toBe('0.5');
+  });
+
   it('leaves the overlay untouched when nothing is scoped', () => {
     const { source, target } = scope({});
     inheritTheme(source, target);

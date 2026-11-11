@@ -24,7 +24,9 @@
     "format:check": "prettier --check .",
     "check:a11y": "node tools/audit.mjs",
     "check:keyboard": "node tools/keyboard.mjs",
-    "check": "pnpm lint && pnpm format:check && pnpm test && pnpm build && pnpm check:a11y && pnpm check:keyboard",
+    "check:contrast": "node tools/contrast.mjs",
+    "check:visual": "node tools/visual.mjs",
+    "check": "pnpm lint && pnpm format:check && pnpm test && pnpm build && pnpm check:contrast && pnpm check:a11y && pnpm check:keyboard",
     "shots": "node tools/shots.mjs",
     "release": "pnpm build:tokens && pnpm build:ui && pnpm --dir dist/tokens publish --access public --no-git-checks && pnpm --dir dist/ui publish --access public --no-git-checks"
   },

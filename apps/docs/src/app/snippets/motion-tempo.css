@@ -9,8 +9,19 @@
   --kn-ripple-opacity: 0.14;
 }
 
-/* Только в одном блоке страницы — например, в боковом меню. */
+/* Отклик только в одном блоке страницы — например, в боковом меню. */
 .app-nav {
   --kn-ripple-opacity: 0.12;
   --kn-ripple-color: var(--kn-color-accent);
+}
+
+/*
+ * Свой темп у блока: пометьте его атрибутом data-kn-tempo — длительности посчитаются
+ * заново от значения, заданного на нём. Готовые имена: brisk (× 0,7) и calm (× 1,4).
+ *
+ *   <aside class="app-nav" data-kn-tempo="brisk">…</aside>
+ *   <section data-kn-tempo style="--kn-duration-scale: 2">…</section>
+ */
+.app-onboarding[data-kn-tempo] {
+  --kn-duration-scale: 1.6;
 }

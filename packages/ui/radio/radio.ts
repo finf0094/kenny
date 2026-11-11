@@ -136,7 +136,8 @@ export class KnRadioGroup<T = unknown> extends KnFormControl<T | null> {
       margin-block-start: calc((1lh - var(--_box)) / 2);
       border-radius: 50%;
       background: var(--kn-color-field);
-      box-shadow: inset 0 0 0 var(--kn-radio-border-width, 1.5px) var(--kn-color-border-strong);
+      box-shadow: inset 0 0 0 var(--kn-radio-border-width, 1.5px)
+        var(--kn-radio-border, var(--kn-color-control-border));
       transition: transform var(--kn-duration-normal) var(--kn-ease-spring);
     }
 

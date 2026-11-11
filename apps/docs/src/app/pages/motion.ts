@@ -204,6 +204,24 @@ const KEYFRAMES = [
           Проверить на кривых
         </button>
       </div>
+      <p>
+        Темп можно задать и части страницы: пометьте блок атрибутом
+        <code>data-kn-tempo</code> — с готовым именем (<code>brisk</code>, <code>calm</code>) или со
+        своим значением переменной. Одни и те же переключатели в трёх темпах:
+      </p>
+      <div class="tempos">
+        @for (tempo of tempos; track tempo.label) {
+          <div class="tempo-card" [attr.data-kn-tempo]="tempo.name">
+            <code>{{ tempo.label }}</code>
+            <kn-switch [checked]="true">Переключатель</kn-switch>
+            <kn-tabs size="sm" [attr.aria-label]="'Вкладки, темп ' + tempo.label">
+              <kn-tab value="1" label="Один" />
+              <kn-tab value="2" label="Два" />
+              <kn-tab value="3" label="Три" />
+            </kn-tabs>
+          </div>
+        }
+      </div>
       <docs-code snippet="motion-tempo.css" label="Темп и отклик на нажатие в своём стиле" />
 
       <h2 id="press">Отклик на нажатие</h2>
@@ -360,6 +378,26 @@ const KEYFRAMES = [
       gap: var(--kn-space-3);
     }
 
+    .tempos {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+      gap: var(--kn-space-3);
+    }
+
+    .tempo-card {
+      display: grid;
+      justify-items: start;
+      gap: var(--kn-space-4);
+      padding: var(--kn-space-5);
+      border-radius: var(--kn-radius-lg);
+      background: var(--docs-stage);
+      box-shadow: inset 0 0 0 1px var(--kn-color-border);
+    }
+
+    .tempo-card code {
+      font-size: var(--kn-text-xs);
+    }
+
     .tempo kn-slider {
       flex: 0 1 14rem;
     }
@@ -493,6 +531,11 @@ export default class MotionPage {
   protected readonly moved = signal(false);
   protected readonly open = signal(false);
   protected readonly keyframes = KEYFRAMES;
+  protected readonly tempos = [
+    { name: 'brisk', label: 'data-kn-tempo="brisk"' },
+    { name: null, label: 'как на странице' },
+    { name: 'calm', label: 'data-kn-tempo="calm"' },
+  ];
   protected readonly press = signal<string | null>('both');
   protected readonly count = signal(1284);
   protected readonly more = (count: number): number => count + 216;

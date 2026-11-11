@@ -79,7 +79,8 @@ import { knDefaultSize, KnFormControl, KnSize } from '@kenny/ui/core';
       margin-block-start: calc((1lh - var(--_box)) / 2);
       border-radius: var(--kn-checkbox-radius, var(--kn-radius-xs));
       background: var(--kn-color-field);
-      box-shadow: inset 0 0 0 var(--kn-checkbox-border-width, 1.5px) var(--kn-color-border-strong);
+      box-shadow: inset 0 0 0 var(--kn-checkbox-border-width, 1.5px)
+        var(--kn-checkbox-border, var(--kn-color-control-border));
       transition: transform var(--kn-duration-normal) var(--kn-ease-spring);
     }
 

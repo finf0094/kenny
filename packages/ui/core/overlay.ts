@@ -83,9 +83,9 @@ export function knPositions(placement: KnPlacement, offset = 8): ConnectedPositi
 }
 
 /**
- * Overlays render at the end of `<body>`, outside of any nested `data-theme` or
- * `data-kn-preset` scope. Copies the theme and the style preset of the element that
- * opened the overlay onto the overlay itself.
+ * Overlays render at the end of `<body>`, outside of any nested `data-theme`,
+ * `data-kn-preset` or `data-kn-tempo` scope. Copies the theme, the style preset and the
+ * tempo of the element that opened the overlay onto the overlay itself.
  */
 export function inheritTheme(source: Element, target: Element): void {
   for (const attribute of ['data-theme', 'data-kn-preset']) {
@@ -94,6 +94,22 @@ export function inheritTheme(source: Element, target: Element): void {
       target.setAttribute(attribute, value);
     }
   }
+  const tempo = tempoOf(source);
+  if (tempo && target instanceof HTMLElement) {
+    target.setAttribute('data-kn-tempo', tempo.name);
+    if (tempo.scale) target.style.setProperty('--kn-duration-scale', tempo.scale);
+  }
+}
+
+/** The tempo scope an element sits in: the value of `data-kn-tempo` and the scale set on it. */
+export function tempoOf(element: Element): { name: string; scale: string } | null {
+  const scope = element.closest('[data-kn-tempo]');
+  if (!scope) return null;
+  const view = scope.ownerDocument.defaultView;
+  return {
+    name: scope.getAttribute('data-kn-tempo') ?? '',
+    scale: view?.getComputedStyle(scope).getPropertyValue('--kn-duration-scale').trim() ?? '',
+  };
 }
 
 export interface KnOverlayOpenOptions {

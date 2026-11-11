@@ -82,10 +82,17 @@
   --kn-color-border: light-dark(rgb(23 26 33 / 0.1), rgb(255 255 255 / 0.1));
   --kn-color-border-strong: light-dark(rgb(23 26 33 / 0.28), rgb(255 255 255 / 0.28));
 
-  /* Fields: the well of an input, select or date picker, and the box of an unchecked checkbox */
+  /*
+   * The edge that makes a control recognisable: the outline of a field, the box of an
+   * unchecked checkbox or radio, the track of a switch that is off. Kept at 3:1 or more
+   * against the surface behind it (WCAG 1.4.11) — `pnpm check:contrast` measures it.
+   */
+  --kn-color-control-border: light-dark(rgb(23 26 33 / 0.5), rgb(255 255 255 / 0.4));
+
+  /* Fields: the well of an input, select or date picker */
   --kn-color-field: var(--kn-color-surface);
-  --kn-color-field-border: light-dark(rgb(23 26 33 / 0.24), rgb(255 255 255 / 0.24));
-  --kn-color-field-border-hover: light-dark(rgb(23 26 33 / 0.44), rgb(255 255 255 / 0.44));
+  --kn-color-field-border: var(--kn-color-control-border);
+  --kn-color-field-border-hover: light-dark(rgb(23 26 33 / 0.72), rgb(255 255 255 / 0.64));
   --kn-color-field-underline: var(
     --kn-color-field-border-hover
   ); /* shown when the underline has a width */

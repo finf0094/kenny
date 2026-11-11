@@ -28,10 +28,11 @@
   --kn-color-border: light-dark(rgb(60 60 67 / 0.14), rgb(120 120 128 / 0.34));
   --kn-color-border-strong: light-dark(rgb(60 60 67 / 0.32), rgb(140 140 148 / 0.56));
 
-  /* Fields: a grey fill, no outline */
+  --kn-color-control-border: light-dark(rgb(60 60 67 / 0.62), rgb(235 235 245 / 0.38));
+
+  /* Fields: a grey fill with a rim just strong enough to be found */
   --kn-color-field: light-dark(rgb(118 118 128 / 0.12), rgb(118 118 128 / 0.24));
-  --kn-color-field-border: transparent;
-  --kn-color-field-border-hover: var(--kn-color-border-strong);
+  --kn-color-field-border-hover: light-dark(rgb(60 60 67 / 0.8), rgb(235 235 245 / 0.72));
 
   /* The active row of a list is a grey highlight, not an accent fill */
   --kn-color-selection: var(--kn-color-pressed);
@@ -84,7 +85,7 @@
   --kn-switch-width: 3.1875rem;
   --kn-switch-height: 1.9375rem;
   --kn-switch-color: light-dark(#248a3d, #30d158);
-  --kn-switch-track: light-dark(rgb(120 120 128 / 0.2), rgb(120 120 128 / 0.36));
+  --kn-switch-track: light-dark(#88888d, #6c6c70);
   --kn-switch-track-shadow: none;
   --kn-switch-thumb-shadow: 0 3px 8px rgb(0 0 0 / 0.15), 0 1px 1px rgb(0 0 0 / 0.16);
   /* Segmented tabs: a white thumb with a soft shadow on a grey track */

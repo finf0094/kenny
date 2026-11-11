@@ -1,0 +1,51 @@
+name: Visual changes
+
+# Builds the base branch and the pull request in one job and compares screenshots of every
+# page in every style and theme. Rendering differs between machines, so both sides are made
+# here, on the same runner. A red result is not a verdict: it says "look at the report".
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: visual-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  visual:
+    name: Screenshots before and after
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - name: Build the base branch
+        run: |
+          git checkout --detach ${{ github.event.pull_request.base.sha }}
+          pnpm install --frozen-lockfile
+          pnpm build:tokens && pnpm build:ui && pnpm build:docs
+          mv dist/docs "$RUNNER_TEMP/docs-base"
+      - name: Build the pull request
+        run: |
+          git checkout --detach ${{ github.event.pull_request.head.sha }}
+          pnpm install --frozen-lockfile
+          pnpm build:tokens && pnpm build:ui && pnpm build:docs
+      # Headless Chrome is preinstalled on the runner at /usr/bin/google-chrome
+      - name: Screenshots of the base branch
+        run: node tools/visual.mjs "$RUNNER_TEMP/docs-base" --update
+      - name: Screenshots of the pull request, compared
+        run: node tools/visual.mjs dist/docs
+      - name: Report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-report
+          path: .visual/report
+          retention-days: 14

@@ -1,4 +1,4 @@
-import { useRipple } from '@kenny/ui/core';
+import { tempoOf, useRipple } from '@kenny/ui/core';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -27,10 +27,15 @@ import { KnIcon } from '@kenny/ui/icon';
 class KnMenuThemeScope {
   theme: string | null = null;
   preset: string | null = null;
+  tempo: string | null = null;
+  scale: string | null = null;
 
   capture(element: Element): void {
     this.theme = element.closest('[data-theme]')?.getAttribute('data-theme') ?? null;
     this.preset = element.closest('[data-kn-preset]')?.getAttribute('data-kn-preset') ?? null;
+    const tempo = tempoOf(element);
+    this.tempo = tempo?.name ?? null;
+    this.scale = tempo?.scale || null;
   }
 }
 
@@ -44,7 +49,12 @@ class KnMenuThemeScope {
   changeDetection: ChangeDetectionStrategy.OnPush,
   hostDirectives: [CdkMenu],
   template: `<ng-content />`,
-  host: { '[attr.data-theme]': 'theme', '[attr.data-kn-preset]': 'preset' },
+  host: {
+    '[attr.data-theme]': 'theme',
+    '[attr.data-kn-preset]': 'preset',
+    '[attr.data-kn-tempo]': 'tempo',
+    '[style.--kn-duration-scale]': 'scale',
+  },
   styles: `
     :host {
       display: flex;
@@ -71,6 +81,8 @@ export class KnMenu {
   private readonly scope = inject(KnMenuThemeScope);
   protected readonly theme = this.scope.theme;
   protected readonly preset = this.scope.preset;
+  protected readonly tempo = this.scope.tempo;
+  protected readonly scale = this.scope.scale;
 }
 
 const itemStyles = `

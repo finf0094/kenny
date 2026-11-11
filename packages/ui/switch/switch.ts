@@ -78,7 +78,7 @@ import { knDefaultSize, KnFormControl, KnSize } from '@kenny/ui/core';
       block-size: var(--_h);
       margin-block-start: calc((1lh - var(--_h)) / 2);
       border-radius: var(--kn-radius-full);
-      background: var(--kn-switch-track, var(--kn-color-border-strong));
+      background: var(--kn-switch-track, var(--kn-color-control-border));
       box-shadow: var(--kn-switch-track-shadow, inset 0 1px 2px rgb(0 0 0 / 0.08));
       overflow: hidden;
     }

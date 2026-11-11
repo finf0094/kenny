@@ -1,14 +1,16 @@
 // Accessibility and runtime audit of the built documentation site.
-/* global document, window, getComputedStyle, localStorage */
+/* global document, window, getComputedStyle, localStorage, MutationObserver */
 //
 //   node tools/audit.mjs [distDir] [--only=/components/button,/docs/tokens] [--theme=light|dark]
-//                        [--preset=default,glass,tonal,crisp,soft] [--concurrency=4]
+//                        [--preset=default,glass,tonal,crisp,soft] [--concurrency=4] [--no-rtl]
 //
 // Opens every prerendered route in headless Chrome, in every style preset and both themes,
 // and fails on:
 //   - any axe-core violation of WCAG 2.1 A/AA (colour contrast included: this is a real browser);
 //   - any console error or uncaught exception;
 //   - horizontal overflow of the page at a phone-sized viewport.
+// Then repeats the pass right-to-left (first style, light theme): the same checks, plus
+// overflow at desktop width — a mirrored layout breaks in places a narrow one does not.
 // CHROME_PATH overrides the browser binary.
 import { readFile } from 'node:fs/promises';
 import { createRequire } from 'node:module';
@@ -40,14 +42,18 @@ const presets =
     ? flags.preset.split(',')
     : ['default', 'glass', 'tonal', 'crisp', 'soft'];
 const concurrency = Number(flags.concurrency ?? 4);
+const rtl = !flags['no-rtl'];
 
 const server = await serve(join(distDir, 'browser'));
 const browser = await puppeteer.launch({ executablePath: chromePath, args: chromeArgs });
 const problems = [];
 let checked = 0;
 
-async function open(route, theme, preset, width, height) {
-  const page = await browser.newPage();
+async function open(route, theme, preset, width, height, dir = 'ltr') {
+  // A context of its own: tabs of one profile share localStorage, and a tab opened for
+  // another style would change the style of this one while it is still starting up
+  const context = await browser.createBrowserContext();
+  const page = await context.newPage();
   await page.setViewport({ width, height });
   await page.emulateMediaFeatures([
     { name: 'prefers-color-scheme', value: theme },
@@ -62,16 +68,27 @@ async function open(route, theme, preset, width, height) {
       /* storage is unavailable on about:blank */
     }
   }, preset);
+  if (dir === 'rtl') {
+    // Set the direction before the app boots, as a real right-to-left page would have it
+    await page.evaluateOnNewDocument(() => {
+      const observer = new MutationObserver(() => {
+        if (!document.documentElement) return;
+        document.documentElement.dir = 'rtl';
+        observer.disconnect();
+      });
+      observer.observe(document, { childList: true });
+    });
+  }
   const errors = [];
   page.on('console', (message) => message.type() === 'error' && errors.push(message.text()));
   page.on('pageerror', (error) => errors.push(error.message));
   await page.goto(`http://localhost:${server.port}${route}`, { waitUntil: 'networkidle0' });
-  return { page, errors };
+  return { page, errors, close: () => context.close() };
 }
 
-async function auditRender(route, theme, preset) {
-  const where = `${route} [${preset}, ${theme}]`;
-  const { page, errors } = await open(route, theme, preset, 1280, 900);
+async function auditRender(route, theme, preset, dir = 'ltr') {
+  const where = `${route} [${preset}, ${theme}${dir === 'rtl' ? ', rtl' : ''}]`;
+  const { page, errors, close } = await open(route, theme, preset, 1280, 900, dir);
   try {
     await page.evaluate(axeSource);
     const result = await page.evaluate(() =>
@@ -93,14 +110,14 @@ async function auditRender(route, theme, preset) {
     for (const error of new Set(errors)) problems.push(`${where} console: ${error}`);
     checked++;
   } finally {
-    await page.close();
+    await close();
   }
 }
 
-/** Narrow viewport: the page itself must not scroll sideways. */
-async function auditOverflow(route, preset) {
-  const where = `${route} [${preset}, 375px]`;
-  const { page, errors } = await open(route, 'light', preset, 375, 800);
+/** The page itself must not scroll sideways: at a phone width, and mirrored at any width. */
+async function auditOverflow(route, preset, width = 375, dir = 'ltr') {
+  const where = `${route} [${preset}, ${width}px${dir === 'rtl' ? ', rtl' : ''}]`;
+  const { page, errors, close } = await open(route, 'light', preset, width, 800, dir);
   try {
     const overflow = await page.evaluate(() => {
       const width = window.innerWidth;
@@ -116,7 +133,9 @@ async function auditOverflow(route, preset) {
       const culprits = [];
       for (const el of document.querySelectorAll('body *')) {
         const rect = el.getBoundingClientRect();
-        if (rect.width === 0 || rect.right <= width + 1 || clipped(el)) continue;
+        // Left-to-right content sticks out on the right, mirrored content on the left
+        const inside = rect.right <= width + 1 && rect.left >= -1;
+        if (rect.width === 0 || inside || clipped(el)) continue;
         if (culprits.some((c) => c.el.contains(el))) continue;
         culprits.push({
           el,
@@ -136,7 +155,7 @@ async function auditOverflow(route, preset) {
     }
     for (const error of new Set(errors)) problems.push(`${where} console: ${error}`);
   } finally {
-    await page.close();
+    await close();
   }
 }
 
@@ -146,6 +165,13 @@ for (const preset of presets) {
   for (const route of routes) {
     for (const theme of themes) jobs.push(() => auditRender(route, theme, preset));
     jobs.push(() => auditOverflow(route, preset));
+  }
+}
+if (rtl) {
+  for (const route of routes) {
+    jobs.push(() => auditRender(route, 'light', presets[0], 'rtl'));
+    jobs.push(() => auditOverflow(route, presets[0], 375, 'rtl'));
+    jobs.push(() => auditOverflow(route, presets[0], 1280, 'rtl'));
   }
 }
 
@@ -162,7 +188,8 @@ try {
 }
 
 console.log(
-  `audited ${routes.length} routes × ${presets.length} styles × ${themes.length} themes: ${checked} renders`,
+  `audited ${routes.length} routes × ${presets.length} styles × ${themes.length} themes` +
+    `${rtl ? ', and right-to-left' : ''}: ${checked} renders`,
 );
 if (problems.length) {
   console.error(`\n${problems.length} problem(s):\n\n${problems.join('\n\n')}`);

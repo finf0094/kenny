@@ -52,6 +52,11 @@
     color-mix(in srgb, var(--kn-accent-50) 34%, transparent)
   );
 
+  --kn-color-control-border: light-dark(
+    color-mix(in srgb, var(--kn-accent-950) 48%, transparent),
+    color-mix(in srgb, var(--kn-accent-50) 40%, transparent)
+  );
+
   /* Fields: a filled well with a line under it; the line thickens and takes the accent on focus */
   --kn-color-field: light-dark(
     color-mix(in srgb, var(--kn-accent-800) 9%, transparent),
@@ -131,7 +136,7 @@
   --kn-switch-height: 2rem;
   --kn-switch-gap: 4px;
   --kn-switch-track: var(--kn-color-surface-sunken);
-  --kn-switch-track-shadow: inset 0 0 0 2px var(--kn-color-border-strong);
+  --kn-switch-track-shadow: inset 0 0 0 2px var(--kn-color-control-border);
   --kn-switch-thumb: var(--kn-color-on-accent);
   --kn-switch-thumb-off: var(--kn-color-text-subtle);
   --kn-switch-thumb-off-scale: 0.67;

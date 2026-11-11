@@ -24,10 +24,11 @@
   --kn-color-border: light-dark(rgb(17 20 28 / 0.12), rgb(255 255 255 / 0.12));
   --kn-color-border-strong: light-dark(rgb(17 20 28 / 0.28), rgb(255 255 255 / 0.27));
 
+  --kn-color-control-border: light-dark(rgb(17 20 28 / 0.52), rgb(255 255 255 / 0.42));
+
   /* Fields: outlined */
   --kn-color-field: var(--kn-color-surface);
-  --kn-color-field-border: light-dark(rgb(17 20 28 / 0.22), rgb(255 255 255 / 0.2));
-  --kn-color-field-border-hover: light-dark(rgb(17 20 28 / 0.42), rgb(255 255 255 / 0.4));
+  --kn-color-field-border-hover: light-dark(rgb(17 20 28 / 0.74), rgb(255 255 255 / 0.66));
 
   /* Interaction layers */
   --kn-color-hover: light-dark(rgb(17 20 28 / 0.055), rgb(255 255 255 / 0.07));

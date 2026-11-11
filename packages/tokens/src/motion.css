@@ -113,6 +113,32 @@
   --kn-dir: -1;
 }
 
+/*
+ * A block with its own tempo. A custom property is computed where it is declared, so the
+ * durations above keep the tempo of the page however the scale changes further down.
+ * The attribute `data-kn-tempo` makes a block compute them again:
+ *
+ *   <aside data-kn-tempo="brisk">                                  a named tempo
+ *   <aside data-kn-tempo style="--kn-duration-scale: 0.6">         any value
+ *
+ * The build fails if these lines drift from the ones in `:root`.
+ */
+[data-kn-tempo] {
+  --kn-duration-instant: calc(80ms * var(--kn-duration-scale) * var(--kn-motion-reduce));
+  --kn-duration-fast: calc(140ms * var(--kn-duration-scale) * var(--kn-motion-reduce));
+  --kn-duration-normal: calc(220ms * var(--kn-duration-scale) * var(--kn-motion-reduce));
+  --kn-duration-slow: calc(360ms * var(--kn-duration-scale) * var(--kn-motion-reduce));
+  --kn-duration-slower: calc(560ms * var(--kn-duration-scale) * var(--kn-motion-reduce));
+}
+
+[data-kn-tempo='brisk'] {
+  --kn-duration-scale: 0.7;
+}
+
+[data-kn-tempo='calm'] {
+  --kn-duration-scale: 1.4;
+}
+
 @media (prefers-reduced-motion: reduce) {
   :root {
     --kn-motion-reduce: 0.0001;

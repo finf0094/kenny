@@ -43,7 +43,28 @@ export async function readAllTokens() {
   for (const group of groups) {
     all.push(...parseTokens(await readFile(join(src, `${group}.css`), 'utf8'), group));
   }
+  await checkTempo(all);
   return all;
+}
+
+/**
+ * `[data-kn-tempo]` repeats every token computed from the tempo, so that a block can have
+ * its own. The copy is written by hand, in the same file; this keeps it honest.
+ */
+async function checkTempo(base) {
+  const css = await readFile(join(src, 'motion.css'), 'utf8');
+  const copy = new Map(
+    parseTokens(css, 'motion', '[data-kn-tempo]').map((token) => [token.name, token.value]),
+  );
+  const expected = base.filter((token) => token.value.includes('var(--kn-duration-scale)'));
+  const drift = expected.filter((token) => copy.get(token.name) !== token.value);
+  if (drift.length || copy.size !== expected.length) {
+    throw new Error(
+      `[data-kn-tempo] in motion.css is out of step with :root: ${
+        drift.map((token) => token.name).join(', ') || 'it declares tokens that :root does not'
+      }`,
+    );
+  }
 }
 
 /** Style presets, in the order the documentation lists them. */

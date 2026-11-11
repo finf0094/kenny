@@ -125,7 +125,7 @@ function optionTokens(options: StyleOptions): Map<string, string> {
   if (options.fields === 'outlined') {
     set({
       '--kn-color-field': 'var(--kn-color-surface)',
-      '--kn-color-field-border': 'var(--kn-color-border-strong)',
+      '--kn-color-field-border': 'var(--kn-color-control-border)',
       '--kn-color-field-border-hover': 'var(--kn-color-text-subtle)',
       '--kn-field-border-width': '1px',
       '--kn-field-underline-width': '0px',
@@ -137,8 +137,9 @@ function optionTokens(options: StyleOptions): Map<string, string> {
   } else if (options.fields === 'filled') {
     set({
       '--kn-color-field': 'var(--kn-color-surface-sunken)',
-      '--kn-color-field-border': 'transparent',
-      '--kn-color-field-border-hover': 'var(--kn-color-border-strong)',
+      // A fill alone is too faint to find the field by: it keeps a rim
+      '--kn-color-field-border': 'var(--kn-color-control-border)',
+      '--kn-color-field-border-hover': 'var(--kn-color-text-subtle)',
       '--kn-field-border-width': '1px',
       '--kn-field-underline-width': '0px',
       '--kn-field-underline-focus-width': '0px',
