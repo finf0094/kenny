@@ -5,24 +5,36 @@
  * of a given kind from the page — a hairline, a shadow, or both. Components use the roles.
  */
 :root {
-  --kn-shadow-color: light-dark(rgb(15 18 25 / 0.08), rgb(0 0 0 / 0.5));
+  --kn-shadow-color: light-dark(rgb(15 18 25 / 0.07), rgb(0 0 0 / 0.5));
   --kn-shadow-color-strong: light-dark(rgb(15 18 25 / 0.14), rgb(0 0 0 / 0.64));
 
-  --kn-shadow-xs: 0 1px 2px var(--kn-shadow-color);
-  --kn-shadow-sm: 0 1px 2px var(--kn-shadow-color), 0 2px 6px var(--kn-shadow-color);
-  --kn-shadow-md: 0 2px 4px var(--kn-shadow-color), 0 8px 20px var(--kn-shadow-color);
-  --kn-shadow-lg: 0 4px 8px var(--kn-shadow-color), 0 16px 40px var(--kn-shadow-color-strong);
-  --kn-shadow-xl: 0 8px 16px var(--kn-shadow-color), 0 28px 72px var(--kn-shadow-color-strong);
+  /* Each step is a tight contact shadow plus a wider, softer one: depth without a grey smear */
+  --kn-shadow-xs: 0 1px 1px var(--kn-shadow-color), 0 1px 3px -1px var(--kn-shadow-color);
+  --kn-shadow-sm: 0 1px 2px var(--kn-shadow-color), 0 3px 8px -2px var(--kn-shadow-color);
+  --kn-shadow-md:
+    0 1px 2px var(--kn-shadow-color), 0 4px 10px -2px var(--kn-shadow-color),
+    0 12px 28px -6px var(--kn-shadow-color);
+  --kn-shadow-lg:
+    0 2px 4px var(--kn-shadow-color), 0 10px 24px -4px var(--kn-shadow-color),
+    0 24px 56px -12px var(--kn-shadow-color-strong);
+  --kn-shadow-xl:
+    0 4px 8px var(--kn-shadow-color), 0 16px 32px -6px var(--kn-shadow-color),
+    0 40px 88px -16px var(--kn-shadow-color-strong);
 
-  /* Light catching the top edge of a filled control (solid buttons, checked boxes). Off by default. */
-  --kn-shadow-highlight: 0 0 0 0 transparent;
+  /* Light catching the top edge of a filled control (solid buttons, checked boxes) */
+  --kn-shadow-highlight: inset 0 1px 0 0 rgb(255 255 255 / 0.16);
+
+  /* A field sits a hair above the page */
+  --kn-field-shadow: 0 1px 2px light-dark(rgb(15 18 25 / 0.05), transparent);
 
   /* The edge of a surface: a hairline by default */
   --kn-surface-rim: inset 0 0 0 1px var(--kn-color-border);
 
   /* Roles */
-  --kn-elevation-raised: var(--kn-surface-rim); /* outline buttons, chips, small tiles */
-  --kn-elevation-card: var(--kn-surface-rim); /* cards, panels, sidebars, tables, toolbars */
+  --kn-elevation-raised:
+    var(--kn-surface-rim), var(--kn-shadow-xs); /* outline buttons, chips, small tiles */
+  --kn-elevation-card:
+    var(--kn-surface-rim), var(--kn-shadow-xs); /* cards, panels, sidebars, tables, toolbars */
   --kn-elevation-popup:
     var(--kn-surface-rim), var(--kn-shadow-md); /* menus, lists, popovers, toasts */
   --kn-elevation-modal:

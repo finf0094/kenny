@@ -46,6 +46,7 @@
   --kn-field-underline-width: 0px;
   --kn-field-underline-focus-width: 0px;
   --kn-field-focus-width: 2px; /* focus ring of a field; zero when the underline shows focus */
+  --kn-field-halo-width: 3px; /* soft glow around the focus ring; zero switches it off */
 
   /* Stacking */
   --kn-z-base: 0;

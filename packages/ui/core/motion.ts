@@ -37,3 +37,21 @@ export async function playExit(element: Element | null | undefined): Promise<voi
   element.setAttribute('data-kn-state', 'closing');
   await waitForAnimations(element);
 }
+
+/**
+ * Resolves a duration token to milliseconds on a given element. Tokens are `calc()`
+ * expressions, which a custom property keeps unevaluated — so the value is read through
+ * a real property instead.
+ */
+export function resolveDuration(element: HTMLElement, token: string): number {
+  const view = element.ownerDocument.defaultView;
+  if (!view) return 0;
+  const before = element.style.getPropertyValue('animation-duration');
+  element.style.setProperty('animation-duration', `var(${token})`);
+  const value = view.getComputedStyle(element).animationDuration.split(',')[0].trim();
+  if (before) element.style.setProperty('animation-duration', before);
+  else element.style.removeProperty('animation-duration');
+  const number = parseFloat(value);
+  if (!Number.isFinite(number)) return 0;
+  return value.endsWith('ms') ? number : number * 1000;
+}

@@ -47,6 +47,8 @@ export const componentGroups: { label: string; items: ComponentNavItem[] }[] = [
       c('radio', 'Radio', () => import('../content/radio')),
       c('switch', 'Switch', () => import('../content/switch')),
       c('slider', 'Slider', () => import('../content/slider')),
+      c('number-input', 'Number Input', () => import('../content/number-input')),
+      c('toggle-group', 'Toggle Group', () => import('../content/toggle-group')),
       c('date-picker', 'DatePicker', () => import('../content/date-picker')),
     ],
   },
@@ -61,6 +63,7 @@ export const componentGroups: { label: string; items: ComponentNavItem[] }[] = [
       c('splitter', 'Splitter', () => import('../content/splitter')),
       c('drawer', 'Drawer', () => import('../content/drawer')),
       c('toolbar', 'Toolbar', () => import('../content/toolbar')),
+      c('divider', 'Divider', () => import('../content/divider')),
     ],
   },
   {
@@ -81,6 +84,8 @@ export const componentGroups: { label: string; items: ComponentNavItem[] }[] = [
       c('table', 'Table', () => import('../content/table')),
       c('pagination', 'Pagination', () => import('../content/pagination')),
       c('badge', 'Badge', () => import('../content/badge')),
+      c('chip', 'Chip', () => import('../content/chip')),
+      c('alert', 'Alert', () => import('../content/alert')),
       c('avatar', 'Avatar', () => import('../content/avatar')),
       c('progress', 'Progress', () => import('../content/progress')),
       c('skeleton', 'Skeleton', () => import('../content/skeleton')),
@@ -88,6 +93,14 @@ export const componentGroups: { label: string; items: ComponentNavItem[] }[] = [
       c('empty-state', 'Empty State', () => import('../content/empty-state')),
       c('breadcrumbs', 'Breadcrumbs', () => import('../content/breadcrumbs')),
       c('stepper', 'Stepper', () => import('../content/stepper')),
+    ],
+  },
+  {
+    label: 'Движение',
+    items: [
+      c('number', 'Number', () => import('../content/number')),
+      c('ripple', 'Ripple', () => import('../content/ripple')),
+      c('reveal', 'Reveal', () => import('../content/reveal')),
     ],
   },
 ];

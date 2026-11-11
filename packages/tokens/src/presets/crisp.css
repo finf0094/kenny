@@ -73,4 +73,9 @@
   /* Components */
   --kn-tooltip-bg: light-dark(#15171c, #ececee);
   --kn-tooltip-color: light-dark(#ffffff, #0e0f11);
+
+  /* Flat fills and fields: no top highlight, no lift */
+  --kn-shadow-highlight: 0 0 0 0 transparent;
+  --kn-field-shadow: 0 0 0 0 transparent;
+  --kn-field-halo-width: 0px;
 }

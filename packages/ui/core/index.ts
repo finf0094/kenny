@@ -7,3 +7,4 @@ export * from './style-loader';
 export * from './control';
 export * from './defaults';
 export * from './labels';
+export * from './ripple';

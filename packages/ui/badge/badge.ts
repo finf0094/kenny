@@ -15,6 +15,7 @@ import { KnBadgeVariant, knDefaults, KnTone } from '@kenny/ui/core';
     '[attr.data-tone]': 'tone()',
     '[attr.data-variant]': 'variant()',
     '[attr.data-size]': 'size()',
+    '[attr.data-pulse]': 'pulse() ? "" : null',
   },
   styles: `
     :host {
@@ -85,10 +86,29 @@ import { KnBadgeVariant, knDefaults, KnTone } from '@kenny/ui/core';
     }
 
     .dot {
+      position: relative;
       inline-size: 0.4375rem;
       block-size: 0.4375rem;
       border-radius: 50%;
       background: currentColor;
+    }
+
+    /* Live status: a ring leaves the dot every couple of seconds */
+    :host([data-pulse]) .dot::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: currentColor;
+      opacity: 0.55;
+      animation: kn-ping 1.8s var(--kn-ease-out) infinite;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      :host([data-pulse]) .dot::after {
+        animation: none;
+        opacity: 0;
+      }
     }
   `,
 })
@@ -101,4 +121,6 @@ export class KnBadge {
   readonly size = input<'md' | 'lg'>('md');
   /** Точка-индикатор перед текстом. */
   readonly dot = input(false, { transform: booleanAttribute });
+  /** Пульсация точки — для «живых» статусов: идёт запись, сервис в сети. Работает вместе с `dot`. */
+  readonly pulse = input(false, { transform: booleanAttribute });
 }

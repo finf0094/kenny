@@ -35,7 +35,7 @@ import { KnSize, KnTone, injectKnLabels } from '@kenny/ui/core';
       display: block;
       block-size: var(--kn-progress-height, var(--_height));
       border-radius: var(--kn-radius-full);
-      background: var(--kn-progress-track, var(--kn-color-border-strong));
+      background: var(--kn-progress-track, var(--kn-color-track));
       overflow: hidden;
     }
 

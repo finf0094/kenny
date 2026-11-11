@@ -8,7 +8,8 @@ import { KnStyleLoader } from './style-loader';
  *
  * Tokens: `--kn-color-field`, `--kn-color-field-border`, `--kn-color-field-border-hover`,
  * `--kn-color-field-underline`, `--kn-field-border-width`, `--kn-field-underline-width`,
- * `--kn-field-underline-focus-width`, `--kn-field-focus-width`, `--kn-radius-field`,
+ * `--kn-field-underline-focus-width`, `--kn-field-focus-width`, `--kn-field-halo-width`,
+ * `--kn-field-shadow`, `--kn-radius-field`,
  * `--kn-radius-field-sm`, `--kn-size-sm|md|lg`. Set a token on one field to change only it.
  *
  * States are written with `:where()`: zero specificity, so any rule of yours wins.
@@ -30,7 +31,9 @@ const controlStyles = `
     background: var(--kn-color-field);
     box-shadow:
       inset 0 0 0 var(--kn-field-border-width) var(--_line),
-      inset 0 calc(var(--_underline-w) * -1) 0 0 var(--_underline);
+      inset 0 calc(var(--_underline-w) * -1) 0 0 var(--_underline),
+      var(--_halo, 0 0 0 0 transparent),
+      var(--kn-field-shadow);
     color: var(--kn-color-text);
     font: inherit;
     font-size: var(--kn-text-md);
@@ -62,6 +65,8 @@ const controlStyles = `
   ) {
     --_underline: var(--_focus);
     --_underline-w: var(--kn-field-underline-focus-width);
+    --_halo: 0 0 0 var(--kn-field-halo-width)
+      color-mix(in srgb, var(--_focus) 20%, transparent);
     outline: var(--kn-field-focus-width) solid var(--_focus);
     outline-offset: -1px;
   }

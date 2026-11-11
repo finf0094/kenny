@@ -138,4 +138,12 @@
   --kn-switch-thumb-shadow: none;
   --kn-tooltip-bg: light-dark(#2f3036, #e5e4ea);
   --kn-tooltip-color: light-dark(#f2f0f7, #1a1b20);
+
+  /* Flat fills and fields: no top highlight, no lift */
+  --kn-shadow-highlight: 0 0 0 0 transparent;
+  --kn-field-shadow: 0 0 0 0 transparent;
+  --kn-field-halo-width: 0px;
+
+  /* Presses answer with a wave instead of a squeeze */
+  --kn-ripple-opacity: 0.14;
 }

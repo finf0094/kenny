@@ -74,4 +74,7 @@
   --kn-tabs-thumb-shadow:
     inset 0 1px 0 0 light-dark(rgb(255 255 255 / 0.95), rgb(255 255 255 / 0.18)),
     0 0 0 0.5px light-dark(rgb(12 19 48 / 0.08), rgb(0 0 0 / 0.5)), var(--kn-shadow-sm);
+
+  /* Flat fills and fields: no top highlight, no lift */
+  --kn-field-shadow: 0 0 0 0 transparent;
 }

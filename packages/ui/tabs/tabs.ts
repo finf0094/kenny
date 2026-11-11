@@ -8,6 +8,7 @@ import {
   DestroyRef,
   ElementRef,
   forwardRef,
+  linkedSignal,
   inject,
   input,
   model,
@@ -16,7 +17,14 @@ import {
 } from '@angular/core';
 import { _IdGenerator } from '@angular/cdk/a11y';
 import { Directionality } from '@angular/cdk/bidi';
-import { knDefaults, knDefaultSize, KnSize, KnTabsVariant } from '@kenny/ui/core';
+import {
+  knDefaults,
+  knDefaultSize,
+  KnSize,
+  KnTabsVariant,
+  resolveDuration,
+  useRipple,
+} from '@kenny/ui/core';
 import { KnIcon } from '@kenny/ui/icon';
 
 export type { KnTabsVariant } from '@kenny/ui/core';
@@ -66,6 +74,8 @@ export type { KnTabsVariant } from '@kenny/ui/core';
     '[attr.data-variant]': 'variant()',
     '[attr.data-size]': 'size()',
     '[attr.data-stretch]': 'stretch() ? "" : null',
+    // Panels arrive from the side the selection moved to
+    '[style.--kn-shift]': 'shift()',
   },
   styles: `
     :host {
@@ -228,7 +238,21 @@ export class KnTabs<T = unknown> {
     return tabs.find((tab) => !tab.disabled())?.value();
   });
 
+  private readonly index = computed(() =>
+    this.tabs().findIndex((tab) => tab.value() === this.current()),
+  );
+  protected readonly shift = linkedSignal<number, string>({
+    source: this.index,
+    computation: (index, previous) =>
+      !previous || previous.source < 0 || index === previous.source
+        ? '0px'
+        : index > previous.source
+          ? '14px'
+          : '-14px',
+  });
+
   constructor() {
+    useRipple('.tab');
     if (typeof ResizeObserver !== 'undefined') {
       const observer = new ResizeObserver(() => this.resized.update((n) => n + 1));
       afterRenderEffect(() => observer.observe(this.list().nativeElement));
@@ -299,7 +323,7 @@ export class KnTabs<T = unknown> {
     if (prev.left === next.left && prev.width === next.width) return;
 
     const style = getComputedStyle(indicator);
-    const duration = parseFloat(style.getPropertyValue('--kn-duration-slow')) || 0;
+    const duration = resolveDuration(indicator, '--kn-duration-slow');
     const easing = style.getPropertyValue('--kn-ease-spring').trim() || 'ease-out';
     indicator.animate(
       [
@@ -331,7 +355,7 @@ export class KnTabs<T = unknown> {
     :host {
       display: block;
       padding-block-start: var(--kn-tabs-gap, var(--kn-space-4));
-      animation: kn-fade-in var(--kn-duration-normal) var(--kn-ease-standard);
+      animation: kn-shift-in var(--kn-duration-slow) var(--kn-ease-out);
     }
 
     :host([hidden]) {

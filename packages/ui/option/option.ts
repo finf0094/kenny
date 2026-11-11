@@ -1,3 +1,4 @@
+import { useRipple } from '@kenny/ui/core';
 import {
   booleanAttribute,
   ChangeDetectionStrategy,
@@ -158,6 +159,10 @@ export class KnOption<T = unknown> implements Highlightable {
     if (!this.disabledInput() && !this.active()) {
       this.parent.activate(this);
     }
+  }
+
+  constructor() {
+    useRipple();
   }
 }
 

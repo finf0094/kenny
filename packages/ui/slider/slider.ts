@@ -75,7 +75,7 @@ import { knDefaultSize, KnFormControl, KnSize } from '@kenny/ui/core';
       inset-block-start: calc(50% - var(--_track) / 2);
       block-size: var(--_track);
       border-radius: var(--kn-radius-full);
-      background: var(--kn-slider-track, var(--kn-color-border-strong));
+      background: var(--kn-slider-track, var(--kn-color-track));
       overflow: hidden;
     }
 

@@ -31,6 +31,19 @@ describe('KnTabs', () => {
     expect(panel).toHaveAttribute('aria-labelledby', tab.id);
   });
 
+  it('tells panels which side the selection moved to', async () => {
+    const { container } = await render(Host);
+    const tabs = container.querySelector<HTMLElement>('kn-tabs')!;
+    // Nothing moves on the first render
+    expect(tabs.style.getPropertyValue('--kn-shift')).toBe('0px');
+    await userEvent.click(screen.getByRole('tab', { name: 'API' }));
+    await stable();
+    expect(tabs.style.getPropertyValue('--kn-shift')).toBe('14px');
+    await userEvent.click(screen.getByRole('tab', { name: 'Код' }));
+    await stable();
+    expect(tabs.style.getPropertyValue('--kn-shift')).toBe('-14px');
+  });
+
   it('activates on click and updates the model', async () => {
     const { fixture } = await render(Host);
     await userEvent.click(screen.getByRole('tab', { name: 'Код' }));

@@ -95,4 +95,8 @@
   /* Slider: a thin track and a large thumb */
   --kn-slider-track-size: 0.25rem;
   --kn-slider-thumb-size: 1.75rem;
+
+  /* Flat fills and fields: no top highlight, no lift */
+  --kn-shadow-highlight: 0 0 0 0 transparent;
+  --kn-field-shadow: 0 0 0 0 transparent;
 }

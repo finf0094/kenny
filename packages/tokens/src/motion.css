@@ -5,14 +5,20 @@
  *  - animate only `transform` and `opacity` (height uses a grid-row trick, see Collapse);
  *  - frequent actions use `fast`, surfaces entering the screen use `normal`/`slow`;
  *  - springs are for things the user moves or toggles, standard curves for the rest;
- *  - every duration is a token, so `prefers-reduced-motion` switches the whole system off here.
+ *  - every duration is a token, so `prefers-reduced-motion` switches the whole system off here,
+ *    and `--kn-duration-scale` changes its tempo.
  */
 :root {
-  --kn-duration-instant: 80ms;
-  --kn-duration-fast: 140ms;
-  --kn-duration-normal: 220ms;
-  --kn-duration-slow: 360ms;
-  --kn-duration-slower: 560ms;
+  /* One dial for the tempo of the whole system: 0.5 — twice as fast, 1.5 — unhurried */
+  --kn-duration-scale: 1;
+  /* Internal: collapses every duration under prefers-reduced-motion. Do not override. */
+  --kn-motion-reduce: 1;
+
+  --kn-duration-instant: calc(80ms * var(--kn-duration-scale) * var(--kn-motion-reduce));
+  --kn-duration-fast: calc(140ms * var(--kn-duration-scale) * var(--kn-motion-reduce));
+  --kn-duration-normal: calc(220ms * var(--kn-duration-scale) * var(--kn-motion-reduce));
+  --kn-duration-slow: calc(360ms * var(--kn-duration-scale) * var(--kn-motion-reduce));
+  --kn-duration-slower: calc(560ms * var(--kn-duration-scale) * var(--kn-motion-reduce));
 
   --kn-ease-standard: cubic-bezier(0.2, 0, 0, 1);
   --kn-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
@@ -93,6 +99,9 @@
   /* How far a button shrinks while pressed; 1 switches the effect off */
   --kn-press-scale: 0.97;
 
+  /* A wave spreading from the point of a press; 0 switches it off, 0.12–0.16 reads well */
+  --kn-ripple-opacity: 0;
+
   /* Stagger step for list items: `animation-delay: calc(var(--kn-index) * var(--kn-stagger))` */
   --kn-stagger: 28ms;
 
@@ -106,11 +115,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   :root {
-    --kn-duration-instant: 0.01ms;
-    --kn-duration-fast: 0.01ms;
-    --kn-duration-normal: 0.01ms;
-    --kn-duration-slow: 0.01ms;
-    --kn-duration-slower: 0.01ms;
+    --kn-motion-reduce: 0.0001;
     --kn-stagger: 0ms;
   }
 }
@@ -191,5 +196,45 @@
   }
   to {
     transform: translateX(calc(100% * var(--kn-dir)));
+  }
+}
+
+/* A ring that expands and fades: live status dots */
+@keyframes kn-ping {
+  to {
+    opacity: 0;
+    transform: scale(2.6);
+  }
+}
+
+/* A short sideways shake: "no", an invalid submit */
+@keyframes kn-shake {
+  20% {
+    transform: translateX(-5px);
+  }
+  40% {
+    transform: translateX(5px);
+  }
+  60% {
+    transform: translateX(-3px);
+  }
+  80% {
+    transform: translateX(2px);
+  }
+}
+
+/* Tab panels and steps: content arrives from the side it was "at" */
+@keyframes kn-shift-in {
+  from {
+    opacity: 0;
+    transform: translateX(calc(var(--kn-shift, 12px) * var(--kn-dir)));
+  }
+}
+
+/* Content that scales up into place: reveals, numbers */
+@keyframes kn-zoom-in {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
   }
 }

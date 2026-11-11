@@ -6,7 +6,7 @@ import {
   model,
   numberAttribute,
 } from '@angular/core';
-import { knDefaultSize, KnSize, injectKnLabels } from '@kenny/ui/core';
+import { knDefaultSize, KnSize, injectKnLabels, useRipple } from '@kenny/ui/core';
 import { KnIcon } from '@kenny/ui/icon';
 
 /** Builds `[1, '…', 4, 5, 6, '…', 20]` for the given position. */
@@ -209,5 +209,9 @@ export class KnPagination {
   protected go(page: number): void {
     const next = Math.min(this.pageCount(), Math.max(1, page));
     if (next !== this.page()) this.page.set(next);
+  }
+
+  constructor() {
+    useRipple('.page');
   }
 }

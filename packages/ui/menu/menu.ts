@@ -1,3 +1,4 @@
+import { useRipple } from '@kenny/ui/core';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -183,6 +184,10 @@ export class KnMenuItem {
   /** `danger` — для необратимых действий. */
   readonly tone = input<'neutral' | 'danger'>('neutral');
   protected readonly hasSubmenu = inject(CdkMenuTrigger, { optional: true, self: true }) !== null;
+
+  constructor() {
+    useRipple();
+  }
 }
 
 /** Пункт-флажок. Состояние хранит приложение: меняйте `checked` по событию `triggered`. */
@@ -203,7 +208,11 @@ export class KnMenuItem {
   `,
   styles: itemStyles,
 })
-export class KnMenuItemCheckbox {}
+export class KnMenuItemCheckbox {
+  constructor() {
+    useRipple();
+  }
+}
 
 /** Пункт-переключатель внутри `<kn-menu-group>`: выбран один из группы. */
 @Component({
@@ -223,7 +232,11 @@ export class KnMenuItemCheckbox {}
   `,
   styles: itemStyles,
 })
-export class KnMenuItemRadio {}
+export class KnMenuItemRadio {
+  constructor() {
+    useRipple();
+  }
+}
 
 /** Группа пунктов с необязательным заголовком. Радио-пункты внутри взаимоисключающие. */
 @Component({

@@ -9,6 +9,14 @@ import { expectNoA11yViolations } from '../testing/a11y';
 import { KnBadge } from './badge';
 
 describe('KnBadge', () => {
+  it('marks a live status with a pulsing dot that is hidden from assistive technology', async () => {
+    const { container } = await render(`<kn-badge tone="success" dot pulse>Online</kn-badge>`, {
+      imports: [KnBadge],
+    });
+    expect(container.querySelector('kn-badge')).toHaveAttribute('data-pulse');
+    expect(container.querySelector('.dot')).toHaveAttribute('aria-hidden', 'true');
+  });
+
   it('reflects tone and variant and can show a status dot', async () => {
     const { container } = await render(
       `<kn-badge tone="success" variant="solid" dot>Оплачен</kn-badge>`,

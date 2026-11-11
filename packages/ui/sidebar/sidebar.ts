@@ -1,4 +1,4 @@
-import { injectKnLabels } from '@kenny/ui/core';
+import { injectKnLabels, useRipple } from '@kenny/ui/core';
 import {
   booleanAttribute,
   ChangeDetectionStrategy,
@@ -236,4 +236,8 @@ export class KnSidebarGroup {
 export class KnSidebarItem {
   /** Отмечает текущую страницу. С роутером удобнее `routerLinkActive="active"`. */
   readonly active = input(false, { transform: booleanAttribute });
+
+  constructor() {
+    useRipple();
+  }
 }

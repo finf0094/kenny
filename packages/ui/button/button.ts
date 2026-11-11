@@ -8,7 +8,7 @@ import {
   input,
   Renderer2,
 } from '@angular/core';
-import { KnButtonVariant, knDefaults, knDefaultSize, KnSize } from '@kenny/ui/core';
+import { KnButtonVariant, knDefaults, knDefaultSize, KnSize, useRipple } from '@kenny/ui/core';
 import { KnSpinner } from '@kenny/ui/spinner';
 
 export type { KnButtonVariant } from '@kenny/ui/core';
@@ -239,6 +239,7 @@ export class KnButton {
   protected readonly inert = computed(() => this.disabled() || this.loading());
 
   constructor() {
+    useRipple();
     // Capture phase: runs before any (click) handler bound by the consumer.
     inject(Renderer2).listen(this.element, 'click', (event: Event) => this.haltWhenInert(event), {
       capture: true,
