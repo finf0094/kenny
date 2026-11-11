@@ -32,6 +32,8 @@ export type { KnCardVariant } from '@kenny/ui/core';
       flex-direction: column;
       box-sizing: border-box;
       min-inline-size: 0;
+      /* A card on a <button> must not keep the button's own padding */
+      padding: 0;
       border: 0;
       border-radius: var(--kn-card-radius, var(--kn-radius-lg));
       color: var(--kn-color-text);

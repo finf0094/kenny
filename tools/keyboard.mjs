@@ -535,8 +535,8 @@ try {
       );
       const focused = await active(page);
       expect(focused.tag === 'textarea', `focus moved to <${focused.tag}>`);
-      const table = await page.$('.thread .message:last-of-type table');
-      expect(Boolean(table), 'the answer has no table of invoices');
+      const files = await page.$$('.thread .message:last-of-type .cards button');
+      expect(files.length === 3, `expected three files in the answer, got ${files.length}`);
     },
   );
 } finally {

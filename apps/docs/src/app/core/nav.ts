@@ -136,6 +136,7 @@ export const examples: (NavItem & { description: string })[] = [
     path: '/examples/chat',
     title: 'Чат с агентом',
     icon: 'zap',
-    description: 'Диалоги, лента с шагами агента и ответом по словам, поле ввода с вложениями.',
+    description:
+      'Меню с чатами, ответ агента с шагами работы и файлами, поле ввода с выбором модели.',
   },
 ];
